@@ -113,11 +113,11 @@ const About = () => {
             </p>
           </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <TeamMember
               name="Priya Sharma"
               role="Cultural Historian"
-              bio="Specializes in the historical evolution of Indian states and their cultural significance."
+              bio="Specializes in the historical evolution of Indian states and their cultural significance across North India."
               image="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
               delay={0.1}
             />
@@ -125,17 +125,25 @@ const About = () => {
             <TeamMember
               name="Arjun Patel"
               role="Content Director"
-              bio="Leads our content strategy and ensures accuracy and quality of all cultural information."
+              bio="Leads our content strategy and ensures accuracy and quality of all cultural information from Western states."
               image="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
               delay={0.2}
             />
             
             <TeamMember
               name="Meera Iyer"
-              role="User Experience Designer"
-              bio="Creates engaging and intuitive experiences that make cultural exploration enjoyable."
+              role="UX Designer"
+              bio="Creates engaging and intuitive experiences that make cultural exploration enjoyable for users of all backgrounds."
               image="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
               delay={0.3}
+            />
+            
+            <TeamMember
+              name="Rajiv Khanna"
+              role="Cultural Researcher"
+              bio="Researches the diverse traditions and customs of Southern Indian states to bring authentic information to our platform."
+              image="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
+              delay={0.4}
             />
           </div>
         </section>
@@ -172,7 +180,7 @@ const FeatureCard = ({ icon, title, description, delay = 0 }) => {
         ease: [0.19, 1, 0.22, 1], 
         delay 
       }}
-      className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow"
+      className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow dark:bg-gray-800 dark:border dark:border-gray-700"
     >
       <div className="w-16 h-16 rounded-full bg-india-orange/10 flex items-center justify-center text-india-orange mb-6 mx-auto">
         {icon}
@@ -193,9 +201,9 @@ const TeamMember = ({ name, role, bio, image, delay = 0 }) => {
         ease: [0.19, 1, 0.22, 1], 
         delay 
       }}
-      className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow"
+      className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow dark:bg-gray-800 dark:border dark:border-gray-700"
     >
-      <div className="h-64 overflow-hidden">
+      <div className="h-48 overflow-hidden">
         <img 
           src={image} 
           alt={name} 

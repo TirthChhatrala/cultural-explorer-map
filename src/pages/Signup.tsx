@@ -1,13 +1,50 @@
 
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { motion } from 'framer-motion';
-import { User, Lock, Mail, ArrowRight } from 'lucide-react';
+import { User, Lock, Mail, ArrowRight, AlertCircle } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
+import { useToast } from '../hooks/use-toast';
 
 const Signup = () => {
   const { theme } = useTheme();
+  const { signup } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [error, setError] = useState('');
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    
+    if (!name || !email || !password) {
+      setError('Please fill in all fields');
+      return;
+    }
+    
+    if (!agreedToTerms) {
+      setError('You must agree to the Terms of Service and Privacy Policy');
+      return;
+    }
+    
+    const success = signup(name, email, password);
+    if (success) {
+      toast({
+        title: "Account created successfully",
+        description: "Welcome to Indian Cultural Explorer",
+      });
+      navigate('/dashboard');
+    } else {
+      setError('Email already exists. Please try another email or login.');
+    }
+  };
   
   return (
     <Layout>
@@ -26,7 +63,16 @@ const Signup = () => {
               <p className="text-muted-foreground">Join Indian Cultural Explorer</p>
             </div>
             
-            <form className="space-y-6">
+            {error && (
+              <div className={`mb-4 p-3 rounded-lg flex items-center gap-2 ${
+                theme === 'dark' ? 'bg-red-500/10 text-red-400' : 'bg-red-50 text-red-500'
+              }`}>
+                <AlertCircle size={18} />
+                <p className="text-sm">{error}</p>
+              </div>
+            )}
+            
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="space-y-2">
                 <label htmlFor="name" className="block text-sm font-medium">Full Name</label>
                 <div className={`flex items-center rounded-lg border ${
@@ -36,6 +82,8 @@ const Signup = () => {
                   <input
                     id="name"
                     type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     placeholder="John Doe"
                     className={`w-full bg-transparent focus:outline-none ${
                       theme === 'dark' ? 'placeholder:text-gray-500' : 'placeholder:text-gray-400'
@@ -53,6 +101,8 @@ const Signup = () => {
                   <input
                     id="email"
                     type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="youremail@example.com"
                     className={`w-full bg-transparent focus:outline-none ${
                       theme === 'dark' ? 'placeholder:text-gray-500' : 'placeholder:text-gray-400'
@@ -70,6 +120,8 @@ const Signup = () => {
                   <input
                     id="password"
                     type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
                     className={`w-full bg-transparent focus:outline-none ${
                       theme === 'dark' ? 'placeholder:text-gray-500' : 'placeholder:text-gray-400'
@@ -82,6 +134,8 @@ const Signup = () => {
                 <input
                   id="terms"
                   type="checkbox"
+                  checked={agreedToTerms}
+                  onChange={(e) => setAgreedToTerms(e.target.checked)}
                   className="h-4 w-4 rounded border-gray-300 text-india-orange focus:ring-india-orange mt-1"
                 />
                 <label htmlFor="terms" className="ml-2 block text-sm text-muted-foreground">

@@ -2,15 +2,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { MapPin, Info, Newspaper, Calendar, Users, User, Shield } from 'lucide-react';
+import { MapPin, Info, Newspaper, Calendar, Users, User, Shield, LogOut } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
+import { useToast } from '../hooks/use-toast';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === '/';
   const { theme } = useTheme();
+  const { isAuthenticated, user, logout } = useAuth();
+  const { toast } = useToast();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,6 +28,19 @@ const Header = () => {
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  const toggleUserMenu = () => {
+    setUserMenuOpen(!userMenuOpen);
+  };
+
+  const handleLogout = () => {
+    logout();
+    setUserMenuOpen(false);
+    toast({
+      title: "Logged out successfully",
+      description: "You have been logged out of your account",
+    });
   };
 
   return (
@@ -60,8 +78,62 @@ const Header = () => {
         </nav>
         
         <div className="hidden md:flex items-center space-x-4">
-          <Link to="/login" className="text-sm font-medium hover:text-india-orange transition-colors">Login</Link>
-          <Link to="/signup" className="px-4 py-2 bg-india-orange text-white rounded-full text-sm font-medium hover:bg-india-orange/90 transition-colors">Sign Up</Link>
+          {isAuthenticated ? (
+            <div className="relative">
+              <motion.button
+                className={`flex items-center space-x-2 px-4 py-2 rounded-full ${
+                  theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
+                } transition-colors`}
+                onClick={toggleUserMenu}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <div className={`w-8 h-8 rounded-full bg-india-orange/10 flex items-center justify-center text-india-orange`}>
+                  <User size={16} />
+                </div>
+                <span className="font-medium text-sm">{user?.name.split(' ')[0]}</span>
+              </motion.button>
+              
+              {userMenuOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className={`absolute right-0 mt-2 w-48 rounded-lg shadow-lg overflow-hidden ${
+                    theme === 'dark' ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-100'
+                  }`}
+                >
+                  <div className="p-3 border-b border-gray-700/20">
+                    <p className="font-medium text-sm">{user?.name}</p>
+                    <p className="text-xs text-muted-foreground">{user?.email}</p>
+                  </div>
+                  <Link 
+                    to="/dashboard" 
+                    className={`block w-full text-left px-4 py-2 text-sm ${
+                      theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-50'
+                    }`}
+                    onClick={() => setUserMenuOpen(false)}
+                  >
+                    Dashboard
+                  </Link>
+                  <button 
+                    className={`flex items-center w-full text-left px-4 py-2 text-sm ${
+                      theme === 'dark' ? 'hover:bg-gray-700 text-red-400' : 'hover:bg-gray-50 text-red-500'
+                    }`}
+                    onClick={handleLogout}
+                  >
+                    <LogOut size={14} className="mr-2" />
+                    Log out
+                  </button>
+                </motion.div>
+              )}
+            </div>
+          ) : (
+            <>
+              <Link to="/login" className="text-sm font-medium hover:text-india-orange transition-colors">Login</Link>
+              <Link to="/signup" className="px-4 py-2 bg-india-orange text-white rounded-full text-sm font-medium hover:bg-india-orange/90 transition-colors">Sign Up</Link>
+            </>
+          )}
         </div>
         
         <motion.button
@@ -95,8 +167,31 @@ const Header = () => {
             <MobileNavLink to="/freedom-fighters" label="Freedom Fighters" icon={<Shield className="w-5 h-5" />} active={location.pathname === '/freedom-fighters'} onClick={() => setMobileMenuOpen(false)} />
             
             <div className="pt-3 border-t border-gray-200 flex space-x-4">
-              <Link to="/login" className="block px-4 py-2 w-full text-center rounded-lg bg-secondary text-foreground hover:bg-secondary/80 transition-colors" onClick={() => setMobileMenuOpen(false)}>Login</Link>
-              <Link to="/signup" className="block px-4 py-2 w-full text-center rounded-lg bg-india-orange text-white hover:bg-india-orange/90 transition-colors" onClick={() => setMobileMenuOpen(false)}>Sign Up</Link>
+              {isAuthenticated ? (
+                <>
+                  <Link 
+                    to="/dashboard" 
+                    className="block px-4 py-2 w-full text-center rounded-lg bg-secondary text-foreground hover:bg-secondary/80 transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Dashboard
+                  </Link>
+                  <button 
+                    className="block px-4 py-2 w-full text-center rounded-lg bg-red-500 text-white hover:bg-red-600 transition-colors"
+                    onClick={() => {
+                      handleLogout();
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" className="block px-4 py-2 w-full text-center rounded-lg bg-secondary text-foreground hover:bg-secondary/80 transition-colors" onClick={() => setMobileMenuOpen(false)}>Login</Link>
+                  <Link to="/signup" className="block px-4 py-2 w-full text-center rounded-lg bg-india-orange text-white hover:bg-india-orange/90 transition-colors" onClick={() => setMobileMenuOpen(false)}>Sign Up</Link>
+                </>
+              )}
             </div>
           </div>
         </motion.div>

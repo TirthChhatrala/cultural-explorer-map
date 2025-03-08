@@ -16,11 +16,31 @@ export interface State {
     x: number;
     y: number;
   };
+  politicalParties?: PoliticalParty[];
+  festivals?: Festival[];
 }
 
 export interface Attraction {
   name: string;
   description: string;
+  image: string;
+}
+
+export interface PoliticalParty {
+  name: string;
+  abbreviation: string;
+  foundedYear: number;
+  ideology: string;
+  currentLeader: string;
+  description: string;
+  logo?: string;
+}
+
+export interface Festival {
+  name: string;
+  month: string;
+  description: string;
+  significance: string;
   image: string;
 }
 
@@ -51,6 +71,11 @@ export const states: State[] = [
         name: "Jaisalmer Fort",
         description: "A UNESCO World Heritage Site and one of the largest fully preserved fortified cities in the world, located in the heart of the Thar Desert.",
         image: "https://images.unsplash.com/photo-1591089101324-2280d9260000?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
+      },
+      {
+        name: "Udaipur City Palace",
+        description: "A magnificent palace complex built over a period of nearly 400 years, with contributions from several rulers of the Mewar dynasty.",
+        image: "https://images.unsplash.com/photo-1587135941948-670b381f08ce?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
       }
     ],
     famousFor: [
@@ -65,7 +90,41 @@ export const states: State[] = [
     coordinates: {
       x: 27,
       y: 73
-    }
+    },
+    politicalParties: [
+      {
+        name: "Bharatiya Janata Party",
+        abbreviation: "BJP",
+        foundedYear: 1980,
+        ideology: "Nationalism, Conservatism",
+        currentLeader: "Bhajan Lal Sharma (Chief Minister)",
+        description: "BJP is one of the two major political parties in India. In Rajasthan, it has a significant presence and has formed the government multiple times."
+      },
+      {
+        name: "Indian National Congress",
+        abbreviation: "INC",
+        foundedYear: 1885,
+        ideology: "Liberalism, Social democracy",
+        currentLeader: "Govind Singh Dotasra (State President)",
+        description: "The Indian National Congress is one of India's oldest political parties. In Rajasthan, it has alternated power with the BJP in recent decades."
+      }
+    ],
+    festivals: [
+      {
+        name: "Pushkar Camel Fair",
+        month: "November",
+        description: "An annual camel and livestock fair held in the town of Pushkar.",
+        significance: "It's one of the world's largest camel fairs, attracting thousands of camels, horses and cattle for trading.",
+        image: "https://images.unsplash.com/photo-1516146619866-aaa0384b0bcd?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
+      },
+      {
+        name: "Desert Festival",
+        month: "February",
+        description: "A colorful event showcasing the rich cultural heritage of Rajasthan, held in Jaisalmer.",
+        significance: "This festival highlights the traditions and customs of the desert dwellers with music, dance, and competitions.",
+        image: "https://images.unsplash.com/photo-1603206004639-38d94223ddc5?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
+      }
+    ]
   },
   {
     id: "kerala",
@@ -92,6 +151,11 @@ export const states: State[] = [
         name: "Fort Kochi",
         description: "A historic coastal area with colonial buildings, Chinese fishing nets, and a vibrant art scene.",
         image: "https://images.unsplash.com/photo-1589829529583-c08aa1cd8fa6?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
+      },
+      {
+        name: "Wayanad",
+        description: "A rural district with lush forests, wildlife, and tribal heritage.",
+        image: "https://images.unsplash.com/photo-1609946860441-a51ffbe8a3a8?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
       }
     ],
     famousFor: [
@@ -106,7 +170,41 @@ export const states: State[] = [
     coordinates: {
       x: 10,
       y: 76
-    }
+    },
+    politicalParties: [
+      {
+        name: "Communist Party of India (Marxist)",
+        abbreviation: "CPI(M)",
+        foundedYear: 1964,
+        ideology: "Communism, Marxism",
+        currentLeader: "Pinarayi Vijayan (Chief Minister)",
+        description: "The CPI(M) has been a dominant political force in Kerala for decades, leading the Left Democratic Front coalition."
+      },
+      {
+        name: "Indian National Congress",
+        abbreviation: "INC",
+        foundedYear: 1885,
+        ideology: "Liberalism, Social democracy",
+        currentLeader: "K. Sudhakaran (State President)",
+        description: "The INC leads the United Democratic Front in Kerala, traditionally alternating power with the LDF."
+      }
+    ],
+    festivals: [
+      {
+        name: "Onam",
+        month: "August-September",
+        description: "A harvest festival celebrated with elaborate feasts, boat races, dances, and floral decorations.",
+        significance: "Kerala's most important festival, commemorating the return of the mythical King Mahabali.",
+        image: "https://images.unsplash.com/photo-1600096194534-95cf5ece04cf?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
+      },
+      {
+        name: "Thrissur Pooram",
+        month: "April-May",
+        description: "A spectacular temple festival featuring decorated elephants, percussion performances and fireworks.",
+        significance: "Considered the most magnificent temple festival in Kerala with a rich cultural display.",
+        image: "https://images.unsplash.com/photo-1626968361222-291e74711449?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
+      }
+    ]
   },
   {
     id: "tamilnadu",
@@ -133,6 +231,11 @@ export const states: State[] = [
         name: "Ooty",
         description: "A popular hill station with beautiful lakes, gardens, and colonial architecture.",
         image: "https://images.unsplash.com/photo-1586883091030-8c52f2feef74?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
+      },
+      {
+        name: "Thanjavur",
+        description: "Home to the Brihadeeswarar Temple, a UNESCO World Heritage Site, and the seat of the great Chola empire.",
+        image: "https://images.unsplash.com/photo-1633069322673-79a76dd2e1fb?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
       }
     ],
     famousFor: [
@@ -147,7 +250,41 @@ export const states: State[] = [
     coordinates: {
       x: 11,
       y: 78
-    }
+    },
+    politicalParties: [
+      {
+        name: "Dravida Munnetra Kazhagam",
+        abbreviation: "DMK",
+        foundedYear: 1949,
+        ideology: "Social democracy, Dravidian nationalism",
+        currentLeader: "M. K. Stalin (Chief Minister)",
+        description: "The DMK emerged from the Dravidian movement and has been a dominant political force in Tamil Nadu for decades."
+      },
+      {
+        name: "All India Anna Dravida Munnetra Kazhagam",
+        abbreviation: "AIADMK",
+        foundedYear: 1972,
+        ideology: "Populism, Dravidian nationalism",
+        currentLeader: "Edappadi K. Palaniswami",
+        description: "The AIADMK was founded by M. G. Ramachandran and has alternated power with the DMK in Tamil Nadu since the 1970s."
+      }
+    ],
+    festivals: [
+      {
+        name: "Pongal",
+        month: "January",
+        description: "A four-day harvest festival celebrating the Sun God and the harvest season.",
+        significance: "Tamil Nadu's most important festival, marking the beginning of the sun's northward journey.",
+        image: "https://images.unsplash.com/photo-1611334837534-29d22128389a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
+      },
+      {
+        name: "Madurai Chithirai Festival",
+        month: "April-May",
+        description: "A grand celebration at the Meenakshi Amman Temple commemorating the celestial wedding of Goddess Meenakshi to Lord Sundareswarar.",
+        significance: "One of the most famous temple festivals in Tamil Nadu, attracting devotees from across the country.",
+        image: "https://images.unsplash.com/photo-1623079398424-860afdba8f2d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
+      }
+    ]
   }
 ];
 
@@ -156,3 +293,77 @@ export const getStateById = (id: string): State | undefined => {
 };
 
 export const stateIds = states.map(state => state.id);
+
+export interface FreedomFighter {
+  id: string;
+  name: string;
+  image: string;
+  lifespan: string;
+  state: string;
+  years: string;
+  contribution: string;
+  biography: string;
+}
+
+export const freedomFighters: FreedomFighter[] = [
+  {
+    id: "mahatma-gandhi",
+    name: "Mahatma Gandhi",
+    image: "https://images.unsplash.com/photo-1552058544-f2b08422138a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3",
+    lifespan: "1869-1948",
+    state: "Gujarat",
+    years: "1915-1948",
+    contribution: "Father of the Nation, led non-violent civil disobedience movements",
+    biography: "Mohandas Karamchand Gandhi, widely known as Mahatma Gandhi, was an Indian lawyer, anti-colonial nationalist, and political ethicist who employed nonviolent resistance to lead the successful campaign for India's independence from British rule. He inspired movements for civil rights and freedom across the world. Born in Porbandar, Gujarat, Gandhi studied law in London and practiced in South Africa, where he developed his political views and activism. Upon returning to India, he organized farmers, laborers, and urban laborers to protest against excessive land-tax and discrimination. His philosophy of Satyagraha (truth-force) and Ahimsa (non-violence) became fundamental concepts in the independence movement. He led nationwide campaigns for various social causes and for achieving Swaraj or self-rule. He was assassinated on January 30, 1948, by Nathuram Godse."
+  },
+  {
+    id: "subhas-chandra-bose",
+    name: "Subhas Chandra Bose",
+    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3", 
+    lifespan: "1897-1945 (disputed)",
+    state: "West Bengal",
+    years: "1920-1945",
+    contribution: "Founded Indian National Army, led militant movement for independence",
+    biography: "Subhas Chandra Bose was an Indian nationalist whose defiant patriotism made him a hero in India. He is popularly known as 'Netaji' (Respected Leader). Bose advocated complete independence for India at the earliest, whereas the All-India Congress Committee wanted it in phases, through Dominion status. During World War II, he sought assistance from Nazi Germany and Imperial Japan to overthrow British rule in India. He founded the Indian National Army (Azad Hind Fauj) with Japanese assistance following the Fall of Singapore, drawing ex-prisoners of war and plantation workers from the Indian diaspora in Southeast Asia. His sudden disappearance after a plane crash in Taiwan in 1945 has led to various theories about his fate."
+  },
+  {
+    id: "bhagat-singh",
+    name: "Bhagat Singh",
+    image: "https://images.unsplash.com/photo-1621118209941-e1ef27858e69?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3",
+    lifespan: "1907-1931",
+    state: "Punjab",
+    years: "1926-1931",
+    contribution: "Revolutionary freedom fighter, advocated armed resistance",
+    biography: "Bhagat Singh was an Indian socialist revolutionary whose acts of dramatic violence against the British in India, followed by his execution at age 23, made him a folk hero of the Indian independence movement. Born into a Sikh family in Punjab, Singh became involved in nationalist politics as a teenager and quickly rose to prominence in the Hindustan Republican Association (HRA). He gained nationwide support after the Lahore Conspiracy Case, when he underwent a 116-day fast in jail, demanding equal rights for Indian and European prisoners. Singh and his associates were sentenced to death for killing a British police officer, John Saunders, and conspiracies against the government. He was hanged on March 23, 1931, at the age of 23. His legacy continues to inspire generations of young Indians."
+  },
+  {
+    id: "rani-lakshmibai",
+    name: "Rani Lakshmibai",
+    image: "https://images.unsplash.com/photo-1580618864482-f006386dc0ec?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3",
+    lifespan: "1828-1858",
+    state: "Uttar Pradesh",
+    years: "1857-1858",
+    contribution: "Led armed rebellion during the 1857 Indian Rebellion",
+    biography: "Rani Lakshmibai, also known as Jhansi Ki Rani, was an Indian queen and warrior. She was one of the leading figures of the Indian Rebellion of 1857 and became a symbol of resistance to the British Raj. Born Manikarnika Tambe in Varanasi, she was married to Raja Gangadhar Rao, the Maharaja of Jhansi. After her husband's death, the British East India Company, under Governor-General Lord Dalhousie, applied the Doctrine of Lapse, annexing the state of Jhansi as Gangadhar Rao and Lakshmibai had no biological children. Refusing to cede her kingdom, she fought against the British, riding into battle with her adopted son tied to her back. She died on June 18, 1858, during the Siege of Gwalior, fighting against the British. Her courage, leadership, and fierceness in battle have made her an icon in Indian history."
+  },
+  {
+    id: "sardar-vallabhbhai-patel",
+    name: "Sardar Vallabhbhai Patel",
+    image: "https://images.unsplash.com/photo-1627740283004-a4abe8f006e9?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3",
+    lifespan: "1875-1950",
+    state: "Gujarat",
+    years: "1918-1950",
+    contribution: "Iron Man of India, integrated princely states into Indian Union",
+    biography: "Vallabhbhai Jhaverbhai Patel, commonly known as Sardar Patel, was an Indian barrister, statesman, and a founding father of the Republic of India. He served as the first Deputy Prime Minister of India and the first Home Minister from 1947 to 1950. As India's first Minister of Home Affairs, he played a crucial role in the integration of over 560 princely states into the Indian Union. His commitment to national integration earned him the title 'Iron Man of India'. He was also instrumental in organizing the peasants of Bardoli, Gujarat, in a non-violent Civil Disobedience against oppressive policies imposed by the British. After independence, he reorganized the Indian Civil Service and helped establish the All India Administrative Service. His birth anniversary, October 31, is celebrated as National Unity Day in India."
+  },
+  {
+    id: "sarojini-naidu",
+    name: "Sarojini Naidu",
+    image: "https://images.unsplash.com/photo-1694661042254-fda17de64563?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3",
+    lifespan: "1879-1949",
+    state: "Telangana",
+    years: "1917-1947",
+    contribution: "Nightingale of India, poet and political activist",
+    biography: "Sarojini Naidu was an Indian political activist, feminist, and poet. A proponent of civil rights, women's emancipation, and anti-imperialistic ideas, she was an important figure in India's struggle for independence from colonial rule. Born in Hyderabad, she was a brilliant student who mastered several languages and began writing poetry at an early age. Her works earned her the sobriquet 'The Nightingale of India'. She joined the Indian National Congress and the Indian independence movement in 1905. She became a follower of Mahatma Gandhi and his ideas of non-violent resistance. As a mark of her political involvement, she was appointed as the first female governor of the United Provinces, now Uttar Pradesh, in 1947. She was also the first woman to become the president of the Indian National Congress."
+  }
+];

@@ -1,13 +1,43 @@
 
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { motion } from 'framer-motion';
-import { User, Lock, ArrowRight } from 'lucide-react';
+import { User, Lock, ArrowRight, AlertCircle } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
+import { useToast } from '../hooks/use-toast';
 
 const Login = () => {
   const { theme } = useTheme();
+  const { login } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    
+    if (!email || !password) {
+      setError('Please fill in all fields');
+      return;
+    }
+    
+    const success = login(email, password);
+    if (success) {
+      toast({
+        title: "Login successful",
+        description: "Welcome back to Indian Cultural Explorer",
+      });
+      navigate('/dashboard');
+    } else {
+      setError('Invalid email or password');
+    }
+  };
   
   return (
     <Layout>
@@ -26,7 +56,16 @@ const Login = () => {
               <p className="text-muted-foreground">Sign in to continue to Indian Cultural Explorer</p>
             </div>
             
-            <form className="space-y-6">
+            {error && (
+              <div className={`mb-4 p-3 rounded-lg flex items-center gap-2 ${
+                theme === 'dark' ? 'bg-red-500/10 text-red-400' : 'bg-red-50 text-red-500'
+              }`}>
+                <AlertCircle size={18} />
+                <p className="text-sm">{error}</p>
+              </div>
+            )}
+            
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="space-y-2">
                 <label htmlFor="email" className="block text-sm font-medium">Email</label>
                 <div className={`flex items-center rounded-lg border ${
@@ -36,6 +75,8 @@ const Login = () => {
                   <input
                     id="email"
                     type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="youremail@example.com"
                     className={`w-full bg-transparent focus:outline-none ${
                       theme === 'dark' ? 'placeholder:text-gray-500' : 'placeholder:text-gray-400'
@@ -56,6 +97,8 @@ const Login = () => {
                   <input
                     id="password"
                     type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
                     className={`w-full bg-transparent focus:outline-none ${
                       theme === 'dark' ? 'placeholder:text-gray-500' : 'placeholder:text-gray-400'
