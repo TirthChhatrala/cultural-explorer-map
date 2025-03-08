@@ -2,10 +2,14 @@
 import React from 'react';
 import Header from './Header';
 import { motion } from 'framer-motion';
+import { useTheme } from '../context/ThemeContext';
+import { Sun, Moon } from 'lucide-react';
 
 const Layout = ({ children }) => {
+  const { theme, toggleTheme } = useTheme();
+
   return (
-    <div className="min-h-screen bg-page-gradient">
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-page-gradient'}`}>
       <Header />
       <div 
         className="absolute inset-0 opacity-5 pointer-events-none"
@@ -26,9 +30,18 @@ const Layout = ({ children }) => {
       >
         {children}
       </motion.main>
-      <footer className="py-6 border-t border-border bg-secondary/50 backdrop-blur-sm">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} Indian Cultural Explorer. All rights reserved.</p>
+      <footer className={`py-6 border-t ${theme === 'dark' ? 'border-gray-800 bg-gray-900/50' : 'border-border bg-secondary/50'} backdrop-blur-sm`}>
+        <div className="container mx-auto px-4 flex items-center justify-between">
+          <p className="text-sm text-muted-foreground">
+            © {new Date().getFullYear()} Indian Cultural Explorer. All rights reserved.
+          </p>
+          <button
+            onClick={toggleTheme}
+            className={`p-2.5 rounded-full ${theme === 'dark' ? 'bg-gray-800 text-yellow-300' : 'bg-secondary text-indigo-600'} hover:opacity-80 transition-colors`}
+            aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+          >
+            {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+          </button>
         </div>
       </footer>
     </div>

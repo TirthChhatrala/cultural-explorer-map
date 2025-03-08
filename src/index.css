@@ -37,6 +37,36 @@
 
     --radius: 0.5rem;
   }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+  }
 }
 
 @layer base {
@@ -62,6 +92,10 @@
   .glass {
     @apply bg-glass-gradient backdrop-blur-md border border-white/20 shadow-lg;
   }
+  
+  .dark .glass {
+    @apply backdrop-blur-md bg-gray-800/30 border border-gray-700/50 shadow-lg;
+  }
 
   .text-shadow {
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -74,7 +108,11 @@
 
 /* Interactive map styles */
 .state-path {
-  @apply fill-india-blue/90 stroke-white stroke-[0.5px] transition-all duration-300 ease-in-out-expo hover:fill-india-orange/90 hover:stroke-white cursor-pointer;
+  @apply fill-india-blue/70 stroke-white stroke-[0.5px] transition-all duration-300 ease-in-out-expo hover:fill-india-orange/90 hover:stroke-white cursor-pointer;
+}
+
+.dark .state-path {
+  @apply fill-india-blue/90 stroke-gray-300 hover:fill-india-orange;
 }
 
 .state-path.active {
@@ -103,9 +141,17 @@
   @apply bg-gray-300 rounded-full hover:bg-gray-400 transition-colors;
 }
 
+.dark ::-webkit-scrollbar-thumb {
+  @apply bg-gray-700 hover:bg-gray-600;
+}
+
 /* Loading animations */
 .loading-shimmer {
   @apply relative overflow-hidden bg-gray-200 rounded-md before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_1.5s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/60 before:to-transparent;
+}
+
+.dark .loading-shimmer {
+  @apply bg-gray-800 before:via-gray-700/60;
 }
 
 .image-reveal {

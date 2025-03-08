@@ -2,13 +2,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { MapPin, Info, Newspaper, Calendar, Users } from 'lucide-react';
+import { MapPin, Info, Newspaper, Calendar, Users, User, Shield } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === '/';
+  const { theme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,7 +28,11 @@ const Header = () => {
   return (
     <header 
       className={`fixed top-0 w-full z-50 transition-all duration-300 ease-out-expo ${
-        scrolled ? 'py-4 bg-white/80 backdrop-blur-md shadow-sm' : 'py-6 bg-transparent'
+        scrolled 
+          ? theme === 'dark'
+            ? 'py-4 bg-gray-900/80 backdrop-blur-md shadow-md shadow-black/10'
+            : 'py-4 bg-white/80 backdrop-blur-md shadow-sm'
+          : 'py-6 bg-transparent'
       }`}
     >
       <div className="container mx-auto px-4 flex items-center justify-between">
@@ -50,7 +56,13 @@ const Header = () => {
           <NavLink to="/news" label="News" icon={<Newspaper className="w-4 h-4" />} active={location.pathname === '/news'} />
           <NavLink to="/festivals" label="Festivals & Events" icon={<Calendar className="w-4 h-4" />} active={location.pathname === '/festivals'} />
           <NavLink to="/political-parties" label="Political Parties" icon={<Users className="w-4 h-4" />} active={location.pathname === '/political-parties'} />
+          <NavLink to="/freedom-fighters" label="Freedom Fighters" icon={<Shield className="w-4 h-4" />} active={location.pathname === '/freedom-fighters'} />
         </nav>
+        
+        <div className="hidden md:flex items-center space-x-4">
+          <Link to="/login" className="text-sm font-medium hover:text-india-orange transition-colors">Login</Link>
+          <Link to="/signup" className="px-4 py-2 bg-india-orange text-white rounded-full text-sm font-medium hover:bg-india-orange/90 transition-colors">Sign Up</Link>
+        </div>
         
         <motion.button
           className="md:hidden w-10 h-10 rounded-full flex items-center justify-center hover:bg-secondary transition-colors"
@@ -72,7 +84,7 @@ const Header = () => {
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
-          className="md:hidden bg-white shadow-lg"
+          className={`md:hidden ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'} shadow-lg`}
         >
           <div className="container mx-auto px-4 py-4 flex flex-col space-y-3">
             <MobileNavLink to="/" label="Home" icon={<MapPin className="w-5 h-5" />} active={isHome} onClick={() => setMobileMenuOpen(false)} />
@@ -80,6 +92,12 @@ const Header = () => {
             <MobileNavLink to="/news" label="News" icon={<Newspaper className="w-5 h-5" />} active={location.pathname === '/news'} onClick={() => setMobileMenuOpen(false)} />
             <MobileNavLink to="/festivals" label="Festivals & Events" icon={<Calendar className="w-5 h-5" />} active={location.pathname === '/festivals'} onClick={() => setMobileMenuOpen(false)} />
             <MobileNavLink to="/political-parties" label="Political Parties" icon={<Users className="w-5 h-5" />} active={location.pathname === '/political-parties'} onClick={() => setMobileMenuOpen(false)} />
+            <MobileNavLink to="/freedom-fighters" label="Freedom Fighters" icon={<Shield className="w-5 h-5" />} active={location.pathname === '/freedom-fighters'} onClick={() => setMobileMenuOpen(false)} />
+            
+            <div className="pt-3 border-t border-gray-200 flex space-x-4">
+              <Link to="/login" className="block px-4 py-2 w-full text-center rounded-lg bg-secondary text-foreground hover:bg-secondary/80 transition-colors" onClick={() => setMobileMenuOpen(false)}>Login</Link>
+              <Link to="/signup" className="block px-4 py-2 w-full text-center rounded-lg bg-india-orange text-white hover:bg-india-orange/90 transition-colors" onClick={() => setMobileMenuOpen(false)}>Sign Up</Link>
+            </div>
           </div>
         </motion.div>
       )}
@@ -88,11 +106,12 @@ const Header = () => {
 };
 
 const NavLink = ({ to, label, icon, active }) => {
+  const { theme } = useTheme();
   return (
     <Link 
       to={to} 
       className={`relative flex items-center gap-1.5 text-sm font-medium transition-colors hover:text-india-orange ${
-        active ? 'text-india-orange' : 'text-foreground'
+        active ? 'text-india-orange' : theme === 'dark' ? 'text-gray-200' : 'text-foreground'
       }`}
     >
       {icon}
@@ -109,11 +128,18 @@ const NavLink = ({ to, label, icon, active }) => {
 };
 
 const MobileNavLink = ({ to, label, icon, active, onClick }) => {
+  const { theme } = useTheme();
   return (
     <Link 
       to={to} 
       className={`flex items-center gap-3 p-3 rounded-lg transition-colors ${
-        active ? 'bg-secondary text-india-orange' : 'text-foreground hover:bg-secondary/50'
+        active 
+          ? theme === 'dark'
+            ? 'bg-gray-800 text-india-orange'
+            : 'bg-secondary text-india-orange' 
+          : theme === 'dark'
+            ? 'text-gray-200 hover:bg-gray-800/50'
+            : 'text-foreground hover:bg-secondary/50'
       }`}
       onClick={onClick}
     >

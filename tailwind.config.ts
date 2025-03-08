@@ -126,6 +126,7 @@ export default {
 			backgroundImage: {
 				'glass-gradient': 'linear-gradient(145deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 100%)',
 				'page-gradient': 'linear-gradient(to bottom, hsl(var(--background)), hsl(var(--background)) 10%, hsl(var(--muted)) 100%)',
+				'india-map': 'url(/lovable-uploads/2a393761-154c-4977-adca-b6c9447fefca.png)',
 			},
 		}
 	},
