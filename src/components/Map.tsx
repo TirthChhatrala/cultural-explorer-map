@@ -37,7 +37,7 @@ const Map = () => {
           className="w-full h-auto drop-shadow-xl"
           xmlSpace="preserve"
         >
-          {/* More Accurate Map of India */}
+          {/* Enhanced Map of India with improved details */}
           <g className="india-map">
             {/* Jammu and Kashmir */}
             <path
@@ -48,6 +48,22 @@ const Map = () => {
                 setActiveState('jammukashmir');
                 const bounds = e.currentTarget.getBoundingClientRect();
                 handleStateHover('Jammu & Kashmir', bounds.left + bounds.width/2, bounds.top);
+              }}
+              onMouseLeave={() => {
+                setActiveState(null);
+                setTooltip({ ...tooltip, visible: false });
+              }}
+            />
+            
+            {/* Ladakh */}
+            <path
+              className={`state-path ${activeState === 'ladakh' ? 'active' : ''}`}
+              d="M290,85 L320,70 L340,90 L320,110 L300,100 L275,115 L265,105 Z"
+              onClick={() => handleStateClick('ladakh')}
+              onMouseEnter={(e) => {
+                setActiveState('ladakh');
+                const bounds = e.currentTarget.getBoundingClientRect();
+                handleStateHover('Ladakh', bounds.left + bounds.width/2, bounds.top);
               }}
               onMouseLeave={() => {
                 setActiveState(null);
@@ -453,7 +469,6 @@ const Map = () => {
               }}
             />
 
-            {/* Add other northeastern states like Meghalaya, Mizoram, Nagaland, Tripura */}
             <path
               className={`state-path ${activeState === 'meghalaya' ? 'active' : ''}`}
               d="M380,255 L415,255 L415,265 L380,265 Z"
@@ -507,6 +522,54 @@ const Map = () => {
                 setActiveState('nagaland');
                 const bounds = e.currentTarget.getBoundingClientRect();
                 handleStateHover('Nagaland', bounds.left + bounds.width/2, bounds.top);
+              }}
+              onMouseLeave={() => {
+                setActiveState(null);
+                setTooltip({ ...tooltip, visible: false });
+              }}
+            />
+            
+            {/* Add Puducherry */}
+            <path
+              className={`state-path ${activeState === 'puducherry' ? 'active' : ''}`}
+              d="M215,525 L220,525 L220,530 L215,530 Z"
+              onClick={() => handleStateClick('puducherry')}
+              onMouseEnter={(e) => {
+                setActiveState('puducherry');
+                const bounds = e.currentTarget.getBoundingClientRect();
+                handleStateHover('Puducherry', bounds.left + bounds.width/2, bounds.top);
+              }}
+              onMouseLeave={() => {
+                setActiveState(null);
+                setTooltip({ ...tooltip, visible: false });
+              }}
+            />
+            
+            {/* Add Andaman and Nicobar Islands */}
+            <path
+              className={`state-path ${activeState === 'andamannicobar' ? 'active' : ''}`}
+              d="M465,410 L475,410 L480,450 L470,450 Z"
+              onClick={() => handleStateClick('andamannicobar')}
+              onMouseEnter={(e) => {
+                setActiveState('andamannicobar');
+                const bounds = e.currentTarget.getBoundingClientRect();
+                handleStateHover('Andaman & Nicobar', bounds.left + bounds.width/2, bounds.top);
+              }}
+              onMouseLeave={() => {
+                setActiveState(null);
+                setTooltip({ ...tooltip, visible: false });
+              }}
+            />
+            
+            {/* Add Lakshadweep */}
+            <path
+              className={`state-path ${activeState === 'lakshadweep' ? 'active' : ''}`}
+              d="M75,470 L80,470 L80,480 L75,480 Z"
+              onClick={() => handleStateClick('lakshadweep')}
+              onMouseEnter={(e) => {
+                setActiveState('lakshadweep');
+                const bounds = e.currentTarget.getBoundingClientRect();
+                handleStateHover('Lakshadweep', bounds.left + bounds.width/2, bounds.top);
               }}
               onMouseLeave={() => {
                 setActiveState(null);

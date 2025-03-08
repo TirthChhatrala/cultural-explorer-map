@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -150,7 +149,6 @@ const Header = () => {
         </motion.button>
       </div>
 
-      {/* Mobile Menu */}
       {mobileMenuOpen && (
         <motion.div 
           initial={{ opacity: 0, height: 0 }}

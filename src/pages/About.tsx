@@ -2,220 +2,259 @@
 import React from 'react';
 import Layout from '../components/Layout';
 import { motion } from 'framer-motion';
-import { Users, BookOpen, Map, Compass } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+import { 
+  Phone, 
+  Mail, 
+  MapPin, 
+  Github, 
+  Linkedin, 
+  Twitter 
+} from 'lucide-react';
 
 const About = () => {
+  const { theme } = useTheme();
+  
+  const teamMembers = [
+    {
+      name: "Rajesh Kumar",
+      role: "Lead Developer",
+      bio: "Passionate about creating intuitive digital experiences that celebrate India's rich cultural heritage.",
+      image: "https://randomuser.me/api/portraits/men/32.jpg",
+      contact: {
+        email: "rajesh@example.com",
+        phone: "+91 98765 43210",
+        location: "Bangalore, Karnataka"
+      },
+      social: {
+        github: "https://github.com/rajesh",
+        linkedin: "https://linkedin.com/in/rajesh",
+        twitter: "https://twitter.com/rajesh"
+      }
+    },
+    {
+      name: "Priya Sharma",
+      role: "UI/UX Designer",
+      bio: "Combines traditional Indian artistic elements with modern design principles to create visually stunning interfaces.",
+      image: "https://randomuser.me/api/portraits/women/44.jpg",
+      contact: {
+        email: "priya@example.com",
+        phone: "+91 87654 32109",
+        location: "Delhi, Delhi"
+      },
+      social: {
+        github: "https://github.com/priya",
+        linkedin: "https://linkedin.com/in/priya",
+        twitter: "https://twitter.com/priya"
+      }
+    },
+    {
+      name: "Amit Patel",
+      role: "Cultural Researcher",
+      bio: "Dedicated to ensuring accurate representation of India's diverse cultural heritage across all states.",
+      image: "https://randomuser.me/api/portraits/men/62.jpg",
+      contact: {
+        email: "amit@example.com",
+        phone: "+91 76543 21098",
+        location: "Mumbai, Maharashtra"
+      },
+      social: {
+        github: "https://github.com/amit",
+        linkedin: "https://linkedin.com/in/amit",
+        twitter: "https://twitter.com/amit"
+      }
+    },
+    {
+      name: "Lakshmi Reddy",
+      role: "Full-Stack Developer",
+      bio: "Specializes in creating responsive and accessible web applications that work seamlessly across all devices.",
+      image: "https://randomuser.me/api/portraits/women/26.jpg",
+      contact: {
+        email: "lakshmi@example.com",
+        phone: "+91 65432 10987",
+        location: "Chennai, Tamil Nadu"
+      },
+      social: {
+        github: "https://github.com/lakshmi",
+        linkedin: "https://linkedin.com/in/lakshmi",
+        twitter: "https://twitter.com/lakshmi"
+      }
+    }
+  ];
+  
   return (
     <Layout>
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto px-4">
         <section className="text-center mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
+            transition={{ duration: 0.7 }}
           >
             <span className="inline-block px-3 py-1 bg-india-orange/10 text-india-orange rounded-full text-sm font-medium mb-4">
-              Who We Are
+              Our Mission
             </span>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-4 tracking-tight">
-              About <span className="text-india-orange">Us</span>
+            <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">
+              About Indian Cultural Explorer
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Dedicated to showcasing the diverse cultural heritage of India through an interactive platform.
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              We are dedicated to showcasing the rich cultural diversity of India, connecting people to the country's heritage, art, and traditions across its many vibrant states.
             </p>
           </motion.div>
         </section>
-
+        
         <section className="mb-20">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
+              className={`rounded-xl overflow-hidden shadow-lg ${
+                theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+              }`}
             >
-              <h2 className="text-3xl font-display font-semibold mb-6">Our Mission</h2>
-              <p className="text-muted-foreground mb-6">
-                Indian Cultural Explorer is dedicated to preserving and promoting the rich cultural tapestry of India. Our mission is to create an accessible, comprehensive, and engaging platform that showcases the diverse heritage of all Indian states.
-              </p>
-              <p className="text-muted-foreground mb-6">
-                We believe that understanding cultural diversity fosters greater appreciation and respect. Through our platform, we aim to educate people about the unique traditions, histories, and contributions of each Indian state.
-              </p>
-              <div className="flex items-center gap-4 text-india-orange">
-                <BookOpen size={24} />
-                <span className="font-medium">Educate • Inspire • Connect</span>
+              <div className="p-8">
+                <h2 className="text-2xl font-display font-bold mb-4">Our Vision</h2>
+                <p className="text-muted-foreground mb-4">
+                  To create a comprehensive digital platform that accurately represents India's cultural tapestry, making it accessible to both Indians and people around the world.
+                </p>
+                <p className="text-muted-foreground">
+                  We believe that understanding cultural diversity is essential for fostering appreciation, respect, and unity in our increasingly globalized world.
+                </p>
               </div>
             </motion.div>
             
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.7, delay: 0.4 }}
-              className="bg-gradient-to-r from-india-orange/10 to-india-blue/10 p-1 rounded-xl"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className={`rounded-xl overflow-hidden shadow-lg ${
+                theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+              }`}
             >
-              <div className="rounded-lg overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1532664189809-02133fee698d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3" 
-                  alt="Cultural diversity of India"
-                  className="w-full h-auto object-cover rounded-lg"
-                />
+              <div className="p-8">
+                <h2 className="text-2xl font-display font-bold mb-4">Our Approach</h2>
+                <p className="text-muted-foreground mb-4">
+                  We meticulously research and validate all cultural information to ensure accuracy, working with experts from each region to provide authentic insights.
+                </p>
+                <p className="text-muted-foreground">
+                  Our platform combines educational content with interactive features, making cultural exploration engaging and accessible for users of all backgrounds.
+                </p>
               </div>
             </motion.div>
           </div>
         </section>
-
+        
         <section className="mb-20">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl font-display font-semibold mb-4">What We Offer</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Our platform provides comprehensive resources about all Indian states, their unique cultural identities, and significant contributions.
-            </p>
-          </motion.div>
+          <div className="text-center mb-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+            >
+              <span className="inline-block px-3 py-1 bg-secondary rounded-full text-sm font-medium mb-4">
+                The People Behind Our Mission
+              </span>
+              <h2 className="text-3xl md:text-4xl font-display font-semibold mb-4">
+                Meet Our Team
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Our diverse team brings together expertise in technology, design, and cultural research to create an authentic representation of India's heritage.
+              </p>
+            </motion.div>
+          </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <FeatureCard 
-              icon={<Map className="h-10 w-10" />}
-              title="Interactive Exploration"
-              description="Navigate through our interactive map to discover detailed information about each Indian state."
-              delay={0.1}
-            />
-            
-            <FeatureCard 
-              icon={<BookOpen className="h-10 w-10" />}
-              title="Cultural Resources"
-              description="Access comprehensive information about the history, cuisine, festivals, and traditions of each state."
-              delay={0.2}
-            />
-            
-            <FeatureCard 
-              icon={<Compass className="h-10 w-10" />}
-              title="Travel Insights"
-              description="Learn about attractions, best times to visit, and cultural experiences unique to each region."
-              delay={0.3}
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {teamMembers.map((member, index) => (
+              <motion.div
+                key={member.name}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 * index }}
+                className={`rounded-xl overflow-hidden shadow-lg ${
+                  theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+                } hover:shadow-xl transition-shadow`}
+              >
+                <div className="aspect-square overflow-hidden">
+                  <img 
+                    src={member.image} 
+                    alt={member.name} 
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-display font-semibold mb-1">{member.name}</h3>
+                  <p className="text-india-orange font-medium text-sm mb-3">{member.role}</p>
+                  <p className="text-sm text-muted-foreground mb-4">{member.bio}</p>
+                  
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center text-sm">
+                      <Mail className="w-4 h-4 mr-2 text-muted-foreground" />
+                      <span className="text-muted-foreground">{member.contact.email}</span>
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <Phone className="w-4 h-4 mr-2 text-muted-foreground" />
+                      <span className="text-muted-foreground">{member.contact.phone}</span>
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <MapPin className="w-4 h-4 mr-2 text-muted-foreground" />
+                      <span className="text-muted-foreground">{member.contact.location}</span>
+                    </div>
+                  </div>
+                  
+                  <div className="flex justify-center space-x-3 mt-4">
+                    <a href={member.social.github} className="text-muted-foreground hover:text-foreground transition-colors">
+                      <Github className="w-5 h-5" />
+                    </a>
+                    <a href={member.social.linkedin} className="text-muted-foreground hover:text-foreground transition-colors">
+                      <Linkedin className="w-5 h-5" />
+                    </a>
+                    <a href={member.social.twitter} className="text-muted-foreground hover:text-foreground transition-colors">
+                      <Twitter className="w-5 h-5" />
+                    </a>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </section>
-
-        <section className="mb-20">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl font-display font-semibold mb-4">Our Team</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              We are a passionate team of historians, cultural researchers, and technology enthusiasts dedicated to preserving and promoting India's cultural heritage.
-            </p>
-          </motion.div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <TeamMember
-              name="Priya Sharma"
-              role="Cultural Historian"
-              bio="Specializes in the historical evolution of Indian states and their cultural significance across North India."
-              image="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
-              delay={0.1}
-            />
-            
-            <TeamMember
-              name="Arjun Patel"
-              role="Content Director"
-              bio="Leads our content strategy and ensures accuracy and quality of all cultural information from Western states."
-              image="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
-              delay={0.2}
-            />
-            
-            <TeamMember
-              name="Meera Iyer"
-              role="UX Designer"
-              bio="Creates engaging and intuitive experiences that make cultural exploration enjoyable for users of all backgrounds."
-              image="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
-              delay={0.3}
-            />
-            
-            <TeamMember
-              name="Rajiv Khanna"
-              role="Cultural Researcher"
-              bio="Researches the diverse traditions and customs of Southern Indian states to bring authentic information to our platform."
-              image="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
-              delay={0.4}
-            />
-          </div>
-        </section>
-
+        
         <section className="mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="bg-india-blue/5 rounded-2xl p-8 text-center"
-          >
-            <Users className="w-12 h-12 text-india-blue mx-auto mb-4" />
-            <h2 className="text-2xl font-display font-semibold mb-3">Join Our Community</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
-              We invite you to be part of our growing community of culture enthusiasts. Share your experiences, contribute your knowledge, and help us preserve India's rich heritage.
-            </p>
-            <button className="px-6 py-3 bg-india-blue text-white rounded-full font-medium hover:bg-india-blue/90 transition-colors">
-              Get Involved
-            </button>
-          </motion.div>
+          <div className={`rounded-xl p-8 ${
+            theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+          } shadow-lg`}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+              className="text-center mb-8"
+            >
+              <h2 className="text-3xl font-display font-semibold mb-4">
+                Get in Touch
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                We're always looking to improve. Feel free to reach out with questions, suggestions, or corrections.
+              </p>
+            </motion.div>
+            
+            <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
+              <div className="flex items-center gap-2">
+                <Mail className="w-5 h-5 text-india-orange" />
+                <span>contact@indianculturalexplorer.com</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone className="w-5 h-5 text-india-orange" />
+                <span>+91 123 456 7890</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <MapPin className="w-5 h-5 text-india-orange" />
+                <span>New Delhi, India</span>
+              </div>
+            </div>
+          </div>
         </section>
       </div>
     </Layout>
-  );
-};
-
-const FeatureCard = ({ icon, title, description, delay = 0 }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ 
-        duration: 0.5, 
-        ease: [0.19, 1, 0.22, 1], 
-        delay 
-      }}
-      className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow dark:bg-gray-800 dark:border dark:border-gray-700"
-    >
-      <div className="w-16 h-16 rounded-full bg-india-orange/10 flex items-center justify-center text-india-orange mb-6 mx-auto">
-        {icon}
-      </div>
-      <h3 className="text-xl font-display font-semibold mb-3 text-center">{title}</h3>
-      <p className="text-muted-foreground text-center">{description}</p>
-    </motion.div>
-  );
-};
-
-const TeamMember = ({ name, role, bio, image, delay = 0 }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ 
-        duration: 0.5, 
-        ease: [0.19, 1, 0.22, 1], 
-        delay 
-      }}
-      className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow dark:bg-gray-800 dark:border dark:border-gray-700"
-    >
-      <div className="h-48 overflow-hidden">
-        <img 
-          src={image} 
-          alt={name} 
-          className="w-full h-full object-cover"
-        />
-      </div>
-      <div className="p-6">
-        <h3 className="text-xl font-display font-semibold">{name}</h3>
-        <p className="text-india-orange font-medium text-sm mb-2">{role}</p>
-        <p className="text-muted-foreground text-sm">{bio}</p>
-      </div>
-    </motion.div>
   );
 };
 
