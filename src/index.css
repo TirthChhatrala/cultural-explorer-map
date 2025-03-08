@@ -74,11 +74,11 @@
 
 /* Interactive map styles */
 .state-path {
-  @apply fill-white/80 stroke-gray-300 stroke-[0.5px] transition-all duration-300 ease-in-out-expo hover:fill-india-orange/60 hover:stroke-india-orange cursor-pointer;
+  @apply fill-india-blue/90 stroke-white stroke-[0.5px] transition-all duration-300 ease-in-out-expo hover:fill-india-orange/90 hover:stroke-white cursor-pointer;
 }
 
 .state-path.active {
-  @apply fill-india-orange/80 stroke-india-orange;
+  @apply fill-india-orange stroke-white;
 }
 
 /* Page transitions */

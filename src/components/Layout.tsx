@@ -7,6 +7,16 @@ const Layout = ({ children }) => {
   return (
     <div className="min-h-screen bg-page-gradient">
       <Header />
+      <div 
+        className="absolute inset-0 opacity-5 pointer-events-none"
+        style={{
+          backgroundImage: 'url(/lovable-uploads/87e03e01-1cae-414e-8e9d-f0e1eb9b6b92.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          zIndex: -1
+        }}
+      />
       <motion.main 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

@@ -7,6 +7,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import StateDetails from "./pages/StateDetails";
 import NotFound from "./pages/NotFound";
+import About from "./pages/About";
+import News from "./pages/News";
+import Festivals from "./pages/Festivals";
+import PoliticalParties from "./pages/PoliticalParties";
 
 // Add framer-motion dependency
 import { AnimatePresence } from "framer-motion";
@@ -23,6 +27,10 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/state/:stateId" element={<StateDetails />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/news" element={<News />} />
+            <Route path="/festivals" element={<Festivals />} />
+            <Route path="/political-parties" element={<PoliticalParties />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AnimatePresence>
