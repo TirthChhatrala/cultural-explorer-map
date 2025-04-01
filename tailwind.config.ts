@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -66,8 +65,8 @@ export default {
 				sm: 'calc(var(--radius) - 4px)'
 			},
 			fontFamily: {
-				sans: ['Inter var', 'sans-serif'],
-				display: ['Playfair Display', 'serif'],
+				sans: ['Poppins', 'sans-serif'],
+				display: ['Lora', 'serif'],
 			},
 			keyframes: {
 				'accordion-down': {

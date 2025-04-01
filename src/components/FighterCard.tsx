@@ -24,10 +24,10 @@ const FighterCard = ({ fighter, onClick }) => {
       </div>
       <div className="p-4">
         <h3 className="text-lg font-display font-semibold">{fighter.name}</h3>
-        <p className="text-sm text-muted-foreground">{fighter.state}</p>
-        <p className="text-xs mt-1">{fighter.contribution}</p>
+        <p className="text-sm text-muted-foreground font-sans">{fighter.state}</p>
+        <p className="text-xs mt-1 font-sans">{fighter.contribution}</p>
         <div className="mt-2 flex items-center">
-          <span className="text-xs px-2 py-0.5 rounded-full bg-india-orange/10 text-india-orange">
+          <span className="text-xs px-2 py-0.5 rounded-full bg-india-orange/10 text-india-orange font-sans">
             {fighter.lifespan}
           </span>
         </div>

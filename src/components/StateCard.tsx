@@ -65,7 +65,7 @@ const StateCard: React.FC<StateCardProps> = ({
       </div>
       
       {(!collapsible || expanded) && (
-        <div className="p-6">
+        <div className="p-6 font-sans">
           {children}
         </div>
       )}
