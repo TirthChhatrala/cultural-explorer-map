@@ -583,7 +583,7 @@ export const states = [
     population: '61.1 million',
     area: '191,791 km²',
     language: 'Kannada',
-    famousFor: 'Bengaluru's IT industry, Mysore Palace, Hampi ruins',
+    famousFor: 'Bengaluru\'s IT industry, Mysore Palace, Hampi ruins',
     freedomFighters: ['Tipu Sultan', 'Karnad Sadashiva Rao', 'Aluru Venkata Rao']
   },
   {
