@@ -584,7 +584,7 @@ const Map = () => {
           <motion.div
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`glass absolute text-sm font-medium px-3 py-1.5 rounded-full shadow-lg pointer-events-none ${
+            className={`glass absolute text-sm font-cursive px-3 py-1.5 rounded-full shadow-lg pointer-events-none ${
               theme === 'dark' ? 'text-white' : 'text-foreground'
             }`}
             style={{
@@ -618,7 +618,7 @@ const Map = () => {
             </div>
             <div className="p-4">
               <h3 className="text-lg font-display font-semibold">{state.name}</h3>
-              <p className="text-sm text-muted-foreground mt-1">{state.description}</p>
+              <p className="text-sm text-muted-foreground mt-1 font-cursive">{state.description}</p>
             </div>
           </motion.div>
         ))}

@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Dancing+Script:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -104,15 +104,24 @@
   .text-gradient {
     @apply bg-gradient-to-r from-india-orange via-india-blue to-india-green bg-clip-text text-transparent;
   }
+  
+  .font-cursive {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.15em;
+  }
+  
+  .font-serif {
+    font-family: 'Lora', serif;
+  }
 }
 
 /* Interactive map styles */
 .state-path {
-  @apply fill-india-blue/70 stroke-white stroke-[0.5px] transition-all duration-300 ease-in-out-expo hover:fill-india-orange/90 hover:stroke-white cursor-pointer;
+  @apply fill-india-orange/70 stroke-white stroke-[0.5px] transition-all duration-300 ease-in-out-expo hover:fill-india-orange hover:stroke-white cursor-pointer;
 }
 
 .dark .state-path {
-  @apply fill-india-blue/90 stroke-gray-300 hover:fill-india-orange;
+  @apply fill-india-orange/80 stroke-gray-300 hover:fill-india-orange;
 }
 
 .state-path.active {

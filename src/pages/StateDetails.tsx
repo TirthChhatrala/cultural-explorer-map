@@ -78,7 +78,7 @@ const StateDetails = () => {
               }
               delay={0.2}
             >
-              <p className="text-gray-700 leading-relaxed">{state.famousFor}</p>
+              <p className="text-gray-700 leading-relaxed font-cursive">{state.famousFor}</p>
             </StateCard>
             
             <StateCard 
@@ -95,7 +95,7 @@ const StateDetails = () => {
               }
               delay={0.3}
             >
-              <p className="text-gray-700 leading-relaxed">The capital city of {state.name} is {state.capital}, serving as the administrative headquarters of the state.</p>
+              <p className="text-gray-700 leading-relaxed font-serif">The capital city of {state.name} is {state.capital}, serving as the administrative headquarters of the state.</p>
             </StateCard>
             
             <StateCard 
@@ -112,7 +112,7 @@ const StateDetails = () => {
                 {state.freedomFighters.map((fighter, index) => (
                   <li key={index} className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-india-orange"></div>
-                    <span>{fighter}</span>
+                    <span className="font-cursive">{fighter}</span>
                   </li>
                 ))}
               </ul>
@@ -129,7 +129,7 @@ const StateDetails = () => {
                 <h2 className="text-3xl font-display font-semibold mb-4">
                   About {state.name}
                 </h2>
-                <p className="text-muted-foreground max-w-2xl mx-auto">
+                <p className="text-muted-foreground max-w-2xl mx-auto font-cursive">
                   Learn more about this beautiful state
                 </p>
               </motion.div>
@@ -137,22 +137,22 @@ const StateDetails = () => {
             
             <div className="bg-white rounded-xl shadow-md overflow-hidden p-6 mb-8">
               <h3 className="text-xl font-display font-semibold mb-4">Overview</h3>
-              <p className="text-gray-700 leading-relaxed mb-4">{state.description}</p>
+              <p className="text-gray-700 leading-relaxed mb-4 font-serif">{state.description}</p>
               
               <div className="mt-6">
                 <h4 className="text-lg font-display font-medium mb-2">Key Features</h4>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="bg-secondary/10 p-4 rounded-lg">
                     <h5 className="font-medium text-india-orange mb-2">Geography</h5>
-                    <p className="text-sm">Area of {state.area} with diverse landscapes.</p>
+                    <p className="text-sm font-cursive">Area of {state.area} with diverse landscapes.</p>
                   </div>
                   <div className="bg-secondary/10 p-4 rounded-lg">
                     <h5 className="font-medium text-india-orange mb-2">Demographics</h5>
-                    <p className="text-sm">Home to approximately {state.population} people.</p>
+                    <p className="text-sm font-cursive">Home to approximately {state.population} people.</p>
                   </div>
                   <div className="bg-secondary/10 p-4 rounded-lg">
                     <h5 className="font-medium text-india-orange mb-2">Culture</h5>
-                    <p className="text-sm">Rich cultural heritage with {state.language} as primary language.</p>
+                    <p className="text-sm font-cursive">Rich cultural heritage with {state.language} as primary language.</p>
                   </div>
                 </div>
               </div>
@@ -163,7 +163,7 @@ const StateDetails = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-6 py-3 bg-secondary text-foreground rounded-full font-medium hover:bg-secondary/80 transition-colors"
+              className="px-6 py-3 bg-india-orange text-white rounded-full font-medium hover:bg-india-orange/80 transition-colors"
               onClick={() => navigate('/')}
             >
               Back to Map
