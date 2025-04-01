@@ -1,3 +1,4 @@
+
 export const freedomFighters = [
   {
     id: '1',
@@ -450,3 +451,348 @@ export const freedomFighters = [
     legacy: 'Ram Prasad Bismil is revered as a martyr of the Indian independence movement and a symbol of courage and sacrifice in Uttar Pradesh.'
   }
 ];
+
+// Add the missing exports that other files depend on
+export const states = [
+  {
+    id: 'andhrapradesh',
+    name: 'Andhra Pradesh',
+    capital: 'Amaravati',
+    description: 'Known for its rich cultural heritage and the second-longest coastline in India.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '49.6 million',
+    area: '162,975 km²',
+    language: 'Telugu',
+    famousFor: 'Tirupati Temple, Araku Valley, Telugu cinema',
+    freedomFighters: ['Alluri Sitarama Raju', 'Tanguturi Prakasam Pantulu', 'Potti Sriramulu']
+  },
+  {
+    id: 'arunachalpradesh',
+    name: 'Arunachal Pradesh',
+    capital: 'Itanagar',
+    description: 'Easternmost state of India known for its mountainous terrain and diverse tribal cultures.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '1.4 million',
+    area: '83,743 km²',
+    language: 'English, Hindi, and local tribal languages',
+    famousFor: 'Tawang Monastery, Namdapha National Park, tribal heritage',
+    freedomFighters: ['Matmur Jamoh', 'Moje Riba']
+  },
+  {
+    id: 'assam',
+    name: 'Assam',
+    capital: 'Dispur',
+    description: 'Famous for its tea plantations and silk, Assam is the gateway to the northeast.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '31.2 million',
+    area: '78,438 km²',
+    language: 'Assamese',
+    famousFor: 'Assam tea, Kaziranga National Park, Bihu festival',
+    freedomFighters: ['Kanaklata Barua', 'Kushal Konwar', 'Maniram Dewan']
+  },
+  {
+    id: 'bihar',
+    name: 'Bihar',
+    capital: 'Patna',
+    description: 'Ancient center of learning and culture, birthplace of Buddhism and Jainism.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '104 million',
+    area: '94,163 km²',
+    language: 'Hindi, Bhojpuri, Maithili',
+    famousFor: 'Bodh Gaya, Nalanda University, Chhath Puja',
+    freedomFighters: ['Dr. Rajendra Prasad', 'Jayaprakash Narayan', 'Babu Kunwar Singh']
+  },
+  {
+    id: 'chattisgarh',
+    name: 'Chhattisgarh',
+    capital: 'Raipur',
+    description: 'One of the newest states of India, rich in mineral resources and tribal culture.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '25.5 million',
+    area: '135,191 km²',
+    language: 'Chhattisgarhi, Hindi',
+    famousFor: 'Chitrakote Falls, Bastar tribal art, steel and mining industries',
+    freedomFighters: ['Veer Narayan Singh', 'Hanuman Singh', 'Gend Singh']
+  },
+  {
+    id: 'goa',
+    name: 'Goa',
+    capital: 'Panaji',
+    description: 'India\'s smallest state by area and a popular tourist destination for its beaches.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '1.5 million',
+    area: '3,702 km²',
+    language: 'Konkani',
+    famousFor: 'Beaches, Portuguese architecture, seafood cuisine',
+    freedomFighters: ['T.B. Cunha', 'Mohan Ranade', 'Ram Manohar Lohia']
+  },
+  {
+    id: 'gujarat',
+    name: 'Gujarat',
+    capital: 'Gandhinagar',
+    description: 'The westernmost state of India with a rich cultural and historical heritage.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '60.4 million',
+    area: '196,024 km²',
+    language: 'Gujarati',
+    famousFor: 'Rann of Kutch, Gir National Park, Statue of Unity',
+    freedomFighters: ['Mahatma Gandhi', 'Sardar Vallabhbhai Patel', 'Shyamji Krishna Varma']
+  },
+  {
+    id: 'haryana',
+    name: 'Haryana',
+    capital: 'Chandigarh',
+    description: 'A northern state surrounding Delhi on three sides, known for its agricultural production.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '25.4 million',
+    area: '44,212 km²',
+    language: 'Hindi, Haryanvi',
+    famousFor: 'Kurukshetra, sports achievements, automobile industry',
+    freedomFighters: ['Rao Tula Ram', 'Neki Ram Sharma', 'Devi Lal']
+  },
+  {
+    id: 'himachalpradesh',
+    name: 'Himachal Pradesh',
+    capital: 'Shimla',
+    description: 'Known for its scenic beauty, mountains, and hill stations in the western Himalayas.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '6.8 million',
+    area: '55,673 km²',
+    language: 'Hindi, Pahari',
+    famousFor: 'Shimla, Kullu-Manali, Dharamshala',
+    freedomFighters: ['Y.S. Parmar', 'Padam Dev', 'Thakur Sen Negi']
+  },
+  {
+    id: 'jharkhand',
+    name: 'Jharkhand',
+    capital: 'Ranchi',
+    description: 'Eastern state known for its waterfalls, forests, and mineral resources.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '32.9 million',
+    area: '79,714 km²',
+    language: 'Hindi, Santali, and other tribal languages',
+    famousFor: 'Waterfalls, tribal culture, coal mines',
+    freedomFighters: ['Birsa Munda', 'Sheikh Bhikhari', 'Jaipal Singh Munda']
+  },
+  {
+    id: 'karnataka',
+    name: 'Karnataka',
+    capital: 'Bengaluru',
+    description: 'Southern state known for its tech hub Bengaluru and many historical sites.',
+    image: '/lovable-uploads/a9995949-9963-49ca-8944-61590425495a.jpg',
+    population: '61.1 million',
+    area: '191,791 km²',
+    language: 'Kannada',
+    famousFor: 'Bengaluru's IT industry, Mysore Palace, Hampi ruins',
+    freedomFighters: ['Tipu Sultan', 'Karnad Sadashiva Rao', 'Aluru Venkata Rao']
+  },
+  {
+    id: 'kerala',
+    name: 'Kerala',
+    capital: 'Thiruvananthapuram',
+    description: 'Southwestern state known as "God\'s Own Country" for its backwaters and pristine beaches.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '34.6 million',
+    area: '38,863 km²',
+    language: 'Malayalam',
+    famousFor: 'Backwaters, Ayurveda, high literacy rate',
+    freedomFighters: ['A.K. Gopalan', 'K. Kelappan', 'Vakkom Majeed']
+  },
+  {
+    id: 'madhyapradesh',
+    name: 'Madhya Pradesh',
+    capital: 'Bhopal',
+    description: 'The second-largest state in India, known as the "Heart of India".',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '72.6 million',
+    area: '308,245 km²',
+    language: 'Hindi',
+    famousFor: 'Khajuraho temples, Sanchi Stupa, tiger reserves',
+    freedomFighters: ['Chandrashekhar Azad', 'Tantya Tope', 'Shankar Shah']
+  },
+  {
+    id: 'maharashtra',
+    name: 'Maharashtra',
+    capital: 'Mumbai',
+    description: 'Western state with India\'s financial capital Mumbai and a rich cultural heritage.',
+    image: '/lovable-uploads/49f1965d-9965-4669-897d-f09925999999.jpg',
+    population: '112.4 million',
+    area: '307,713 km²',
+    language: 'Marathi',
+    famousFor: 'Mumbai, Ajanta & Ellora Caves, Bollywood',
+    freedomFighters: ['Shivaji Maharaj', 'Bal Gangadhar Tilak', 'Savitribai Phule']
+  },
+  {
+    id: 'manipur',
+    name: 'Manipur',
+    capital: 'Imphal',
+    description: 'Northeastern state known for its scenic hills, forests, and cultural traditions.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '2.9 million',
+    area: '22,327 km²',
+    language: 'Manipuri (Meiteilon)',
+    famousFor: 'Loktak Lake, classical dance forms, women\'s market',
+    freedomFighters: ['Bir Tikendrajit Singh', 'Rani Gaidinliu', 'Haipou Jadonang']
+  },
+  {
+    id: 'meghalaya',
+    name: 'Meghalaya',
+    capital: 'Shillong',
+    description: 'Northeastern state known as the "Abode of Clouds" with high rainfall and beautiful landscapes.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '3 million',
+    area: '22,429 km²',
+    language: 'Khasi, Garo, Jaintia, English',
+    famousFor: 'Living root bridges, Cherrapunji, Shillong\'s music scene',
+    freedomFighters: ['U Tirot Sing', 'Pa Togan Sangma', 'U Kiang Nangbah']
+  },
+  {
+    id: 'mizoram',
+    name: 'Mizoram',
+    capital: 'Aizawl',
+    description: 'Northeastern state with hilly terrain and a distinct tribal culture.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '1.1 million',
+    area: '21,081 km²',
+    language: 'Mizo, English',
+    famousFor: 'Bamboo dance, handicrafts, beautiful landscapes',
+    freedomFighters: ['Khuangchera', 'Pasaltha Khuangchera', 'Ropuiliani']
+  },
+  {
+    id: 'nagaland',
+    name: 'Nagaland',
+    capital: 'Kohima',
+    description: 'Northeastern state known for its tribal heritage and the Hornbill Festival.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '2 million',
+    area: '16,579 km²',
+    language: 'English, various Naga languages',
+    famousFor: 'Hornbill Festival, World War II Cemetery, tribal culture',
+    freedomFighters: ['A.Z. Phizo', 'Imkongliba Ao', 'Kedahge Kiyelho Sema']
+  },
+  {
+    id: 'odisha',
+    name: 'Odisha',
+    capital: 'Bhubaneswar',
+    description: 'Eastern state with a long coastline, ancient temples, and tribal traditions.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '41.9 million',
+    area: '155,707 km²',
+    language: 'Odia',
+    famousFor: 'Jagannath Temple, Konark Sun Temple, Odissi dance',
+    freedomFighters: ['Veer Surendra Sai', 'Laxman Nayak', 'Jayee Rajguru']
+  },
+  {
+    id: 'punjab',
+    name: 'Punjab',
+    capital: 'Chandigarh',
+    description: 'Northern state known for its agriculture, cuisine, and vibrant culture.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '27.7 million',
+    area: '50,362 km²',
+    language: 'Punjabi',
+    famousFor: 'Golden Temple, Bhangra dance, agricultural production',
+    freedomFighters: ['Bhagat Singh', 'Lala Lajpat Rai', 'Udham Singh']
+  },
+  {
+    id: 'rajasthan',
+    name: 'Rajasthan',
+    capital: 'Jaipur',
+    description: 'Largest state by area, known for its desert landscape, palaces, and colorful culture.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '68.5 million',
+    area: '342,239 km²',
+    language: 'Hindi, Rajasthani',
+    famousFor: 'Thar Desert, magnificent forts and palaces, traditional arts',
+    freedomFighters: ['Kesari Singh Bareth', 'Arjun Lal Sethi', 'Vijay Singh Pathik']
+  },
+  {
+    id: 'sikkim',
+    name: 'Sikkim',
+    capital: 'Gangtok',
+    description: 'Northeastern state in the Himalayas known for its biodiversity and Buddhist monasteries.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '0.6 million',
+    area: '7,096 km²',
+    language: 'Nepali, Sikkimese, Lepcha, Bhutia, English',
+    famousFor: 'Kanchenjunga, Buddhist monasteries, organic farming',
+    freedomFighters: ['Kazi Lhendup Dorjee', 'Helen Lepcha', 'Krishna Chandra Pradhan']
+  },
+  {
+    id: 'tamilnadu',
+    name: 'Tamil Nadu',
+    capital: 'Chennai',
+    description: 'Southern state known for its Dravidian culture, classical arts, and temple architecture.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '72 million',
+    area: '130,058 km²',
+    language: 'Tamil',
+    famousFor: 'Ancient temples, Bharatanatyam dance, Tamil cinema',
+    freedomFighters: ['V.O. Chidambaram Pillai', 'Subramania Bharati', 'Dheeran Chinnamalai']
+  },
+  {
+    id: 'telangana',
+    name: 'Telangana',
+    capital: 'Hyderabad',
+    description: 'One of the newest states, formed in 2014, with a rich history and culture.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '35.2 million',
+    area: '112,077 km²',
+    language: 'Telugu',
+    famousFor: 'Hyderabad city, Charminar, biryani',
+    freedomFighters: ['Komaram Bheem', 'Chakali Ilamma', 'Doddi Komarayya']
+  },
+  {
+    id: 'tripura',
+    name: 'Tripura',
+    capital: 'Agartala',
+    description: 'Northeastern state with a rich tribal culture and beautiful natural landscapes.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '3.7 million',
+    area: '10,486 km²',
+    language: 'Bengali, Kokborok',
+    famousFor: 'Royal palaces, Neermahal water palace, bamboo crafts',
+    freedomFighters: ['Bir Bikram Kishore Debbarman', 'Dasarath Deb']
+  },
+  {
+    id: 'uttarpradesh',
+    name: 'Uttar Pradesh',
+    capital: 'Lucknow',
+    description: 'Most populous state in India with major religious and historical sites.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '199.8 million',
+    area: '243,290 km²',
+    language: 'Hindi, Urdu',
+    famousFor: 'Taj Mahal, Varanasi, Ayodhya',
+    freedomFighters: ['Mangal Pandey', 'Rani Lakshmibai', 'Chandrashekhar Azad']
+  },
+  {
+    id: 'uttarakhand',
+    name: 'Uttarakhand',
+    capital: 'Dehradun',
+    description: 'Northern state in the Himalayas, known for its natural beauty and pilgrimage sites.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '10.1 million',
+    area: '53,483 km²',
+    language: 'Hindi, Garhwali, Kumaoni',
+    famousFor: 'Char Dham pilgrimage, Jim Corbett National Park, yoga',
+    freedomFighters: ['Govind Ballabh Pant', 'Chandra Singh Garhwali', 'Sunderlal Bahuguna']
+  },
+  {
+    id: 'westbengal',
+    name: 'West Bengal',
+    capital: 'Kolkata',
+    description: 'Eastern state with a rich cultural heritage and the major city of Kolkata.',
+    image: '/lovable-uploads/6945f65a-a999-4949-8949-a949a949a949.jpg',
+    population: '91.3 million',
+    area: '88,752 km²',
+    language: 'Bengali',
+    famousFor: 'Kolkata culture, Durga Puja, Sundarbans',
+    freedomFighters: ['Subhas Chandra Bose', 'Khudiram Bose', 'Matangini Hazra']
+  }
+];
+
+// Helper function to get state by ID
+export const getStateById = (id) => {
+  return states.find(state => state.id === id) || null;
+};
