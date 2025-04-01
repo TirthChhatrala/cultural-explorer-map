@@ -50,7 +50,7 @@ const FighterModal = ({ isOpen, onClose, fighter }) => {
                   {fighter.state}
                 </span>
                 <h2 className="text-3xl font-display font-bold text-white mb-1">{fighter.name}</h2>
-                <p className="text-white/80">{fighter.years}</p>
+                <p className="text-white/80">{fighter.lifespan}</p>
               </div>
             </div>
             
@@ -64,7 +64,7 @@ const FighterModal = ({ isOpen, onClose, fighter }) => {
                 <div>
                   <h3 className="text-xl font-display font-semibold mb-2">Contributions</h3>
                   <ul className="space-y-2">
-                    {fighter.contributions.map((contribution, index) => (
+                    {fighter.contributions && fighter.contributions.map((contribution, index) => (
                       <li key={index} className="flex items-start gap-2">
                         <div className="w-1.5 h-1.5 rounded-full bg-india-orange mt-2" />
                         <span>{contribution}</span>
@@ -73,10 +73,12 @@ const FighterModal = ({ isOpen, onClose, fighter }) => {
                   </ul>
                 </div>
                 
-                <div>
-                  <h3 className="text-xl font-display font-semibold mb-2">Legacy</h3>
-                  <p className="text-muted-foreground">{fighter.legacy}</p>
-                </div>
+                {fighter.legacy && (
+                  <div>
+                    <h3 className="text-xl font-display font-semibold mb-2">Legacy</h3>
+                    <p className="text-muted-foreground">{fighter.legacy}</p>
+                  </div>
+                )}
               </div>
             </div>
           </motion.div>

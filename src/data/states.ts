@@ -1,4 +1,3 @@
-
 export interface State {
   id: string;
   name: string;
@@ -303,6 +302,8 @@ export interface FreedomFighter {
   years: string;
   contribution: string;
   biography: string;
+  contributions: string[];
+  legacy: string;
 }
 
 export const freedomFighters: FreedomFighter[] = [
@@ -314,56 +315,126 @@ export const freedomFighters: FreedomFighter[] = [
     state: "Gujarat",
     years: "1915-1948",
     contribution: "Father of the Nation, led non-violent civil disobedience movements",
-    biography: "Mohandas Karamchand Gandhi, widely known as Mahatma Gandhi, was an Indian lawyer, anti-colonial nationalist, and political ethicist who employed nonviolent resistance to lead the successful campaign for India's independence from British rule. He inspired movements for civil rights and freedom across the world. Born in Porbandar, Gujarat, Gandhi studied law in London and practiced in South Africa, where he developed his political views and activism. Upon returning to India, he organized farmers, laborers, and urban laborers to protest against excessive land-tax and discrimination. His philosophy of Satyagraha (truth-force) and Ahimsa (non-violence) became fundamental concepts in the independence movement. He led nationwide campaigns for various social causes and for achieving Swaraj or self-rule. He was assassinated on January 30, 1948, by Nathuram Godse."
+    biography: "Mohandas Karamchand Gandhi, widely known as Mahatma Gandhi, was an Indian lawyer, anti-colonial nationalist, and political ethicist who employed nonviolent resistance to lead the successful campaign for India's independence from British rule. He inspired movements for civil rights and freedom across the world. Born in Porbandar, Gujarat, Gandhi studied law in London and practiced in South Africa, where he developed his political views and activism. Upon returning to India, he organized farmers, laborers, and urban laborers to protest against excessive land-tax and discrimination. His philosophy of Satyagraha (truth-force) and Ahimsa (non-violence) became fundamental concepts in the independence movement.",
+    contributions: [
+      "Led the Salt March in 1930 to protest the British monopoly on salt.",
+      "Spearheaded the Quit India Movement in 1942.",
+      "Advocated for non-violent civil disobedience as a means to achieve independence.",
+      "Worked towards Hindu-Muslim unity and the eradication of untouchability."
+    ],
+    legacy: "Gandhi's legacy includes numerous memorials and statues across India. His birthday, 2 October, is commemorated as Gandhi Jayanti, a national holiday in India, and is celebrated worldwide as the International Day of Nonviolence. He is considered the Father of the Nation in India."
   },
   {
     id: "subhas-chandra-bose",
     name: "Subhas Chandra Bose",
-    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3", 
-    lifespan: "1897-1945 (disputed)",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Subhas_Chandra_Bose_NRB.jpg/640px-Subhas_Chandra_Bose_NRB.jpg", 
+    lifespan: "1897-1945",
     state: "West Bengal",
     years: "1920-1945",
     contribution: "Founded Indian National Army, led militant movement for independence",
-    biography: "Subhas Chandra Bose was an Indian nationalist whose defiant patriotism made him a hero in India. He is popularly known as 'Netaji' (Respected Leader). Bose advocated complete independence for India at the earliest, whereas the All-India Congress Committee wanted it in phases, through Dominion status. During World War II, he sought assistance from Nazi Germany and Imperial Japan to overthrow British rule in India. He founded the Indian National Army (Azad Hind Fauj) with Japanese assistance following the Fall of Singapore, drawing ex-prisoners of war and plantation workers from the Indian diaspora in Southeast Asia. His sudden disappearance after a plane crash in Taiwan in 1945 has led to various theories about his fate."
+    biography: "Subhas Chandra Bose was an Indian nationalist whose defiant patriotism made him a hero in India. He is popularly known as 'Netaji' (Respected Leader). Bose advocated complete independence for India at the earliest, whereas the All-India Congress Committee wanted it in phases, through Dominion status. During World War II, he sought assistance from Nazi Germany and Imperial Japan to overthrow British rule in India.",
+    contributions: [
+      "Founded and led the Indian National Army (Azad Hind Fauj) to fight against the British.",
+      "Established the provisional government of Free India (Azad Hind) in 1943.",
+      "Gave the famous slogan 'Give me blood, and I shall give you freedom'.",
+      "Promoted women's equality by forming the Rani of Jhansi Regiment, an all-female combat unit."
+    ],
+    legacy: "Bose's legacy is commemorated through numerous statues, the naming of various institutions, and the declassification of files related to his disappearance. His birthday is celebrated as 'Parakram Divas' in India."
   },
   {
     id: "bhagat-singh",
     name: "Bhagat Singh",
-    image: "https://images.unsplash.com/photo-1621118209941-e1ef27858e69?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Bhagat_Singh_%28cropped%29.jpg/640px-Bhagat_Singh_%28cropped%29.jpg",
     lifespan: "1907-1931",
     state: "Punjab",
     years: "1926-1931",
     contribution: "Revolutionary freedom fighter, advocated armed resistance",
-    biography: "Bhagat Singh was an Indian socialist revolutionary whose acts of dramatic violence against the British in India, followed by his execution at age 23, made him a folk hero of the Indian independence movement. Born into a Sikh family in Punjab, Singh became involved in nationalist politics as a teenager and quickly rose to prominence in the Hindustan Republican Association (HRA). He gained nationwide support after the Lahore Conspiracy Case, when he underwent a 116-day fast in jail, demanding equal rights for Indian and European prisoners. Singh and his associates were sentenced to death for killing a British police officer, John Saunders, and conspiracies against the government. He was hanged on March 23, 1931, at the age of 23. His legacy continues to inspire generations of young Indians."
+    biography: "Bhagat Singh was an Indian socialist revolutionary whose acts of dramatic violence against the British in India, followed by his execution at age 23, made him a folk hero of the Indian independence movement. Born into a Sikh family in Punjab, Singh became involved in nationalist politics as a teenager and quickly rose to prominence in the Hindustan Republican Association (HRA).",
+    contributions: [
+      "Formed the Hindustan Socialist Republican Association to fight for India's independence.",
+      "Protested against the Public Safety Bill and the Trade Dispute Act by throwing non-lethal bombs in the Central Legislative Assembly.",
+      "His hunger strike in prison drew attention to the plight of Indian political prisoners.",
+      "Was influential in popularizing the slogan 'Inquilab Zindabad' (Long Live the Revolution)."
+    ],
+    legacy: "Bhagat Singh's legacy includes numerous films, plays, and books based on his life. His image appears on Indian postage stamps, and several educational institutions and parks are named after him. He remains a symbol of youth and courage in the fight against oppression."
   },
   {
     id: "rani-lakshmibai",
     name: "Rani Lakshmibai",
-    image: "https://images.unsplash.com/photo-1580618864482-f006386dc0ec?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Rani_of_jhansi.jpg/640px-Rani_of_jhansi.jpg",
     lifespan: "1828-1858",
     state: "Uttar Pradesh",
     years: "1857-1858",
     contribution: "Led armed rebellion during the 1857 Indian Rebellion",
-    biography: "Rani Lakshmibai, also known as Jhansi Ki Rani, was an Indian queen and warrior. She was one of the leading figures of the Indian Rebellion of 1857 and became a symbol of resistance to the British Raj. Born Manikarnika Tambe in Varanasi, she was married to Raja Gangadhar Rao, the Maharaja of Jhansi. After her husband's death, the British East India Company, under Governor-General Lord Dalhousie, applied the Doctrine of Lapse, annexing the state of Jhansi as Gangadhar Rao and Lakshmibai had no biological children. Refusing to cede her kingdom, she fought against the British, riding into battle with her adopted son tied to her back. She died on June 18, 1858, during the Siege of Gwalior, fighting against the British. Her courage, leadership, and fierceness in battle have made her an icon in Indian history."
+    biography: "Rani Lakshmibai, also known as Jhansi Ki Rani, was an Indian queen and warrior. She was one of the leading figures of the Indian Rebellion of 1857 and became a symbol of resistance to the British Raj. Born Manikarnika Tambe in Varanasi, she was married to Raja Gangadhar Rao, the Maharaja of Jhansi.",
+    contributions: [
+      "Led her forces against the British during the Indian Rebellion of 1857.",
+      "Refused to cede Jhansi to the British under the Doctrine of Lapse.",
+      "Organized an army that included women soldiers.",
+      "Participated in securing Gwalior Fort before her death in battle."
+    ],
+    legacy: "Rani Lakshmi Bai has become an icon of the Indian independence movement and a symbol of female power and resistance. She is remembered in India as a national heroine and a symbol of resistance to British colonial rule."
   },
   {
     id: "sardar-vallabhbhai-patel",
     name: "Sardar Vallabhbhai Patel",
-    image: "https://images.unsplash.com/photo-1627740283004-a4abe8f006e9?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Sardar_patel_%28cropped%29.jpg/640px-Sardar_patel_%28cropped%29.jpg",
     lifespan: "1875-1950",
     state: "Gujarat",
     years: "1918-1950",
     contribution: "Iron Man of India, integrated princely states into Indian Union",
-    biography: "Vallabhbhai Jhaverbhai Patel, commonly known as Sardar Patel, was an Indian barrister, statesman, and a founding father of the Republic of India. He served as the first Deputy Prime Minister of India and the first Home Minister from 1947 to 1950. As India's first Minister of Home Affairs, he played a crucial role in the integration of over 560 princely states into the Indian Union. His commitment to national integration earned him the title 'Iron Man of India'. He was also instrumental in organizing the peasants of Bardoli, Gujarat, in a non-violent Civil Disobedience against oppressive policies imposed by the British. After independence, he reorganized the Indian Civil Service and helped establish the All India Administrative Service. His birth anniversary, October 31, is celebrated as National Unity Day in India."
+    biography: "Vallabhbhai Jhaverbhai Patel, commonly known as Sardar Patel, was an Indian barrister, statesman, and a founding father of the Republic of India. He served as the first Deputy Prime Minister of India and the first Home Minister from 1947 to 1950. As India's first Minister of Home Affairs, he played a crucial role in the integration of over 560 princely states into the Indian Union.",
+    contributions: [
+      "Played a crucial role in India's freedom struggle, particularly during the Bardoli Satyagraha.",
+      "Unified 562 princely states to form the Indian Union after independence.",
+      "Organized relief efforts during the 1928 Bardoli floods and 1934 Bihar earthquake.",
+      "Played a key role in the formation of the All India Services."
+    ],
+    legacy: "Patel's legacy includes the Statue of Unity, the world's tallest statue, dedicated to him. His birthday, 31 October, is celebrated as National Unity Day in India. He is remembered as the 'Iron Man of India' for his commitment to national integration."
   },
   {
     id: "sarojini-naidu",
     name: "Sarojini Naidu",
-    image: "https://images.unsplash.com/photo-1694661042254-fda17de64563?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Sarojini_Naidu_1946_%28cropped%29.JPG/640px-Sarojini_Naidu_1946_%28cropped%29.JPG",
     lifespan: "1879-1949",
     state: "Telangana",
     years: "1917-1947",
     contribution: "Nightingale of India, poet and political activist",
-    biography: "Sarojini Naidu was an Indian political activist, feminist, and poet. A proponent of civil rights, women's emancipation, and anti-imperialistic ideas, she was an important figure in India's struggle for independence from colonial rule. Born in Hyderabad, she was a brilliant student who mastered several languages and began writing poetry at an early age. Her works earned her the sobriquet 'The Nightingale of India'. She joined the Indian National Congress and the Indian independence movement in 1905. She became a follower of Mahatma Gandhi and his ideas of non-violent resistance. As a mark of her political involvement, she was appointed as the first female governor of the United Provinces, now Uttar Pradesh, in 1947. She was also the first woman to become the president of the Indian National Congress."
-  }
-];
+    biography: "Sarojini Naidu was an Indian political activist, feminist, and poet. A proponent of civil rights, women's emancipation, and anti-imperialistic ideas, she was an important figure in India's struggle for independence from colonial rule. Born in Hyderabad, she was a brilliant student who mastered several languages and began writing poetry at an early age.",
+    contributions: [
+      "Was the first Indian woman to become the President of the Indian National Congress.",
+      "Led the Civil Disobedience Movement in 1930 after Gandhi's arrest.",
+      "Advocated for women's rights and education.",
+      "Became the first woman governor of an Indian state (Uttar Pradesh) after independence."
+    ],
+    legacy: "Naidu is known as the 'Nightingale of India' for her poetry. Her birthday, 13 February, is celebrated as National Women's Day in India. She is remembered for her contributions to literature, politics, and women's rights."
+  },
+  {
+    id: "chandrasekhar-azad",
+    name: "Chandra Shekhar Azad",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Chandra_Shekhar_Azad.jpg/640px-Chandra_Shekhar_Azad.jpg",
+    lifespan: "1906-1931",
+    state: "Madhya Pradesh",
+    years: "1921-1931",
+    contribution: "Revolutionary leader, advocated for armed resistance against British rule",
+    biography: "Chandra Shekhar Azad was an Indian revolutionary who reorganized the Hindustan Republican Association under its new name of Hindustan Socialist Republican Army (HSRA) after the death of its founder, Ram Prasad Bismil. He was born in Bhavra village, in present-day Madhya Pradesh.",
+    contributions: [
+      "Participated in the Kakori Train Robbery of 1925.",
+      "Reorganized the Hindustan Republican Association as the Hindustan Socialist Republican Army.",
+      "Mentored revolutionaries like Bhagat Singh and Sukhdev.",
+      "Vowed never to be captured alive by the British, which he fulfilled."
+    ],
+    legacy: "Azad is considered one of the most influential revolutionaries of the Indian independence movement. His courage and commitment to freedom have been celebrated in numerous films, books, and songs. Several institutions, parks, and places are named after him across India."
+  },
+  {
+    id: "bal-gangadhar-tilak",
+    name: "Bal Gangadhar Tilak",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Bal_Gangadhar_Tilak.jpg/640px-Bal_Gangadhar_Tilak.jpg",
+    lifespan: "1856-1920",
+    state: "Maharashtra",
+    years: "1890-1920",
+    contribution: "Lokmanya Tilak, advocated 'Swaraj is my birthright'",
+    biography: "Bal Gangadhar Tilak was an Indian nationalist, teacher, and independence activist. He was one of the first leaders of the Indian Independence Movement and is known for his famous quote 'Swaraj (self-rule) is my birthright, and I shall have it'. The British colonial authorities called him 'The father of the Indian unrest'.",
+    contributions: [
+      "Founded the Deccan Education Society to impart quality education to India's youth.",
+      "Started the newspapers 'Kesari' in Marathi and 'Mah
