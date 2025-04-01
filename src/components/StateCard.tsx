@@ -1,8 +1,18 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTheme } from '../context/ThemeContext';
 
-const StateCard = ({ title, children, icon, delay = 0 }) => {
+interface StateCardProps {
+  title: string;
+  children: React.ReactNode;
+  icon?: React.ReactNode;
+  delay?: number;
+}
+
+const StateCard: React.FC<StateCardProps> = ({ title, children, icon, delay = 0 }) => {
+  const { theme } = useTheme();
+  
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -12,9 +22,13 @@ const StateCard = ({ title, children, icon, delay = 0 }) => {
         ease: [0.19, 1, 0.22, 1],
         delay 
       }}
-      className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300"
+      className={`rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 ${
+        theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white'
+      }`}
     >
-      <div className="flex items-center gap-3 bg-secondary/50 px-6 py-4 border-b">
+      <div className={`flex items-center gap-3 px-6 py-4 border-b ${
+        theme === 'dark' ? 'bg-gray-700/50 border-gray-700' : 'bg-secondary/50 border-gray-100'
+      }`}>
         {icon && (
           <div className="text-india-orange">
             {icon}
