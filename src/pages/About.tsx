@@ -56,7 +56,7 @@ const About = () => {
             <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">
               About Indian Cultural Explorer
             </h1>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto font-sans">
               We are dedicated to showcasing the rich cultural diversity of India, connecting people to the country's heritage, art, and traditions across its many vibrant states.
             </p>
           </motion.div>
@@ -74,10 +74,10 @@ const About = () => {
             >
               <div className="p-8">
                 <h2 className="text-2xl font-display font-bold mb-4">Our Vision</h2>
-                <p className="text-muted-foreground mb-4">
+                <p className="text-muted-foreground mb-4 font-sans">
                   To create a comprehensive digital platform that accurately represents India's cultural tapestry, making it accessible to both Indians and people around the world.
                 </p>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground font-sans">
                   We believe that understanding cultural diversity is essential for fostering appreciation, respect, and unity in our increasingly globalized world.
                 </p>
               </div>
@@ -93,10 +93,10 @@ const About = () => {
             >
               <div className="p-8">
                 <h2 className="text-2xl font-display font-bold mb-4">Our Approach</h2>
-                <p className="text-muted-foreground mb-4">
+                <p className="text-muted-foreground mb-4 font-sans">
                   We meticulously research and validate all cultural information to ensure accuracy, working with experts from each region to provide authentic insights.
                 </p>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground font-sans">
                   Our platform combines educational content with interactive features, making cultural exploration engaging and accessible for users of all backgrounds.
                 </p>
               </div>
@@ -117,7 +117,7 @@ const About = () => {
               <h2 className="text-3xl md:text-4xl font-display font-semibold mb-4">
                 Meet The Developer
               </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-muted-foreground max-w-2xl mx-auto font-sans">
                 This project is the work of a passionate developer committed to showcasing India's rich cultural heritage through technology.
               </p>
             </motion.div>
@@ -145,18 +145,18 @@ const About = () => {
                 <div className="p-8 md:w-2/3">
                   <h3 className="text-2xl font-display font-semibold mb-1">{developerInfo.name}</h3>
                   <p className="text-india-orange font-medium text-sm mb-4">{developerInfo.role}</p>
-                  <p className="text-muted-foreground mb-6">{developerInfo.bio}</p>
+                  <p className="text-muted-foreground mb-6 font-sans">{developerInfo.bio}</p>
                   
                   <div className="space-y-2 mb-6">
-                    <div className="flex items-center text-sm">
+                    <div className="flex items-center text-sm font-sans">
                       <Mail className="w-4 h-4 mr-2 text-india-orange" />
                       <span className="text-muted-foreground">{developerInfo.contact.email}</span>
                     </div>
-                    <div className="flex items-center text-sm">
+                    <div className="flex items-center text-sm font-sans">
                       <Phone className="w-4 h-4 mr-2 text-india-orange" />
                       <span className="text-muted-foreground">{developerInfo.contact.phone}</span>
                     </div>
-                    <div className="flex items-center text-sm">
+                    <div className="flex items-center text-sm font-sans">
                       <MapPin className="w-4 h-4 mr-2 text-india-orange" />
                       <span className="text-muted-foreground">{developerInfo.contact.location}</span>
                     </div>
@@ -167,7 +167,7 @@ const About = () => {
                       href={developerInfo.social.github} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm"
+                      className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm font-sans"
                     >
                       <Github className="w-4 h-4" />
                       GitHub
@@ -176,7 +176,7 @@ const About = () => {
                       href={developerInfo.social.linkedin} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm"
+                      className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm font-sans"
                     >
                       <Linkedin className="w-4 h-4" />
                       LinkedIn
@@ -184,7 +184,7 @@ const About = () => {
                   </div>
                   
                   <div>
-                    <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
+                    <h4 className="text-sm font-semibold mb-2 flex items-center gap-2 font-sans">
                       <Code className="w-4 h-4 text-india-orange" />
                       Skills
                     </h4>
@@ -192,7 +192,7 @@ const About = () => {
                       {developerInfo.skills.map(skill => (
                         <span 
                           key={skill}
-                          className="text-xs px-2 py-1 rounded-full bg-india-orange/10 text-india-orange"
+                          className="text-xs px-2 py-1 rounded-full bg-india-orange/10 text-india-orange font-sans"
                         >
                           {skill}
                         </span>
@@ -217,7 +217,7 @@ const About = () => {
             <div className="p-8">
               <div className="mb-8 text-center">
                 <h2 className="text-3xl font-display font-semibold mb-4">Project Features</h2>
-                <p className="text-muted-foreground max-w-2xl mx-auto">
+                <p className="text-muted-foreground max-w-2xl mx-auto font-sans">
                   This project combines various technologies to create an interactive experience of India's cultural heritage.
                 </p>
               </div>
@@ -227,8 +227,8 @@ const About = () => {
                   <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-india-orange/10 flex items-center justify-center text-india-orange">
                     <Terminal className="w-8 h-8" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Interactive Map</h3>
-                  <p className="text-muted-foreground">
+                  <h3 className="text-xl font-display font-semibold mb-2">Interactive Map</h3>
+                  <p className="text-muted-foreground font-sans">
                     Navigate through an interactive map of India to explore different states and their cultural highlights.
                   </p>
                 </div>
@@ -237,8 +237,8 @@ const About = () => {
                   <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-india-orange/10 flex items-center justify-center text-india-orange">
                     <Code className="w-8 h-8" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Modern Tech Stack</h3>
-                  <p className="text-muted-foreground">
+                  <h3 className="text-xl font-display font-semibold mb-2">Modern Tech Stack</h3>
+                  <p className="text-muted-foreground font-sans">
                     Built with React, Tailwind CSS, and framer-motion to provide a smooth and responsive user experience.
                   </p>
                 </div>
@@ -247,8 +247,8 @@ const About = () => {
                   <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-india-orange/10 flex items-center justify-center text-india-orange">
                     <Cpu className="w-8 h-8" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Admin Dashboard</h3>
-                  <p className="text-muted-foreground">
+                  <h3 className="text-xl font-display font-semibold mb-2">Admin Dashboard</h3>
+                  <p className="text-muted-foreground font-sans">
                     A comprehensive admin panel for maintaining and updating the content across all sections of the website.
                   </p>
                 </div>
@@ -270,21 +270,21 @@ const About = () => {
               <h2 className="text-3xl font-display font-semibold mb-4">
                 Get in Touch
               </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-muted-foreground max-w-2xl mx-auto font-sans">
                 Have questions or feedback? Feel free to reach out directly to the developer.
               </p>
             </motion.div>
             
             <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 font-sans">
                 <Mail className="w-5 h-5 text-india-orange" />
                 <span>{developerInfo.contact.email}</span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 font-sans">
                 <Phone className="w-5 h-5 text-india-orange" />
                 <span>{developerInfo.contact.phone}</span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 font-sans">
                 <MapPin className="w-5 h-5 text-india-orange" />
                 <span>{developerInfo.contact.location}</span>
               </div>
