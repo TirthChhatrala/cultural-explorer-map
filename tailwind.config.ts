@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -20,10 +19,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['Playfair Display', 'serif'],
-        sans: ['Poppins', 'sans-serif'],
-        serif: ['Lora', 'serif'],
-        cursive: ['Dancing Script', 'cursive'],
+        sans: ['Arial', 'Helvetica', 'sans-serif'],
+        display: ['Arial', 'Helvetica', 'sans-serif'],
+        serif: ['Georgia', 'Times New Roman', 'serif'],
+        cursive: ['Arial', 'Helvetica', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -114,4 +113,3 @@ export default {
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
-
