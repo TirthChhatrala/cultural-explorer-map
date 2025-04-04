@@ -9,78 +9,37 @@ import {
   MapPin, 
   Github, 
   Linkedin, 
-  Twitter 
+  Code,
+  Terminal,
+  Cpu
 } from 'lucide-react';
 
 const About = () => {
   const { theme } = useTheme();
   
-  const teamMembers = [
-    {
-      name: "Rajesh Kumar",
-      role: "Lead Developer",
-      bio: "Passionate about creating intuitive digital experiences that celebrate India's rich cultural heritage.",
-      image: "https://randomuser.me/api/portraits/men/32.jpg",
-      contact: {
-        email: "rajesh@example.com",
-        phone: "+91 98765 43210",
-        location: "Bangalore, Karnataka"
-      },
-      social: {
-        github: "https://github.com/rajesh",
-        linkedin: "https://linkedin.com/in/rajesh",
-        twitter: "https://twitter.com/rajesh"
-      }
+  const developerInfo = {
+    name: "Chhatrala Tirth",
+    role: "Project Developer",
+    bio: "Created the entire Indian Cultural Explorer project, dedicated to showcasing India's rich heritage and cultural diversity.",
+    image: "https://randomuser.me/api/portraits/men/32.jpg", // You might want to replace this with your actual photo
+    contact: {
+      email: "tirthchhatrala@gmail.com",
+      phone: "+91 9328971214",
+      location: "Junagadh, Gujarat"
     },
-    {
-      name: "Priya Sharma",
-      role: "UI/UX Designer",
-      bio: "Combines traditional Indian artistic elements with modern design principles to create visually stunning interfaces.",
-      image: "https://randomuser.me/api/portraits/women/44.jpg",
-      contact: {
-        email: "priya@example.com",
-        phone: "+91 87654 32109",
-        location: "Delhi, Delhi"
-      },
-      social: {
-        github: "https://github.com/priya",
-        linkedin: "https://linkedin.com/in/priya",
-        twitter: "https://twitter.com/priya"
-      }
+    social: {
+      github: "https://github.com/TirthChhatrala",
+      linkedin: "https://www.linkedin.com/in/tirth-chhatrala-b7815a219/"
     },
-    {
-      name: "Amit Patel",
-      role: "Cultural Researcher",
-      bio: "Dedicated to ensuring accurate representation of India's diverse cultural heritage across all states.",
-      image: "https://randomuser.me/api/portraits/men/62.jpg",
-      contact: {
-        email: "amit@example.com",
-        phone: "+91 76543 21098",
-        location: "Mumbai, Maharashtra"
-      },
-      social: {
-        github: "https://github.com/amit",
-        linkedin: "https://linkedin.com/in/amit",
-        twitter: "https://twitter.com/amit"
-      }
-    },
-    {
-      name: "Lakshmi Reddy",
-      role: "Full-Stack Developer",
-      bio: "Specializes in creating responsive and accessible web applications that work seamlessly across all devices.",
-      image: "https://randomuser.me/api/portraits/women/26.jpg",
-      contact: {
-        email: "lakshmi@example.com",
-        phone: "+91 65432 10987",
-        location: "Chennai, Tamil Nadu"
-      },
-      social: {
-        github: "https://github.com/lakshmi",
-        linkedin: "https://linkedin.com/in/lakshmi",
-        twitter: "https://twitter.com/lakshmi"
-      }
-    }
-  ];
+    skills: [
+      "Full Stack Development",
+      "React & React Native",
+      "Node.js",
+      "UI/UX Design",
+      "Database Management",
+      "API Integration"
+    ]
+  };
   
   return (
     <Layout>
@@ -153,70 +112,149 @@ const About = () => {
               transition={{ duration: 0.7 }}
             >
               <span className="inline-block px-3 py-1 bg-secondary rounded-full text-sm font-medium mb-4">
-                The People Behind Our Mission
+                The Person Behind Our Mission
               </span>
               <h2 className="text-3xl md:text-4xl font-display font-semibold mb-4">
-                Meet Our Team
+                Meet The Developer
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Our diverse team brings together expertise in technology, design, and cultural research to create an authentic representation of India's heritage.
+                This project is the work of a passionate developer committed to showcasing India's rich cultural heritage through technology.
               </p>
             </motion.div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {teamMembers.map((member, index) => (
-              <motion.div
-                key={member.name}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 * index }}
-                className={`rounded-xl overflow-hidden shadow-lg ${
-                  theme === 'dark' ? 'bg-gray-800' : 'bg-white'
-                } hover:shadow-xl transition-shadow`}
-              >
-                <div className="aspect-square overflow-hidden">
-                  <img 
-                    src={member.image} 
-                    alt={member.name} 
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                  />
+          <div className="flex justify-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className={`max-w-2xl rounded-xl overflow-hidden shadow-lg ${
+                theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+              }`}
+            >
+              <div className="md:flex">
+                <div className="md:w-1/3">
+                  <div className="h-full">
+                    <img 
+                      src={developerInfo.image} 
+                      alt={developerInfo.name} 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                 </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-display font-semibold mb-1">{member.name}</h3>
-                  <p className="text-india-orange font-medium text-sm mb-3">{member.role}</p>
-                  <p className="text-sm text-muted-foreground mb-4">{member.bio}</p>
+                <div className="p-8 md:w-2/3">
+                  <h3 className="text-2xl font-display font-semibold mb-1">{developerInfo.name}</h3>
+                  <p className="text-india-orange font-medium text-sm mb-4">{developerInfo.role}</p>
+                  <p className="text-muted-foreground mb-6">{developerInfo.bio}</p>
                   
-                  <div className="space-y-2 mb-4">
+                  <div className="space-y-2 mb-6">
                     <div className="flex items-center text-sm">
-                      <Mail className="w-4 h-4 mr-2 text-muted-foreground" />
-                      <span className="text-muted-foreground">{member.contact.email}</span>
+                      <Mail className="w-4 h-4 mr-2 text-india-orange" />
+                      <span className="text-muted-foreground">{developerInfo.contact.email}</span>
                     </div>
                     <div className="flex items-center text-sm">
-                      <Phone className="w-4 h-4 mr-2 text-muted-foreground" />
-                      <span className="text-muted-foreground">{member.contact.phone}</span>
+                      <Phone className="w-4 h-4 mr-2 text-india-orange" />
+                      <span className="text-muted-foreground">{developerInfo.contact.phone}</span>
                     </div>
                     <div className="flex items-center text-sm">
-                      <MapPin className="w-4 h-4 mr-2 text-muted-foreground" />
-                      <span className="text-muted-foreground">{member.contact.location}</span>
+                      <MapPin className="w-4 h-4 mr-2 text-india-orange" />
+                      <span className="text-muted-foreground">{developerInfo.contact.location}</span>
                     </div>
                   </div>
                   
-                  <div className="flex justify-center space-x-3 mt-4">
-                    <a href={member.social.github} className="text-muted-foreground hover:text-foreground transition-colors">
-                      <Github className="w-5 h-5" />
+                  <div className="flex space-x-4 mb-6">
+                    <a 
+                      href={developerInfo.social.github} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm"
+                    >
+                      <Github className="w-4 h-4" />
+                      GitHub
                     </a>
-                    <a href={member.social.linkedin} className="text-muted-foreground hover:text-foreground transition-colors">
-                      <Linkedin className="w-5 h-5" />
-                    </a>
-                    <a href={member.social.twitter} className="text-muted-foreground hover:text-foreground transition-colors">
-                      <Twitter className="w-5 h-5" />
+                    <a 
+                      href={developerInfo.social.linkedin} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm"
+                    >
+                      <Linkedin className="w-4 h-4" />
+                      LinkedIn
                     </a>
                   </div>
+                  
+                  <div>
+                    <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
+                      <Code className="w-4 h-4 text-india-orange" />
+                      Skills
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {developerInfo.skills.map(skill => (
+                        <span 
+                          key={skill}
+                          className="text-xs px-2 py-1 rounded-full bg-india-orange/10 text-india-orange"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </motion.div>
-            ))}
+              </div>
+            </motion.div>
           </div>
+        </section>
+        
+        <section className="mb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className={`rounded-xl overflow-hidden ${
+              theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+            } shadow-lg`}
+          >
+            <div className="p-8">
+              <div className="mb-8 text-center">
+                <h2 className="text-3xl font-display font-semibold mb-4">Project Features</h2>
+                <p className="text-muted-foreground max-w-2xl mx-auto">
+                  This project combines various technologies to create an interactive experience of India's cultural heritage.
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="text-center">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-india-orange/10 flex items-center justify-center text-india-orange">
+                    <Terminal className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">Interactive Map</h3>
+                  <p className="text-muted-foreground">
+                    Navigate through an interactive map of India to explore different states and their cultural highlights.
+                  </p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-india-orange/10 flex items-center justify-center text-india-orange">
+                    <Code className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">Modern Tech Stack</h3>
+                  <p className="text-muted-foreground">
+                    Built with React, Tailwind CSS, and framer-motion to provide a smooth and responsive user experience.
+                  </p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-india-orange/10 flex items-center justify-center text-india-orange">
+                    <Cpu className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">Admin Dashboard</h3>
+                  <p className="text-muted-foreground">
+                    A comprehensive admin panel for maintaining and updating the content across all sections of the website.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </section>
         
         <section className="mb-16">
@@ -233,22 +271,22 @@ const About = () => {
                 Get in Touch
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                We're always looking to improve. Feel free to reach out with questions, suggestions, or corrections.
+                Have questions or feedback? Feel free to reach out directly to the developer.
               </p>
             </motion.div>
             
             <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
               <div className="flex items-center gap-2">
                 <Mail className="w-5 h-5 text-india-orange" />
-                <span>contact@indianculturalexplorer.com</span>
+                <span>{developerInfo.contact.email}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-5 h-5 text-india-orange" />
-                <span>+91 123 456 7890</span>
+                <span>{developerInfo.contact.phone}</span>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="w-5 h-5 text-india-orange" />
-                <span>New Delhi, India</span>
+                <span>{developerInfo.contact.location}</span>
               </div>
             </div>
           </div>

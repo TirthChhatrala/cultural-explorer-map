@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { motion } from 'framer-motion';
-import { User, Lock, ArrowRight, AlertCircle } from 'lucide-react';
+import { User, Lock, ArrowRight, AlertCircle, Info } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../hooks/use-toast';
@@ -29,14 +29,22 @@ const Login = () => {
     
     const success = login(email, password);
     if (success) {
+      const isAdmin = email === 'admin@gmail.com';
+      
       toast({
-        title: "Login successful",
-        description: "Welcome back to Indian Cultural Explorer",
+        title: isAdmin ? "Admin login successful" : "Login successful",
+        description: isAdmin ? "Welcome to the admin dashboard" : "Welcome back to Indian Cultural Explorer",
       });
-      navigate('/dashboard');
+      
+      navigate(isAdmin ? '/admin' : '/dashboard');
     } else {
       setError('Invalid email or password');
     }
+  };
+
+  const setAdminCredentials = () => {
+    setEmail('admin@gmail.com');
+    setPassword('admin@123');
   };
   
   return (
@@ -117,6 +125,25 @@ const Login = () => {
                 <ArrowRight className="w-4 h-4" />
               </motion.button>
             </form>
+            
+            <div className="mt-6">
+              <div className={`p-3 rounded-lg flex items-start gap-2 ${
+                theme === 'dark' ? 'bg-blue-500/10 text-blue-400' : 'bg-blue-50 text-blue-600'
+              }`}>
+                <Info size={18} className="mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="text-sm font-medium">Admin Access</p>
+                  <p className="text-xs mt-1">Email: admin@gmail.com</p>
+                  <p className="text-xs">Password: admin@123</p>
+                  <button 
+                    onClick={setAdminCredentials}
+                    className="text-xs mt-2 underline"
+                  >
+                    Use admin credentials
+                  </button>
+                </div>
+              </div>
+            </div>
             
             <div className="mt-8 text-center">
               <p className="text-sm text-muted-foreground">

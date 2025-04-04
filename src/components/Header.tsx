@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { MapPin, Info, Newspaper, Calendar, Users, User, Shield, LogOut } from 'lucide-react';
+import { MapPin, Info, Newspaper, Calendar, Users, User, Shield, LogOut, Settings } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../hooks/use-toast';
@@ -13,7 +14,7 @@ const Header = () => {
   const location = useLocation();
   const isHome = location.pathname === '/';
   const { theme } = useTheme();
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, isAdmin, user, logout } = useAuth();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -87,10 +88,10 @@ const Header = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <div className={`w-8 h-8 rounded-full bg-india-orange/10 flex items-center justify-center text-india-orange`}>
+                <div className={`w-8 h-8 rounded-full ${isAdmin ? 'bg-red-500/10 text-red-500' : 'bg-india-orange/10 text-india-orange'} flex items-center justify-center`}>
                   <User size={16} />
                 </div>
-                <span className="font-medium text-sm">{user?.name.split(' ')[0]}</span>
+                <span className="font-medium text-sm">{isAdmin ? 'Admin' : user?.name.split(' ')[0]}</span>
               </motion.button>
               
               {userMenuOpen && (
@@ -106,15 +107,30 @@ const Header = () => {
                     <p className="font-medium text-sm">{user?.name}</p>
                     <p className="text-xs text-muted-foreground">{user?.email}</p>
                   </div>
-                  <Link 
-                    to="/dashboard" 
-                    className={`block w-full text-left px-4 py-2 text-sm ${
-                      theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-50'
-                    }`}
-                    onClick={() => setUserMenuOpen(false)}
-                  >
-                    Dashboard
-                  </Link>
+                  
+                  {isAdmin ? (
+                    <Link 
+                      to="/admin" 
+                      className={`flex items-center w-full text-left px-4 py-2 text-sm ${
+                        theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-50'
+                      }`}
+                      onClick={() => setUserMenuOpen(false)}
+                    >
+                      <Settings size={14} className="mr-2" />
+                      Admin Dashboard
+                    </Link>
+                  ) : (
+                    <Link 
+                      to="/dashboard" 
+                      className={`block w-full text-left px-4 py-2 text-sm ${
+                        theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-50'
+                      }`}
+                      onClick={() => setUserMenuOpen(false)}
+                    >
+                      Dashboard
+                    </Link>
+                  )}
+                  
                   <button 
                     className={`flex items-center w-full text-left px-4 py-2 text-sm ${
                       theme === 'dark' ? 'hover:bg-gray-700 text-red-400' : 'hover:bg-gray-50 text-red-500'
@@ -167,13 +183,23 @@ const Header = () => {
             <div className="pt-3 border-t border-gray-200 flex space-x-4">
               {isAuthenticated ? (
                 <>
-                  <Link 
-                    to="/dashboard" 
-                    className="block px-4 py-2 w-full text-center rounded-lg bg-secondary text-foreground hover:bg-secondary/80 transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Dashboard
-                  </Link>
+                  {isAdmin ? (
+                    <Link 
+                      to="/admin" 
+                      className="block px-4 py-2 w-full text-center rounded-lg bg-red-500 text-white hover:bg-red-600 transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Admin Dashboard
+                    </Link>
+                  ) : (
+                    <Link 
+                      to="/dashboard" 
+                      className="block px-4 py-2 w-full text-center rounded-lg bg-secondary text-foreground hover:bg-secondary/80 transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Dashboard
+                    </Link>
+                  )}
                   <button 
                     className="block px-4 py-2 w-full text-center rounded-lg bg-red-500 text-white hover:bg-red-600 transition-colors"
                     onClick={() => {
