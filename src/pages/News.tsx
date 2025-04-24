@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import Layout from '../components/Layout';
 import { motion } from 'framer-motion';
-import { Search, Filter, Calendar, User, Flag, Check } from 'lucide-react';
-import { states } from '../data/states';
 import { useTheme } from '../context/ThemeContext';
+import NewsCard from '../components/news/NewsCard';
+import NewsFilter from '../components/news/NewsFilter';
+import NewsletterSubscription from '../components/news/NewsletterSubscription';
 import { useToast } from '../hooks/use-toast';
 
 // Dummy news data
@@ -74,11 +75,11 @@ const categories = ["All", "Culture", "Tourism", "Business", "Agriculture", "Tec
 
 const News = () => {
   const { theme } = useTheme();
-  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedState, setSelectedState] = useState('all');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [email, setEmail] = useState('');
+  const { toast } = useToast();
   
   // Filter news based on search, state, and category
   const filteredNews = newsData.filter(news => {
@@ -124,67 +125,31 @@ const News = () => {
         </section>
 
         <section className="mb-8">
-          <div className={`rounded-xl shadow-sm p-4 md:p-6 ${
-            theme === 'dark' ? 'bg-gray-800/90' : 'bg-white'
-          }`}>
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="relative flex-grow">
-                <Search className="absolute left-3 top-3 text-gray-400" size={20} />
-                <input
-                  type="text"
-                  placeholder="Search news..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className={`w-full pl-10 pr-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-india-orange/30 focus:border-india-orange outline-none transition-all ${
-                    theme === 'dark' ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'
-                  }`}
-                />
-              </div>
-              
-              <div className="flex flex-col md:flex-row gap-4">
-                <div className="relative">
-                  <Filter className="absolute left-3 top-3 text-gray-400" size={20} />
-                  <select
-                    value={selectedState}
-                    onChange={(e) => setSelectedState(e.target.value)}
-                    className={`pl-10 pr-8 py-2.5 border rounded-lg appearance-none focus:ring-2 focus:ring-india-orange/30 focus:border-india-orange outline-none transition-all ${
-                      theme === 'dark' ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'
-                    }`}
-                  >
-                    <option value="all">All States</option>
-                    {states.map(state => (
-                      <option key={state.id} value={state.id}>{state.name}</option>
-                    ))}
-                  </select>
-                </div>
-                
-                <div className="relative">
-                  <Filter className="absolute left-3 top-3 text-gray-400" size={20} />
-                  <select
-                    value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
-                    className={`pl-10 pr-8 py-2.5 border rounded-lg appearance-none focus:ring-2 focus:ring-india-orange/30 focus:border-india-orange outline-none transition-all ${
-                      theme === 'dark' ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'
-                    }`}
-                  >
-                    {categories.map(category => (
-                      <option key={category} value={category}>{category}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
+          <NewsFilter
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            selectedState={selectedState}
+            setSelectedState={setSelectedState}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            categories={categories}
+            theme={theme}
+          />
         </section>
 
         <section className="mb-16">
           {filteredNews.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredNews.map((news, index) => (
-                <NewsCard 
+                <NewsCard
                   key={news.id}
-                  {...news}
+                  title={news.title}
+                  excerpt={news.excerpt}
+                  date={news.date}
+                  author={news.author}
+                  image={news.image}
                   state={states.find(s => s.id === news.state)?.name || ''}
+                  category={news.category}
                   delay={index * 0.1}
                   theme={theme}
                 />
@@ -214,41 +179,7 @@ const News = () => {
         </section>
 
         <section className="mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className={`rounded-2xl p-8 text-center ${
-              theme === 'dark' 
-                ? 'bg-gray-800/90 border-gray-700' 
-                : 'bg-white/90 border-gray-200'
-            }`}
-          >
-            <h2 className="text-2xl font-semibold mb-3">Subscribe to Our Newsletter</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
-              Stay updated with the latest news and stories from across India.
-            </p>
-            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-              <input 
-                type="email" 
-                placeholder="Your email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className={`flex-grow px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-india-orange/30 focus:border-india-orange outline-none transition-all ${
-                  theme === 'dark' 
-                    ? 'bg-gray-700/90 border-gray-600 text-white' 
-                    : 'bg-white border-gray-300'
-                }`}
-              />
-              <button 
-                type="submit"
-                className="px-6 py-2.5 bg-india-orange text-white rounded-lg font-medium hover:bg-india-orange/90 transition-colors"
-              >
-                Subscribe
-              </button>
-            </form>
-          </motion.div>
+          <NewsletterSubscription theme={theme} />
         </section>
       </div>
     </Layout>
