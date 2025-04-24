@@ -4,6 +4,7 @@ import Layout from '../components/Layout';
 import { motion } from 'framer-motion';
 import { Filter, Search, Flag, Users, MapPin } from 'lucide-react';
 import { states } from '../data/states';
+import { useTheme } from '../context/ThemeContext';
 
 // Dummy political parties data
 const partiesData = [
@@ -82,6 +83,7 @@ const partiesData = [
 ];
 
 const PoliticalParties = () => {
+  const { theme } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedState, setSelectedState] = useState('all');
   
@@ -117,7 +119,7 @@ const PoliticalParties = () => {
         </section>
 
         <section className="mb-8">
-          <div className="bg-white rounded-xl shadow-sm p-4 md:p-6">
+          <div className={`rounded-xl shadow-sm p-4 md:p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
             <div className="flex flex-col md:flex-row gap-4">
               <div className="relative flex-grow">
                 <Search className="absolute left-3 top-3 text-gray-400" size={20} />
@@ -126,7 +128,9 @@ const PoliticalParties = () => {
                   placeholder="Search political parties..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-india-orange/30 focus:border-india-orange outline-none transition-all"
+                  className={`w-full pl-10 pr-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-india-orange/30 focus:border-india-orange outline-none transition-all ${
+                    theme === 'dark' ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'
+                  }`}
                 />
               </div>
               
@@ -135,7 +139,9 @@ const PoliticalParties = () => {
                 <select
                   value={selectedState}
                   onChange={(e) => setSelectedState(e.target.value)}
-                  className="pl-10 pr-8 py-2.5 border rounded-lg appearance-none focus:ring-2 focus:ring-india-orange/30 focus:border-india-orange outline-none transition-all"
+                  className={`pl-10 pr-8 py-2.5 border rounded-lg appearance-none focus:ring-2 focus:ring-india-orange/30 focus:border-india-orange outline-none transition-all ${
+                    theme === 'dark' ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'
+                  }`}
                 >
                   <option value="all">All States</option>
                   {states.map(state => (
@@ -163,6 +169,7 @@ const PoliticalParties = () => {
                   color={party.color}
                   states={party.states.map(stateId => states.find(s => s.id === stateId)?.name).filter(Boolean)}
                   delay={index * 0.1}
+                  theme={theme}
                 />
               ))}
             </div>
@@ -178,7 +185,9 @@ const PoliticalParties = () => {
                   setSearchQuery('');
                   setSelectedState('all');
                 }}
-                className="mt-4 px-4 py-2 bg-secondary text-foreground rounded-lg hover:bg-secondary/80 transition-colors"
+                className={`mt-4 px-4 py-2 rounded-lg hover:bg-secondary/80 transition-colors ${
+                  theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-secondary text-foreground'
+                }`}
               >
                 Reset Filters
               </button>
@@ -194,7 +203,7 @@ const PoliticalParties = () => {
           >
             <h2 className="text-3xl font-display font-semibold mb-6 text-center">Electoral System</h2>
             
-            <div className="bg-white rounded-xl shadow-sm overflow-hidden p-6">
+            <div className={`rounded-xl shadow-sm overflow-hidden p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <h3 className="text-xl font-display font-semibold mb-3">General Elections</h3>
@@ -246,7 +255,7 @@ const PoliticalParties = () => {
   );
 };
 
-const PartyCard = ({ name, abbreviation, founded, ideology, leader, description, logo, color, states, delay = 0 }) => {
+const PartyCard = ({ name, abbreviation, founded, ideology, leader, description, logo, color, states, delay = 0, theme }) => {
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
@@ -256,7 +265,9 @@ const PartyCard = ({ name, abbreviation, founded, ideology, leader, description,
         ease: [0.19, 1, 0.22, 1], 
         delay 
       }}
-      className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow"
+      className={`rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow ${
+        theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+      }`}
     >
       <div className="p-6">
         <div className="flex flex-col md:flex-row gap-6">
@@ -302,7 +313,11 @@ const PartyCard = ({ name, abbreviation, founded, ideology, leader, description,
                 {states.map((state, index) => (
                   <span 
                     key={index} 
-                    className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-700"
+                    className={`text-xs px-2 py-1 rounded-full ${
+                      theme === 'dark' 
+                        ? 'bg-gray-700 text-gray-300' 
+                        : 'bg-gray-100 text-gray-700'
+                    }`}
                   >
                     {state}
                   </span>
