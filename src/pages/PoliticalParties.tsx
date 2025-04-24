@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Layout from '../components/Layout';
 import { motion } from 'framer-motion';
-import { Filter, Search } from 'lucide-react';
-import { states } from '../data/states';
 import { useTheme } from '../context/ThemeContext';
 import PartyCard from '../components/parties/PartyCard';
 import ElectoralSystem from '../components/parties/ElectoralSystem';
+import SearchAndFilter from '../components/parties/SearchAndFilter';
+import { usePartyFilter } from '../hooks/usePartyFilter';
+import { states } from '../data/states';
 
 // Dummy political parties data
 const partiesData = [
@@ -85,17 +86,13 @@ const partiesData = [
 
 const PoliticalParties = () => {
   const { theme } = useTheme();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedState, setSelectedState] = useState('all');
-  
-  const filteredParties = partiesData.filter(party => {
-    const matchesSearch = party.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                         party.abbreviation.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         party.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesState = selectedState === 'all' || party.states.includes(selectedState);
-    
-    return matchesSearch && matchesState;
-  });
+  const {
+    searchQuery,
+    setSearchQuery,
+    selectedState,
+    setSelectedState,
+    filteredParties
+  } = usePartyFilter(partiesData);
 
   return (
     <Layout>
@@ -118,42 +115,13 @@ const PoliticalParties = () => {
           </motion.div>
         </section>
 
-        <section className="mb-8">
-          <div className={`rounded-xl shadow-sm p-4 md:p-6 ${
-            theme === 'dark' ? 'bg-gray-800/90' : 'bg-white'
-          }`}>
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="relative flex-grow">
-                <Search className="absolute left-3 top-3 text-gray-400" size={20} />
-                <input
-                  type="text"
-                  placeholder="Search political parties..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className={`w-full pl-10 pr-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-india-orange/30 focus:border-india-orange outline-none transition-all ${
-                    theme === 'dark' ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'
-                  }`}
-                />
-              </div>
-              
-              <div className="relative">
-                <Filter className="absolute left-3 top-3 text-gray-400" size={20} />
-                <select
-                  value={selectedState}
-                  onChange={(e) => setSelectedState(e.target.value)}
-                  className={`pl-10 pr-8 py-2.5 border rounded-lg appearance-none focus:ring-2 focus:ring-india-orange/30 focus:border-india-orange outline-none transition-all ${
-                    theme === 'dark' ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'
-                  }`}
-                >
-                  <option value="all">All States</option>
-                  {states.map(state => (
-                    <option key={state.id} value={state.id}>{state.name}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          </div>
-        </section>
+        <SearchAndFilter
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          selectedState={selectedState}
+          setSelectedState={setSelectedState}
+          theme={theme}
+        />
 
         <section className="mb-16">
           {filteredParties.length > 0 ? (
