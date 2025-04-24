@@ -1,10 +1,14 @@
-
 import React from 'react';
 import Layout from '../components/Layout';
 import Map from '../components/Map';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '../components/ui/button';
+import { ArrowRight } from 'lucide-react';
 
 const Index = () => {
+  const navigate = useNavigate();
+
   return (
     <Layout>
       <div className="max-w-6xl mx-auto">
@@ -31,12 +35,19 @@ const Index = () => {
             transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1], delay: 0.3 }}
             className="mt-8 flex justify-center gap-4"
           >
-            <button className="px-6 py-3 bg-india-orange text-white rounded-full font-medium hover:bg-india-orange/90 transition-colors">
-              Start Exploring
-            </button>
-            <button className="px-6 py-3 bg-white border border-gray-200 rounded-full font-medium hover:bg-gray-50 transition-colors">
+            <Button
+              onClick={() => navigate('/state/gujarat')}
+              className="bg-india-orange hover:bg-india-orange/90"
+            >
+              <span>Start Exploring</span>
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => navigate('/about')}
+            >
               Learn More
-            </button>
+            </Button>
           </motion.div>
         </section>
         

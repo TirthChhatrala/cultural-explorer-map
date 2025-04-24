@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -20,6 +19,8 @@ import Signup from "./pages/Signup";
 import FreedomFighters from "./pages/FreedomFighters";
 import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import ManageStates from "./pages/admin/ManageStates";
+import ManageNews from "./pages/admin/ManageNews";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,8 @@ const App = () => (
                 <Route path="/freedom-fighters" element={<FreedomFighters />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/admin/states" element={<ManageStates />} />
+                <Route path="/admin/news" element={<ManageNews />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </AnimatePresence>
