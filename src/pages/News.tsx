@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Layout from '../components/Layout';
 import { motion } from 'framer-motion';
@@ -91,7 +90,7 @@ const News = () => {
     return matchesSearch && matchesState && matchesCategory;
   });
 
-  const handleSubscribe = (e) => {
+  const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
       toast({
@@ -105,7 +104,7 @@ const News = () => {
 
   return (
     <Layout>
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto px-4">
         <section className="text-center mb-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -125,7 +124,9 @@ const News = () => {
         </section>
 
         <section className="mb-8">
-          <div className={`rounded-xl shadow-sm p-4 md:p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+          <div className={`rounded-xl shadow-sm p-4 md:p-6 ${
+            theme === 'dark' ? 'bg-gray-800/90' : 'bg-white'
+          }`}>
             <div className="flex flex-col md:flex-row gap-4">
               <div className="relative flex-grow">
                 <Search className="absolute left-3 top-3 text-gray-400" size={20} />
@@ -182,13 +183,8 @@ const News = () => {
               {filteredNews.map((news, index) => (
                 <NewsCard 
                   key={news.id}
-                  title={news.title}
-                  excerpt={news.excerpt}
-                  date={news.date}
-                  author={news.author}
-                  image={news.image}
+                  {...news}
                   state={states.find(s => s.id === news.state)?.name || ''}
-                  category={news.category}
                   delay={index * 0.1}
                   theme={theme}
                 />
@@ -222,11 +218,15 @@ const News = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className={`rounded-2xl p-8 text-center ${theme === 'dark' ? 'bg-gray-800/50' : 'bg-india-blue/5'}`}
+            className={`rounded-2xl p-8 text-center ${
+              theme === 'dark' 
+                ? 'bg-gray-800/90 border-gray-700' 
+                : 'bg-white/90 border-gray-200'
+            }`}
           >
-            <h2 className="text-2xl font-display font-semibold mb-3">Subscribe to Our Newsletter</h2>
+            <h2 className="text-2xl font-semibold mb-3">Subscribe to Our Newsletter</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
-              Stay updated with the latest news and stories from across India. We deliver curated content straight to your inbox.
+              Stay updated with the latest news and stories from across India.
             </p>
             <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
               <input 
@@ -236,12 +236,14 @@ const News = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className={`flex-grow px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-india-orange/30 focus:border-india-orange outline-none transition-all ${
-                  theme === 'dark' ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'
+                  theme === 'dark' 
+                    ? 'bg-gray-700/90 border-gray-600 text-white' 
+                    : 'bg-white border-gray-300'
                 }`}
               />
               <button 
                 type="submit"
-                className="px-6 py-2.5 bg-india-blue text-white rounded-lg font-medium hover:bg-india-blue/90 transition-colors"
+                className="px-6 py-2.5 bg-india-orange text-white rounded-lg font-medium hover:bg-india-orange/90 transition-colors"
               >
                 Subscribe
               </button>
@@ -250,59 +252,6 @@ const News = () => {
         </section>
       </div>
     </Layout>
-  );
-};
-
-const NewsCard = ({ title, excerpt, date, author, image, state, category, delay = 0, theme }) => {
-  const formattedDate = new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
-  
-  return (
-    <motion.article
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ 
-        duration: 0.5, 
-        ease: [0.19, 1, 0.22, 1], 
-        delay 
-      }}
-      className={`rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow ${
-        theme === 'dark' ? 'bg-gray-800' : 'bg-white'
-      }`}
-    >
-      <div className="h-48 overflow-hidden">
-        <img 
-          src={image} 
-          alt={title} 
-          className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-        />
-      </div>
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-3">
-          <span className="text-xs font-medium px-2.5 py-1 bg-india-orange/10 text-india-orange rounded-full">
-            {category.charAt(0).toUpperCase() + category.slice(1)}
-          </span>
-          <span className="text-xs text-muted-foreground flex items-center gap-1">
-            <Flag className="w-3 h-3" /> {state}
-          </span>
-        </div>
-        
-        <h3 className="text-xl font-display font-semibold mb-2 line-clamp-2">{title}</h3>
-        <p className="text-muted-foreground text-sm mb-4 line-clamp-3">{excerpt}</p>
-        
-        <div className="flex justify-between items-center text-xs text-muted-foreground">
-          <span className="flex items-center gap-1">
-            <Calendar className="w-3 h-3" /> {formattedDate}
-          </span>
-          <span className="flex items-center gap-1">
-            <User className="w-3 h-3" /> {author}
-          </span>
-        </div>
-      </div>
-    </motion.article>
   );
 };
 

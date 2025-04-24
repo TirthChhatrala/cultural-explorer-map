@@ -9,14 +9,14 @@ import { states } from '../data/states';
 const EnhancedMap = () => {
   const { theme } = useTheme();
   const navigate = useNavigate();
-  const [hoveredState, setHoveredState] = useState(null);
-  const [activeState, setActiveState] = useState(null);
+  const [hoveredState, setHoveredState] = useState<string | null>(null);
+  const [activeState, setActiveState] = useState<string | null>(null);
 
-  const handleStateHover = (stateId) => {
+  const handleStateHover = (stateId: string | null) => {
     setHoveredState(stateId);
   };
 
-  const handleStateClick = (stateId) => {
+  const handleStateClick = (stateId: string) => {
     setActiveState(stateId);
     navigate(`/state/${stateId}`);
   };
@@ -51,7 +51,7 @@ const EnhancedMap = () => {
               >
                 {states.find(state => state.id === hoveredState) && (
                   <div>
-                    <h3 className="font-display font-semibold text-lg">
+                    <h3 className="font-semibold text-lg">
                       {states.find(state => state.id === hoveredState)?.name}
                     </h3>
                     <p className="text-sm text-muted-foreground">

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Layout from '../components/Layout';
 import { motion } from 'framer-motion';
@@ -99,7 +98,7 @@ const PoliticalParties = () => {
 
   return (
     <Layout>
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto px-4">
         <section className="text-center mb-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -119,7 +118,9 @@ const PoliticalParties = () => {
         </section>
 
         <section className="mb-8">
-          <div className={`rounded-xl shadow-sm p-4 md:p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+          <div className={`rounded-xl shadow-sm p-4 md:p-6 ${
+            theme === 'dark' ? 'bg-gray-800/90' : 'bg-white'
+          }`}>
             <div className="flex flex-col md:flex-row gap-4">
               <div className="relative flex-grow">
                 <Search className="absolute left-3 top-3 text-gray-400" size={20} />
@@ -159,15 +160,10 @@ const PoliticalParties = () => {
               {filteredParties.map((party, index) => (
                 <PartyCard 
                   key={party.id}
-                  name={party.name}
-                  abbreviation={party.abbreviation}
-                  founded={party.founded}
-                  ideology={party.ideology}
-                  leader={party.leader}
-                  description={party.description}
-                  logo={party.logo}
-                  color={party.color}
-                  states={party.states.map(stateId => states.find(s => s.id === stateId)?.name).filter(Boolean)}
+                  {...party}
+                  states={party.states.map(stateId => 
+                    states.find(s => s.id === stateId)?.name
+                  ).filter(Boolean)}
                   delay={index * 0.1}
                   theme={theme}
                 />
@@ -201,12 +197,14 @@ const PoliticalParties = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
-            <h2 className="text-3xl font-display font-semibold mb-6 text-center">Electoral System</h2>
+            <h2 className="text-3xl font-semibold mb-6 text-center">Electoral System</h2>
             
-            <div className={`rounded-xl shadow-sm overflow-hidden p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+            <div className={`rounded-xl shadow-sm overflow-hidden p-6 ${
+              theme === 'dark' ? 'bg-gray-800/90' : 'bg-white'
+            }`}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h3 className="text-xl font-display font-semibold mb-3">General Elections</h3>
+                  <h3 className="text-xl font-semibold mb-3">General Elections</h3>
                   <p className="text-muted-foreground mb-4">
                     India follows a parliamentary system of government, where general elections are held every five years to elect members of the Lok Sabha (House of the People), the lower house of India's bicameral parliament.
                   </p>
@@ -227,7 +225,7 @@ const PoliticalParties = () => {
                 </div>
                 
                 <div>
-                  <h3 className="text-xl font-display font-semibold mb-3">State Elections</h3>
+                  <h3 className="text-xl font-semibold mb-3">State Elections</h3>
                   <p className="text-muted-foreground mb-4">
                     State Legislative Assembly elections are held separately for each state, following a similar electoral system. The Chief Minister is typically the leader of the majority party or coalition in the state.
                   </p>
@@ -260,13 +258,9 @@ const PartyCard = ({ name, abbreviation, founded, ideology, leader, description,
     <motion.article
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ 
-        duration: 0.5, 
-        ease: [0.19, 1, 0.22, 1], 
-        delay 
-      }}
+      transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1], delay }}
       className={`rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow ${
-        theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+        theme === 'dark' ? 'bg-gray-800/90' : 'bg-white'
       }`}
     >
       <div className="p-6">
@@ -283,7 +277,7 @@ const PartyCard = ({ name, abbreviation, founded, ideology, leader, description,
               />
             </div>
             <div className="text-center">
-              <h3 className="text-xl font-display font-semibold">{name}</h3>
+              <h3 className="text-xl font-semibold">{name}</h3>
               <p className="text-india-orange font-medium">{abbreviation}</p>
               <div className="mt-2 text-sm text-muted-foreground">
                 <p>Founded: {founded}</p>
