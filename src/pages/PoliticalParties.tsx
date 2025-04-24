@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import Layout from '../components/Layout';
 import { motion } from 'framer-motion';
-import { Filter, Search, Flag, Users, MapPin } from 'lucide-react';
+import { Filter, Search } from 'lucide-react';
 import { states } from '../data/states';
 import { useTheme } from '../context/ThemeContext';
+import PartyCard from '../components/parties/PartyCard';
+import ElectoralSystem from '../components/parties/ElectoralSystem';
 
 // Dummy political parties data
 const partiesData = [
@@ -86,7 +88,6 @@ const PoliticalParties = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedState, setSelectedState] = useState('all');
   
-  // Filter parties based on search and state
   const filteredParties = partiesData.filter(party => {
     const matchesSearch = party.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                          party.abbreviation.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -163,7 +164,7 @@ const PoliticalParties = () => {
                   {...party}
                   states={party.states.map(stateId => 
                     states.find(s => s.id === stateId)?.name
-                  ).filter(Boolean)}
+                  ).filter(Boolean) as string[]}
                   delay={index * 0.1}
                   theme={theme}
                 />
@@ -191,137 +192,9 @@ const PoliticalParties = () => {
           )}
         </section>
 
-        <section className="mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-          >
-            <h2 className="text-3xl font-semibold mb-6 text-center">Electoral System</h2>
-            
-            <div className={`rounded-xl shadow-sm overflow-hidden p-6 ${
-              theme === 'dark' ? 'bg-gray-800/90' : 'bg-white'
-            }`}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="text-xl font-semibold mb-3">General Elections</h3>
-                  <p className="text-muted-foreground mb-4">
-                    India follows a parliamentary system of government, where general elections are held every five years to elect members of the Lok Sabha (House of the People), the lower house of India's bicameral parliament.
-                  </p>
-                  <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li className="flex items-start gap-2">
-                      <span className="bg-india-orange/20 text-india-orange rounded-full w-5 h-5 flex items-center justify-center mt-0.5 flex-shrink-0">1</span>
-                      <span>India uses the first-past-the-post electoral system.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="bg-india-orange/20 text-india-orange rounded-full w-5 h-5 flex items-center justify-center mt-0.5 flex-shrink-0">2</span>
-                      <span>The party or coalition with a majority forms the government.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="bg-india-orange/20 text-india-orange rounded-full w-5 h-5 flex items-center justify-center mt-0.5 flex-shrink-0">3</span>
-                      <span>The Prime Minister is typically the leader of the majority party or coalition.</span>
-                    </li>
-                  </ul>
-                </div>
-                
-                <div>
-                  <h3 className="text-xl font-semibold mb-3">State Elections</h3>
-                  <p className="text-muted-foreground mb-4">
-                    State Legislative Assembly elections are held separately for each state, following a similar electoral system. The Chief Minister is typically the leader of the majority party or coalition in the state.
-                  </p>
-                  <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li className="flex items-start gap-2">
-                      <span className="bg-india-blue/20 text-india-blue rounded-full w-5 h-5 flex items-center justify-center mt-0.5 flex-shrink-0">1</span>
-                      <span>State governments have significant autonomy in certain policy areas.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="bg-india-blue/20 text-india-blue rounded-full w-5 h-5 flex items-center justify-center mt-0.5 flex-shrink-0">2</span>
-                      <span>Different parties may govern at the state and central levels.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="bg-india-blue/20 text-india-blue rounded-full w-5 h-5 flex items-center justify-center mt-0.5 flex-shrink-0">3</span>
-                      <span>Regional parties often play significant roles in state politics.</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </section>
+        <ElectoralSystem theme={theme} />
       </div>
     </Layout>
-  );
-};
-
-const PartyCard = ({ name, abbreviation, founded, ideology, leader, description, logo, color, states, delay = 0, theme }) => {
-  return (
-    <motion.article
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1], delay }}
-      className={`rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow ${
-        theme === 'dark' ? 'bg-gray-800/90' : 'bg-white'
-      }`}
-    >
-      <div className="p-6">
-        <div className="flex flex-col md:flex-row gap-6">
-          <div className="md:w-1/4 flex flex-col items-center">
-            <div 
-              className="w-24 h-24 rounded-full overflow-hidden flex items-center justify-center mb-4"
-              style={{ backgroundColor: `${color}20` }}
-            >
-              <img 
-                src={logo} 
-                alt={`${name} logo`} 
-                className="w-16 h-16 object-contain"
-              />
-            </div>
-            <div className="text-center">
-              <h3 className="text-xl font-semibold">{name}</h3>
-              <p className="text-india-orange font-medium">{abbreviation}</p>
-              <div className="mt-2 text-sm text-muted-foreground">
-                <p>Founded: {founded}</p>
-              </div>
-            </div>
-          </div>
-          
-          <div className="md:w-3/4">
-            <div className="flex flex-col md:flex-row justify-between mb-3">
-              <div>
-                <span className="text-sm font-medium">Ideology:</span>
-                <p className="text-muted-foreground text-sm">{ideology}</p>
-              </div>
-              <div>
-                <span className="text-sm font-medium">Leader:</span>
-                <p className="text-muted-foreground text-sm">{leader}</p>
-              </div>
-            </div>
-            
-            <p className="text-muted-foreground mb-4">{description}</p>
-            
-            <div>
-              <span className="text-sm font-medium flex items-center gap-1 mb-2">
-                <MapPin className="w-4 h-4" /> Prominent in:
-              </span>
-              <div className="flex flex-wrap gap-2">
-                {states.map((state, index) => (
-                  <span 
-                    key={index} 
-                    className={`text-xs px-2 py-1 rounded-full ${
-                      theme === 'dark' 
-                        ? 'bg-gray-700 text-gray-300' 
-                        : 'bg-gray-100 text-gray-700'
-                    }`}
-                  >
-                    {state}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </motion.article>
   );
 };
 
