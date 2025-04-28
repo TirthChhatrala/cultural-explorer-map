@@ -8,15 +8,20 @@ import NewsCard from '../components/news/NewsCard';
 import NewsFilter from '../components/news/NewsFilter';
 import NewsletterSubscription from '../components/news/NewsletterSubscription';
 import { useTheme } from '../context/ThemeContext';
-import { LayoutGrid, List } from 'lucide-react';
+import { LayoutGrid, List, MapPin } from 'lucide-react';
 import { Button } from '../components/ui/button';
+import Map from '../components/Map';
+import { useNavigate } from 'react-router-dom';
 
 const News = () => {
+  const navigate = useNavigate();
   const { theme } = useTheme();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedState, setSelectedState] = useState('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [hoveredState, setHoveredState] = useState<string | null>(null);
+  const [showMap, setShowMap] = useState(false);
 
   // Extract unique categories from news items
   const categories = ['all', ...new Set(newsItems.map(news => news.category))];
@@ -30,6 +35,15 @@ const News = () => {
     
     return matchesSearch && matchesCategory && matchesState;
   });
+
+  const handleStateHover = (stateId: string | null) => {
+    setHoveredState(stateId);
+  };
+
+  const handleStateClick = (stateId: string) => {
+    setSelectedState(stateId);
+    setShowMap(false);
+  };
 
   return (
     <Layout>
@@ -62,6 +76,47 @@ const News = () => {
             theme={theme}
           />
         </div>
+
+        <div className="flex gap-4 mb-8">
+          <Button 
+            variant="outline" 
+            className="flex items-center gap-2"
+            onClick={() => setShowMap(!showMap)}
+          >
+            <MapPin size={16} />
+            {showMap ? "Hide Map" : "Show Map"}
+          </Button>
+        </div>
+
+        {showMap && (
+          <div className="mb-10">
+            <div className="border rounded-xl overflow-hidden bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-md">
+              <div className="p-4 font-medium border-b bg-secondary/30">
+                <h3>Select a state to filter news</h3>
+              </div>
+              <div className="p-4">
+                <div className="h-[400px] md:h-[500px]">
+                  <Map 
+                    onStateHover={handleStateHover}
+                    onStateClick={handleStateClick}
+                    hoveredState={hoveredState}
+                    activeState={selectedState !== 'all' ? selectedState : null}
+                  />
+                </div>
+                {hoveredState && (
+                  <div className="mt-4 p-3 rounded-md bg-muted">
+                    <p className="font-medium">
+                      {states.find(s => s.id === hoveredState)?.name || hoveredState}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Click to filter news from this state
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-display font-semibold">News Articles</h2>
