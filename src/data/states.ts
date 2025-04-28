@@ -1,3 +1,4 @@
+
 interface State {
   id: string;
   name: string;
@@ -9,7 +10,7 @@ interface State {
   language: string;
   famousFor: string;
   freedomFighters: string[];
-  path: string; // Add the path property
+  path: string;
 }
 
 export const states: State[] = [
@@ -431,6 +432,71 @@ export const states: State[] = [
     freedomFighters: [],
     path: "/state/delhi",
   },
+];
+
+// Add the missing getStateById function
+export const getStateById = (id: string | undefined): State | undefined => {
+  if (!id) return undefined;
+  return states.find(state => state.id === id);
+};
+
+// Add the missing freedomFighters export
+export interface FreedomFighter {
+  id: string;
+  name: string;
+  image: string;
+  years: string;
+  state: string;
+  contribution: string;
+  biography: string;
+}
+
+export const freedomFighters: FreedomFighter[] = [
+  {
+    id: "mahatma-gandhi",
+    name: "Mahatma Gandhi",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Mahatma-Gandhi%2C_studio%2C_1931.jpg/800px-Mahatma-Gandhi%2C_studio%2C_1931.jpg",
+    years: "1869-1948",
+    state: "Gujarat",
+    contribution: "Led India's independence movement through non-violence and civil disobedience.",
+    biography: "Mohandas Karamchand Gandhi, widely known as Mahatma Gandhi, was an Indian lawyer, anti-colonial nationalist and political ethicist who employed nonviolent resistance to lead the successful campaign for India's independence from British rule. He inspired movements for civil rights and freedom across the world."
+  },
+  {
+    id: "bhagat-singh",
+    name: "Bhagat Singh",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Bhagat_Singh_1929.jpg/800px-Bhagat_Singh_1929.jpg",
+    years: "1907-1931",
+    state: "Punjab",
+    contribution: "Revolutionary freedom fighter who advocated for violent means to achieve independence.",
+    biography: "Bhagat Singh was an Indian socialist revolutionary whose two acts of dramatic violence against the British in India and execution at age 23 made him a folk hero of the Indian independence movement. In December 1928, Bhagat Singh and an associate, Shivaram Rajguru, fatally shot a 21-year-old British police officer, John Saunders, in Lahore, British India, mistaking Saunders, who was still on probation, for the British police superintendent, James Scott, whom they had intended to assassinate."
+  },
+  {
+    id: "subhas-chandra-bose",
+    name: "Subhas Chandra Bose",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Subhas_Chandra_Bose_NRB.jpg/800px-Subhas_Chandra_Bose_NRB.jpg",
+    years: "1897-1945",
+    state: "West Bengal",
+    contribution: "Founded Indian National Army (Azad Hind Fauj) to fight against British rule.",
+    biography: "Subhas Chandra Bose was an Indian nationalist whose defiant patriotism made him a hero in India, but whose attempts during World War II to rid India of British rule with the help of Nazi Germany and Imperial Japan left a troubled legacy. The honorific Netaji was first applied to Bose in Germany in early 1942—by the Indian soldiers of the Indische Legion and by the German and Indian officials in the Special Bureau for India in Berlin."
+  },
+  {
+    id: "rani-lakshmibai",
+    name: "Rani Lakshmibai",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Statue_of_Rani_of_Jhansi%2C_Solapur.jpg/800px-Statue_of_Rani_of_Jhansi%2C_Solapur.jpg",
+    years: "1828-1858",
+    state: "Madhya Pradesh",
+    contribution: "Led an armed rebellion against the British East India Company during the Indian Rebellion of 1857.",
+    biography: "Lakshmibai, the Rani of Jhansi, was an Indian queen and warrior. She was one of the leading figures of the Indian Rebellion of 1857 and became a symbol of resistance to the British Raj for Indian nationalists."
+  },
+  {
+    id: "bal-gangadhar-tilak",
+    name: "Bal Gangadhar Tilak",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Bal_Gangadhar_Tilak.jpg/800px-Bal_Gangadhar_Tilak.jpg",
+    years: "1856-1920",
+    state: "Maharashtra",
+    contribution: "Indian nationalist who was among the first leaders to advocate for complete independence (Swaraj).",
+    biography: "Bal Gangadhar Tilak, born as Keshav Gangadhar Tilak, was an Indian nationalist, teacher, and an independence activist. He was one third of the Lal Bal Pal triumvirate. Tilak was the first leader of the Indian Independence Movement. The British colonial authorities called him 'The father of the Indian unrest'."
+  }
 ];
 
 export default states;
