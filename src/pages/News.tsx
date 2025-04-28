@@ -18,6 +18,9 @@ const News = () => {
   const [selectedState, setSelectedState] = useState('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
+  // Extract unique categories from news items
+  const categories = ['all', ...new Set(newsItems.map(news => news.category))];
+
   // Filter news based on search term, category, and state
   const filteredNews = newsItems.filter(news => {
     const matchesSearch = news.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -49,12 +52,14 @@ const News = () => {
 
         <div className="mb-12">
           <NewsFilter
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
+            searchQuery={searchTerm}
+            setSearchQuery={setSearchTerm}
             selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory}
+            setSelectedCategory={setSelectedCategory}
             selectedState={selectedState}
-            onStateChange={setSelectedState}
+            setSelectedState={setSelectedState}
+            categories={categories}
+            theme={theme}
           />
         </div>
 
@@ -103,7 +108,7 @@ const News = () => {
         )}
 
         <div className="mt-20">
-          <NewsletterSubscription />
+          <NewsletterSubscription theme={theme} />
         </div>
       </motion.div>
     </Layout>

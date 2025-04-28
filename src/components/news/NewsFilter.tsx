@@ -68,7 +68,8 @@ const NewsFilter: React.FC<NewsFilterProps> = ({
                 theme === 'dark' ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'
               }`}
             >
-              {categories.map(category => (
+              <option value="all">All Categories</option>
+              {categories && categories.map(category => (
                 <option key={category} value={category}>{category}</option>
               ))}
             </select>
@@ -80,4 +81,3 @@ const NewsFilter: React.FC<NewsFilterProps> = ({
 };
 
 export default NewsFilter;
-
