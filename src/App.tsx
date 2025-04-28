@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -21,6 +22,10 @@ import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import ManageStates from "./pages/admin/ManageStates";
 import ManageNews from "./pages/admin/ManageNews";
+import ManageFestivals from "./pages/admin/ManageFestivals";
+import ManageFreedomFighters from "./pages/admin/ManageFreedomFighters";
+import ManageParties from "./pages/admin/ManageParties";
+import ManageImages from "./pages/admin/ManageImages";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +52,10 @@ const App = () => (
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/states" element={<ManageStates />} />
                 <Route path="/admin/news" element={<ManageNews />} />
+                <Route path="/admin/festivals" element={<ManageFestivals />} />
+                <Route path="/admin/freedom-fighters" element={<ManageFreedomFighters />} />
+                <Route path="/admin/political-parties" element={<ManageParties />} />
+                <Route path="/admin/images" element={<ManageImages />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </AnimatePresence>
