@@ -26,6 +26,9 @@ import ManageFestivals from "./pages/admin/ManageFestivals";
 import ManageFreedomFighters from "./pages/admin/ManageFreedomFighters";
 import ManageParties from "./pages/admin/ManageParties";
 import ManageImages from "./pages/admin/ManageImages";
+import Trips from "./pages/Trips";
+import TripDetails from "./pages/TripDetails";
+import CustomTrip from "./pages/CustomTrip";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +52,9 @@ const App = () => (
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/freedom-fighters" element={<FreedomFighters />} />
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/trips" element={<Trips />} />
+                <Route path="/trips/:tripId" element={<TripDetails />} />
+                <Route path="/custom-trip" element={<CustomTrip />} />
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/states" element={<ManageStates />} />
                 <Route path="/admin/news" element={<ManageNews />} />
