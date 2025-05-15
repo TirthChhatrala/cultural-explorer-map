@@ -109,7 +109,7 @@ const CustomTrip = () => {
     
     const customTripRequest = {
       id: `request-${Date.now()}`,
-      userId: user?.id || 'unknown',
+      userId: user?.email || 'unknown', // Changed from user.id to user?.email
       startDate,
       endDate,
       travelers,

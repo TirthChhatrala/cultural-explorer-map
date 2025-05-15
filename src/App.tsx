@@ -28,7 +28,10 @@ import ManageParties from "./pages/admin/ManageParties";
 import ManageImages from "./pages/admin/ManageImages";
 import Trips from "./pages/Trips";
 import TripDetails from "./pages/TripDetails";
+import ManageTrips from "./pages/admin/ManageTrips";
 import CustomTrip from "./pages/CustomTrip";
+import Hotels from "./pages/Hotels";
+import HotelDetails from "./pages/HotelDetails";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +58,8 @@ const App = () => (
                 <Route path="/trips" element={<Trips />} />
                 <Route path="/trips/:tripId" element={<TripDetails />} />
                 <Route path="/custom-trip" element={<CustomTrip />} />
+                <Route path="/hotels" element={<Hotels />} />
+                <Route path="/hotels/:hotelId" element={<HotelDetails />} />
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/states" element={<ManageStates />} />
                 <Route path="/admin/news" element={<ManageNews />} />
@@ -62,6 +67,7 @@ const App = () => (
                 <Route path="/admin/freedom-fighters" element={<ManageFreedomFighters />} />
                 <Route path="/admin/political-parties" element={<ManageParties />} />
                 <Route path="/admin/images" element={<ManageImages />} />
+                <Route path="/admin/trips" element={<ManageTrips />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </AnimatePresence>
