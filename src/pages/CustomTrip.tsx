@@ -6,11 +6,14 @@ import Layout from '../components/Layout';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { states } from '../data/states';
-import { MapPin, Calendar, Users, Route, Car, Train, Plane, Bus, Compass, IndianRupee } from 'lucide-react';
+import { MapPin, Calendar, Users, Route, Car, Train, Plane, Bus, Compass, IndianRupee, AlertCircle } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar as CalendarComponent } from '@/components/ui/calendar';
+import { format } from 'date-fns';
 import EnhancedMap from '../components/EnhancedMap';
 
 const preferences = [
@@ -39,14 +42,19 @@ const CustomTrip = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  // Date selection with calendar
+  const [startDate, setStartDate] = useState<Date | undefined>(undefined);
+  const [endDate, setEndDate] = useState<Date | undefined>(undefined);
+  const [showStartCalendar, setShowStartCalendar] = useState(false);
+  const [showEndCalendar, setShowEndCalendar] = useState(false);
+  
+  // Trip details
   const [travelers, setTravelers] = useState(2);
   const [transportMode, setTransportMode] = useState('car');
   const [selectedStates, setSelectedStates] = useState<string[]>([]);
   const [selectedPreferences, setSelectedPreferences] = useState<string[]>([]);
   const [budget, setBudget] = useState([20000]);
-  const [showMap, setShowMap] = useState(false);
+  const [showMap, setShowMap] = useState(true);
 
   useEffect(() => {
     if (!user) {
@@ -56,6 +64,7 @@ const CustomTrip = () => {
         variant: 'destructive',
       });
       navigate('/login');
+      return;
     }
     
     // Set default dates
@@ -66,24 +75,28 @@ const CustomTrip = () => {
     const threeWeeksFromNow = new Date();
     threeWeeksFromNow.setDate(today.getDate() + 21);
     
-    setStartDate(twoWeeksFromNow.toISOString().substring(0, 10));
-    setEndDate(threeWeeksFromNow.toISOString().substring(0, 10));
+    setStartDate(twoWeeksFromNow);
+    setEndDate(threeWeeksFromNow);
   }, [user, navigate, toast]);
   
   const handleStateSelection = (stateId: string) => {
-    if (selectedStates.includes(stateId)) {
-      setSelectedStates(selectedStates.filter(id => id !== stateId));
-    } else {
-      setSelectedStates([...selectedStates, stateId]);
-    }
+    setSelectedStates(prevStates => {
+      if (prevStates.includes(stateId)) {
+        return prevStates.filter(id => id !== stateId);
+      } else {
+        return [...prevStates, stateId];
+      }
+    });
   };
   
   const handlePreferenceChange = (preferenceId: string) => {
-    if (selectedPreferences.includes(preferenceId)) {
-      setSelectedPreferences(selectedPreferences.filter(id => id !== preferenceId));
-    } else {
-      setSelectedPreferences([...selectedPreferences, preferenceId]);
-    }
+    setSelectedPreferences(prevPrefs => {
+      if (prevPrefs.includes(preferenceId)) {
+        return prevPrefs.filter(id => id !== preferenceId);
+      } else {
+        return [...prevPrefs, preferenceId];
+      }
+    });
   };
   
   const handleSubmit = (e: React.FormEvent) => {
@@ -109,9 +122,9 @@ const CustomTrip = () => {
     
     const customTripRequest = {
       id: `request-${Date.now()}`,
-      userId: user?.email || 'unknown', // Changed from user.id to user?.email
-      startDate,
-      endDate,
+      userId: user?.email || 'unknown',
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
       travelers,
       transportMode,
       states: selectedStates,
@@ -121,7 +134,6 @@ const CustomTrip = () => {
       createdAt: new Date().toISOString()
     };
     
-    // In a real app, this would be saved to a database
     console.log('Trip request submitted:', customTripRequest);
     
     toast({
@@ -130,6 +142,12 @@ const CustomTrip = () => {
     });
     
     navigate('/dashboard');
+  };
+  
+  const getDuration = () => {
+    if (!startDate || !endDate) return 0;
+    const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   };
   
   if (!user) return null;
@@ -158,6 +176,72 @@ const CustomTrip = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20">
           <div className="lg:col-span-2">
             <form onSubmit={handleSubmit}>
+              {/* Trip Destinations Section */}
+              <div className={`p-6 rounded-xl border mb-8 ${
+                theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+              } shadow-sm`}>
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-xl font-display font-semibold flex items-center">
+                    <MapPin className="mr-2 text-india-orange" size={20} />
+                    Destinations
+                  </h2>
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => setShowMap(!showMap)}
+                    className="text-xs"
+                  >
+                    {showMap ? 'Hide Map' : 'Show Map'}
+                  </Button>
+                </div>
+                
+                {showMap && (
+                  <div className="mb-6">
+                    <EnhancedMap 
+                      selectedStates={selectedStates}
+                      onStateSelect={handleStateSelection}
+                      interactive={true}
+                      showControls={true}
+                      showStateInfo={true}
+                    />
+                  </div>
+                )}
+                
+                <p className="text-sm text-muted-foreground mb-4">
+                  Select the states you'd like to visit during your trip:
+                </p>
+                
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 mb-2">
+                  {states.map((state) => (
+                    <div
+                      key={state.id}
+                      className={`p-3 border rounded-md cursor-pointer transition-all ${
+                        selectedStates.includes(state.id) 
+                          ? 'bg-india-orange/20 border-india-orange' 
+                          : theme === 'dark' 
+                            ? 'bg-gray-700 border-gray-600 hover:bg-gray-600' 
+                            : 'bg-white border-gray-300 hover:bg-gray-100'
+                      }`}
+                      onClick={() => handleStateSelection(state.id)}
+                    >
+                      <div className="flex items-center">
+                        <Checkbox 
+                          checked={selectedStates.includes(state.id)}
+                          className="mr-2"
+                        />
+                        <span className="text-sm">{state.name}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                <p className="text-xs text-muted-foreground mt-2">
+                  Selected: {selectedStates.length} states
+                </p>
+              </div>
+              
+              {/* Trip Details Section */}
               <div className={`p-6 rounded-xl border mb-8 ${
                 theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
               } shadow-sm`}>
@@ -169,28 +253,65 @@ const CustomTrip = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                   <div>
                     <label className="block text-sm font-medium mb-2">Start Date</label>
-                    <input
-                      type="date"
-                      className={`w-full p-2 rounded-md border ${
-                        theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'
-                      }`}
-                      value={startDate}
-                      onChange={(e) => setStartDate(e.target.value)}
-                      required
-                    />
+                    <Popover open={showStartCalendar} onOpenChange={setShowStartCalendar}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className={`w-full justify-start text-left font-normal ${!startDate && "text-muted-foreground"}`}
+                        >
+                          <Calendar className="mr-2 h-4 w-4" />
+                          {startDate ? format(startDate, "PPP") : <span>Pick a date</span>}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0 pointer-events-auto" align="start">
+                        <CalendarComponent
+                          mode="single"
+                          selected={startDate}
+                          onSelect={(date) => {
+                            setStartDate(date);
+                            setShowStartCalendar(false);
+                            
+                            // If end date is before the new start date, update it
+                            if (endDate && date && endDate < date) {
+                              const newEndDate = new Date(date);
+                              newEndDate.setDate(date.getDate() + 7);
+                              setEndDate(newEndDate);
+                            }
+                          }}
+                          disabled={(date) => date < new Date()}
+                          initialFocus
+                          className="p-3 pointer-events-auto"
+                        />
+                      </PopoverContent>
+                    </Popover>
                   </div>
                   
                   <div>
                     <label className="block text-sm font-medium mb-2">End Date</label>
-                    <input
-                      type="date"
-                      className={`w-full p-2 rounded-md border ${
-                        theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'
-                      }`}
-                      value={endDate}
-                      onChange={(e) => setEndDate(e.target.value)}
-                      required
-                    />
+                    <Popover open={showEndCalendar} onOpenChange={setShowEndCalendar}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className={`w-full justify-start text-left font-normal ${!endDate && "text-muted-foreground"}`}
+                        >
+                          <Calendar className="mr-2 h-4 w-4" />
+                          {endDate ? format(endDate, "PPP") : <span>Pick a date</span>}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0 pointer-events-auto" align="start">
+                        <CalendarComponent
+                          mode="single"
+                          selected={endDate}
+                          onSelect={(date) => {
+                            setEndDate(date);
+                            setShowEndCalendar(false);
+                          }}
+                          disabled={(date) => startDate ? date <= startDate : date <= new Date()}
+                          initialFocus
+                          className="p-3 pointer-events-auto"
+                        />
+                      </PopoverContent>
+                    </Popover>
                   </div>
                 </div>
                 
@@ -261,66 +382,23 @@ const CustomTrip = () => {
                     </div>
                   </div>
                 </div>
-              </div>
-              
-              <div className={`p-6 rounded-xl border mb-8 ${
-                theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
-              } shadow-sm`}>
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl font-display font-semibold flex items-center">
-                    <MapPin className="mr-2 text-india-orange" size={20} />
-                    Destinations
-                  </h2>
-                  <Button 
-                    type="button" 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={() => setShowMap(!showMap)}
-                    className="text-xs"
-                  >
-                    {showMap ? 'Hide Map' : 'Show Map'}
-                  </Button>
-                </div>
-                
-                {showMap && (
-                  <div className="mb-6">
-                    <EnhancedMap />
+
+                {startDate && endDate && (
+                  <div className={`p-4 rounded-lg mt-6 ${
+                    theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'
+                  }`}>
+                    <div className="flex items-center text-india-orange">
+                      <Calendar size={18} className="mr-2" />
+                      <h3 className="font-medium">Trip Duration: {getDuration()} days</h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      From {startDate ? format(startDate, "PPP") : "--"} to {endDate ? format(endDate, "PPP") : "--"}
+                    </p>
                   </div>
                 )}
-                
-                <p className="text-sm text-muted-foreground mb-4">
-                  Select the states you'd like to visit during your trip:
-                </p>
-                
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 mb-2">
-                  {states.map((state) => (
-                    <div
-                      key={state.id}
-                      className={`p-3 border rounded-md cursor-pointer transition-all ${
-                        selectedStates.includes(state.id) 
-                          ? 'bg-india-orange/20 border-india-orange' 
-                          : theme === 'dark' 
-                            ? 'bg-gray-700 border-gray-600 hover:bg-gray-600' 
-                            : 'bg-white border-gray-300 hover:bg-gray-100'
-                      }`}
-                      onClick={() => handleStateSelection(state.id)}
-                    >
-                      <div className="flex items-center">
-                        <Checkbox 
-                          checked={selectedStates.includes(state.id)}
-                          className="mr-2"
-                        />
-                        <span className="text-sm">{state.name}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                
-                <p className="text-xs text-muted-foreground mt-2">
-                  Selected: {selectedStates.length} states
-                </p>
               </div>
               
+              {/* Preferences Section */}
               <div className={`p-6 rounded-xl border mb-8 ${
                 theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
               } shadow-sm`}>
