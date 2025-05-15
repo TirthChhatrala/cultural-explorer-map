@@ -47,7 +47,7 @@ const EnhancedMap: React.FC<EnhancedMapProps> = ({
     'jammu_kashmir': 'Known as "Paradise on Earth" with breathtaking landscapes.',
     'jharkhand': 'Rich in minerals and tribal culture.',
     'karnataka': 'Home to the IT hub Bangalore and historical sites of Hampi.',
-    'kerala': 'Known as "God's Own Country" with beautiful backwaters and beaches.',
+    'kerala': 'Known as "God\'s Own Country" with beautiful backwaters and beaches.',
     'madhya_pradesh': 'Heart of India with ancient temples and tiger reserves.',
     'maharashtra': 'Home to Mumbai and has a rich Maratha heritage.',
     'manipur': 'Known for classical dance forms and the unique Loktak Lake.',
