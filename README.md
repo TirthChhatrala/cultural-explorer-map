@@ -1,69 +1,116 @@
-# Welcome to your Lovable project
+# 🌍 Cultural Explorer Map
 
-## Project info
+An interactive and intelligent travel planning platform that helps users explore India’s cultural richness while planning personalized and static trips. From itinerary creation to hotel bookings, the application provides a complete travel experience using powerful UI, maps, and admin capabilities.
 
-**URL**: https://lovable.dev/projects/f3bcc8e8-bbbb-4f6c-81c1-ba4e526b02c7
+---
 
-## How can I edit this code?
+## 🧭 Overview
 
-There are several ways of editing your application.
+This project is a comprehensive trip planner that allows users to:
+- Customize travel plans
+- View predefined travel packages
+- Explore state-wise cultural and political data
+- Interact with an advanced India map
+- Book hotels and accommodations
+- Enable trip plan submission and admin approvals
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/f3bcc8e8-bbbb-4f6c-81c1-ba4e526b02c7) and start prompting.
+## 🚀 Key Features
 
-Changes made via Lovable will be committed automatically to this repo.
+### 🏨 Hotel & Accommodation
+- Suggests hotels based on preferences (rating, location, budget)
+- Integrated filtering system
+- Booking system for hotels and resorts
+- Repeatable image gallery for each accommodation
 
-**Use your preferred IDE**
+### 🗺️ Interactive Trip Customization
+- Choose travel dates, traveler count, and transport mode
+- Destination suggestions based on preferences
+- Fully interactive India map with region selection
+- Smart itinerary builder with editable stops
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### 📍 Route & Travel Planner
+- Auto-generate optimized travel routes
+- Editable, visual itinerary
+- Complete trip summary generation
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### 📦 Predefined Static Packages (x10)
+- Small Trip
+- Luxury Trip
+- Royal Trip
+- Budget Trip
+- Adventure Trip
+- Spiritual Journey
+- Beach Vacation
+- Hill Station Escape
+- Wildlife Tour
+- Cultural Heritage Trip
 
-Follow these steps:
+### 🧭 “Trips” Navigation Tab
+- New tab showcasing all customizable and static trips
+- Clean UI with filters and highlights
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone cultural-explorer-map
+### 🗳️ Political Party Explorer
+- State-wise display of political parties
+- Includes current and historical data
+- Filters by state, party type, leader, etc.
 
-# Step 2: Navigate to the project directory.
+### 🧑‍💼 Admin Dashboard
+- View and manage trip status: pending, approved, rejected
+- Approve/deny trip plans submitted by users
+- Apply discounts on static trip packages
+- Manage hotel and location image galleries
+
+### 🍛 Cultural & Local Explorer
+- Cuisine & Food by region
+- Weather patterns
+- Traditional attire
+- Tourist attractions
+- Historical & cultural landmarks
+
+### 📷 User Interaction
+- Post-trip feedback form
+- Upload and display travel photos
+- User-generated gallery
+
+### 🎉 UX Enhancements
+- Logout animation: "Thank you for visiting! Have a nice day!"
+- Restrict trip planning to authenticated users
+
+---
+
+## 🛠️ Tech Stack
+
+| Tool            | Purpose                     |
+|-----------------|-----------------------------|
+| React           | Frontend Framework          |
+| TypeScript      | Type Safety                 |
+| Vite            | Fast Build Tool             |
+| Tailwind CSS    | Styling                     |
+| shadcn/ui       | Reusable UI Components      |
+| Lovable.dev     | Deployment & live editing   |
+
+---
+
+## 📁 Getting Started
+
+### ⚙️ Requirements
+
+- Node.js >= 16
+- npm >= 7
+
+### 🚀 Installation
+
+```bash
+# Step 1: Clone the project
+git clone https://github.com/TirthChhatrala/cultural-explorer-map.git
+
+# Step 2: Navigate to project directory
 cd cultural-explorer-map
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Step 3: Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Step 4: Start local server
 npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/f3bcc8e8-bbbb-4f6c-81c1-ba4e526b02c7) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
