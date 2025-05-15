@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Map from './Map';
@@ -157,6 +156,7 @@ const EnhancedMap: React.FC<EnhancedMapProps> = ({
             />
           </div>
           
+          {/* Map controls */}
           {showControls && (
             <div className="absolute top-4 right-4 flex flex-col gap-2">
               <Button 
@@ -195,6 +195,7 @@ const EnhancedMap: React.FC<EnhancedMapProps> = ({
             </div>
           )}
           
+          {/* State info tooltip */}
           {showStateInfo && (
             <div className="absolute bottom-4 left-4 right-4">
               <AnimatePresence>

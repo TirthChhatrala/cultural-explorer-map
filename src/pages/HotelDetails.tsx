@@ -9,17 +9,15 @@ import { useToast } from '../hooks/use-toast';
 import RoomCard from '../components/hotels/RoomCard';
 import ImageGallery from '../components/hotels/ImageGallery';
 
+// Adding capacity to Room interface to fix the type error
 interface Room {
   id: string;
   name: string;
   description: string;
   price: number;
-  discountedPrice?: number;
+  capacity: number; // Added this field
   amenities: string[];
   images: string[];
-  maxOccupancy: number;
-  beds: number;
-  isAvailable: boolean;
 }
 
 interface Hotel {
@@ -27,382 +25,281 @@ interface Hotel {
   name: string;
   description: string;
   location: string;
-  state: string;
   rating: number;
-  amenities: string[];
+  price: number;
   images: string[];
+  amenities: string[];
   rooms: Room[];
 }
 
-// Sample hotel data (replace with actual data fetching)
+// Sample hotel data for demonstration
 const hotelData: Hotel = {
-  id: "hotel123",
-  name: "The Grand Indian Hotel",
-  description: "A luxurious hotel offering the best of Indian hospitality. Located in the heart of the city, it's the perfect place to experience India.",
-  location: "New Delhi",
-  state: "Delhi",
-  rating: 4.5,
-  amenities: ["Free WiFi", "Swimming Pool", "Spa", "Fitness Center", "Restaurant", "Bar", "24/7 Room Service"],
+  id: "grand-palace-hotel",
+  name: "Grand Palace Hotel",
+  description: "A luxurious 5-star hotel located in the heart of the city, offering stunning views of the skyline and unparalleled service.",
+  location: "Central Business District, Mumbai",
+  rating: 4.8,
+  price: 12000,
   images: [
-    "https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=1000&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=1000&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1568084680786-a84f91d1153c?q=80&w=1000&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=1000&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1000&auto=format&fit=crop"
+    "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3",
+    "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3",
+    "https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3",
+    "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3",
+    "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
+  ],
+  amenities: [
+    "Free Wi-Fi",
+    "Swimming Pool",
+    "Fitness Center",
+    "Spa",
+    "Restaurant",
+    "Bar/Lounge",
+    "24-hour Front Desk",
+    "Room Service",
+    "Business Center",
+    "Airport Shuttle",
+    "Concierge Service",
+    "Laundry Service",
+    "Dry Cleaning",
+    "Babysitting",
+    "Currency Exchange",
+    "ATM on Site"
   ],
   rooms: [
     {
-      id: "room1",
+      id: "deluxe-room",
       name: "Deluxe Room",
-      description: "A spacious room with a king-size bed and a city view.",
-      price: 10000,
-      discountedPrice: 8000,
-      amenities: ["Free WiFi", "Air Conditioning", "TV", "Mini Bar"],
-      images: [
-        "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?q=80&w=1000&auto=format&fit=crop"
+      description: "Spacious room with a king-size bed, modern amenities, and city views.",
+      price: 12000,
+      capacity: 2,
+      amenities: [
+        "King-size bed",
+        "40-inch LED TV",
+        "Mini bar",
+        "Safe",
+        "Air conditioning",
+        "Free Wi-Fi"
       ],
-      maxOccupancy: 3,
-      beds: 1,
-      isAvailable: true
+      images: [
+        "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3",
+        "https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
+      ]
     },
     {
-      id: "room2",
-      name: "Suite",
-      description: "A luxurious suite with a separate living area and a balcony.",
-      price: 20000,
-      amenities: ["Free WiFi", "Air Conditioning", "TV", "Mini Bar", "Balcony"],
-      images: [
-        "https://images.unsplash.com/photo-1616697978994-99104aa91942?q=80&w=1000&auto=format&fit=crop"
+      id: "executive-suite",
+      name: "Executive Suite",
+      description: "Luxurious suite with separate living area, premium amenities, and panoramic city views.",
+      price: 18000,
+      capacity: 2,
+      amenities: [
+        "King-size bed",
+        "Separate living area",
+        "55-inch LED TV",
+        "Premium toiletries",
+        "Jacuzzi",
+        "Mini bar",
+        "Safe",
+        "Air conditioning",
+        "Free Wi-Fi"
       ],
-      maxOccupancy: 4,
-      beds: 2,
-      isAvailable: true
+      images: [
+        "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3",
+        "https://images.unsplash.com/photo-1591088398332-8a7791972843?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
+      ]
     },
     {
-      id: "room3",
-      name: "Standard Room",
-      description: "A comfortable room with a queen-size bed.",
-      price: 5000,
-      amenities: ["Free WiFi", "Air Conditioning", "TV"],
-      images: [
-        "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=1000&auto=format&fit=crop"
+      id: "presidential-suite",
+      name: "Presidential Suite",
+      description: "The epitome of luxury with multiple rooms, private butler service, and the best views in the hotel.",
+      price: 35000,
+      capacity: 4,
+      amenities: [
+        "Master bedroom with king-size bed",
+        "Second bedroom with queen-size bed",
+        "Dining area",
+        "Full kitchen",
+        "Private butler service",
+        "Multiple 65-inch LED TVs",
+        "Premium sound system",
+        "Private terrace",
+        "Jacuzzi",
+        "Mini bar",
+        "Safe",
+        "Air conditioning",
+        "Free Wi-Fi"
       ],
-      maxOccupancy: 2,
-      beds: 1,
-      isAvailable: false
+      images: [
+        "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3",
+        "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
+      ]
     }
   ]
 };
 
-const HotelDetails = () => {
-  const { hotelId } = useParams<{ hotelId: string }>();
+const HotelDetails: React.FC = () => {
   const { theme } = useTheme();
+  const { hotelId } = useParams<{ hotelId: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
-  
-  const [checkInDate, setCheckInDate] = useState('');
-  const [checkOutDate, setCheckOutDate] = useState('');
-  const [nights, setNights] = useState(0);
-  const [adults, setAdults] = useState(2);
-  const [children, setChildren] = useState(0);
-  const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
+  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const [showGallery, setShowGallery] = useState(false);
-  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
-  const [showAllAmenities, setShowAllAmenities] = useState(false);
-  const [scrollToBooking, setScrollToBooking] = useState(false);
-  
-  // Using the sample hotel data for demo purposes
-  // In a real app, you'd fetch this based on the hotelId
-  const hotel = hotelData;
-  
+  const [galleryImages, setGalleryImages] = useState<string[]>([]);
+
+  // Fetch hotel details (replace with actual data fetching)
+  const [hotel, setHotel] = useState<Hotel | null>(null);
+
   useEffect(() => {
-    // Scroll to top when component mounts
-    window.scrollTo(0, 0);
-  }, []);
-  
-  useEffect(() => {
-    // Calculate number of nights
-    if (checkInDate && checkOutDate) {
-      const checkIn = new Date(checkInDate);
-      const checkOut = new Date(checkOutDate);
-      const timeDiff = checkOut.getTime() - checkIn.getTime();
-      const numNights = Math.ceil(timeDiff / (1000 * 3600 * 24));
-      setNights(numNights);
+    // Simulate fetching hotel data based on hotelId
+    // In a real application, you would fetch this data from an API
+    if (hotelId === hotelData.id) {
+      setHotel(hotelData);
     } else {
-      setNights(0);
+      // Handle hotel not found
+      toast({
+        title: "Hotel Not Found",
+        description: "The requested hotel could not be found.",
+        variant: "destructive",
+      });
+      navigate('/hotels');
     }
-  }, [checkInDate, checkOutDate]);
-  
-  useEffect(() => {
-    // Scroll to booking section when state changes
-    if (scrollToBooking) {
-      const bookingElement = document.getElementById('booking-section');
-      if (bookingElement) {
-        // Use scrollIntoView instead of focus
-        bookingElement.scrollIntoView({ behavior: 'smooth' });
-      }
-      setScrollToBooking(false);
-    }
-  }, [scrollToBooking]);
-  
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    if (name === 'checkInDate') {
-      setCheckInDate(value);
-    } else if (name === 'checkOutDate') {
-      setCheckOutDate(value);
-    }
+  }, [hotelId, navigate, toast]);
+
+  const handleRoomSelect = (room: Room) => {
+    setSelectedRoom(room);
   };
-  
+
   const handleBookNow = () => {
-    if (!checkInDate || !checkOutDate) {
+    if (selectedRoom) {
+      // Implement booking logic here
       toast({
-        title: 'Date required',
-        description: 'Please select check-in and check-out dates',
-        variant: 'destructive',
+        title: "Booking Confirmed",
+        description: `You have booked the ${selectedRoom.name} at ${hotel?.name}.`,
       });
-      return;
-    }
-    
-    if (!selectedRoomId) {
+    } else {
       toast({
-        title: 'Room required',
-        description: 'Please select a room to book',
-        variant: 'destructive',
+        title: "No Room Selected",
+        description: "Please select a room to book.",
+        variant: "destructive",
       });
-      return;
     }
-    
-    toast({
-      title: 'Booking confirmed!',
-      description: `Your booking for ${nights} nights has been confirmed`,
-    });
   };
-  
-  const openGallery = (index: number) => {
-    setCurrentPhotoIndex(index);
+
+  const openGallery = (images: string[]) => {
+    setGalleryImages(images);
     setShowGallery(true);
   };
-  
+
+  const closeGallery = () => {
+    setShowGallery(false);
+  };
+
+  if (!hotel) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Layout>
-      <div className="max-w-6xl mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-        >
-          {/* Hero Section */}
-          <div className="relative h-[50vh] min-h-[400px] w-full mb-8 rounded-xl overflow-hidden">
-            <img 
-              src={hotel.images[0]} 
-              alt={hotel.name} 
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
-            <div className="absolute bottom-0 left-0 p-8">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-white mb-2">
-                {hotel.name}
-              </h1>
-              <div className="flex items-center text-white/80 mb-2">
-                <MapPin size={18} className="mr-2" />
-                <span>{hotel.location}, {hotel.state}</span>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
+        className="container mx-auto mt-8 mb-16 px-4"
+      >
+        {/* Hotel Header */}
+        <section className="mb-8">
+          <div className="mb-4">
+            <Button variant="ghost" onClick={() => navigate('/hotels')}>
+              <X className="mr-2 h-4 w-4" />
+              Back to Hotels
+            </Button>
+          </div>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div>
+              <h1 className="text-3xl font-bold font-display">{hotel.name}</h1>
+              <div className="flex items-center text-gray-500 dark:text-gray-400">
+                <MapPin className="mr-2 h-4 w-4" />
+                {hotel.location}
               </div>
-              <div className="flex items-center">
-                <div className="flex items-center">
-                  <Star size={16} className="text-yellow-400 fill-yellow-400 mr-1" />
-                  <span className="text-white/80">{hotel.rating} / 5</span>
-                </div>
-              </div>
+            </div>
+            <div className="flex items-center">
+              <span className="mr-2 text-xl font-semibold">{hotel.rating}</span>
+              <Star className="text-yellow-500 h-5 w-5" />
             </div>
           </div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20">
-            {/* Hotel Details */}
-            <div className="lg:col-span-2">
-              <section className="mb-8">
-                <h2 className="text-2xl font-display font-semibold mb-4">Hotel Overview</h2>
-                <p className="text-muted-foreground mb-6">
-                  {hotel.description}
+        </section>
+
+        {/* Image Gallery */}
+        <section className="mb-8">
+          <ImageGallery images={hotel.images} onImageClick={openGallery} />
+        </section>
+
+        {/* Hotel Details */}
+        <section className="mb-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h2 className="text-2xl font-semibold font-display mb-4">About {hotel.name}</h2>
+            <p className="text-gray-700 dark:text-gray-300">{hotel.description}</p>
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold font-display mb-4">Amenities</h3>
+            <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
+              {hotel.amenities.map((amenity, index) => (
+                <li key={index}>{amenity}</li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {/* Room Selection */}
+        <section>
+          <h2 className="text-2xl font-semibold font-display mb-4">Rooms & Suites</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {hotel.rooms.map((room) => (
+              <RoomCard
+                key={room.id}
+                room={room}
+                selected={selectedRoom?.id === room.id}
+                onSelect={handleRoomSelect}
+              />
+            ))}
+          </div>
+        </section>
+
+        {/* Booking Section */}
+        <section className="mt-8">
+          <div className={`p-6 rounded-lg ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} shadow-md`}>
+            <h3 className="text-xl font-semibold font-display mb-4">Book Your Stay</h3>
+            {selectedRoom ? (
+              <>
+                <p className="text-gray-700 dark:text-gray-300 mb-4">
+                  You have selected the <span className="font-medium">{selectedRoom.name}</span> for ₹{selectedRoom.price.toLocaleString()} per night.
                 </p>
-                
-                <div className="mb-4">
-                  <h3 className="text-xl font-semibold mb-2">Top Amenities</h3>
-                  <div className="flex flex-wrap gap-3">
-                    {hotel.amenities.slice(0, showAllAmenities ? hotel.amenities.length : 5).map((amenity, index) => (
-                      <span key={index} className="inline-flex items-center rounded-full bg-green-100 px-3 py-0.5 text-sm font-medium text-green-800">
-                        <Check size={16} className="mr-2" />
-                        {amenity}
-                      </span>
-                    ))}
-                    {hotel.amenities.length > 5 && (
-                      <button onClick={() => setShowAllAmenities(!showAllAmenities)} className="text-sm text-blue-500">
-                        {showAllAmenities ? 'Show Less' : 'Show All'}
-                      </button>
-                    )}
-                  </div>
-                </div>
-                
-                <div className="mb-6">
-                  <h3 className="text-xl font-semibold mb-2">Hotel Images</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    {hotel.images.map((image, index) => (
-                      <button key={index} onClick={() => openGallery(index)} className="relative rounded-md overflow-hidden aspect-video">
-                        <img 
-                          src={image} 
-                          alt={`${hotel.name} - Image ${index + 1}`} 
-                          className="w-full h-full object-cover transition-transform hover:scale-105" 
-                        />
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                
-                <div className="mb-8">
-                  <h2 className="text-2xl font-display font-semibold mb-4">Rooms & Suites</h2>
-                  <div className="space-y-6">
-                    {hotel.rooms.map(room => (
-                      <RoomCard 
-                        key={room.id}
-                        room={room}
-                        selectedRoomId={selectedRoomId}
-                        onSelect={() => {
-                          setSelectedRoomId(room.id);
-                          setScrollToBooking(true);
-                        }}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </section>
-            </div>
-            
-            {/* Booking Sidebar */}
-            <div>
-              <div id="booking-section" className={`sticky top-24 p-6 rounded-lg border shadow-sm ${
-                theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
-              }`}>
-                <h3 className="text-xl font-display font-semibold mb-4">Book Your Stay</h3>
-                
-                <div className="mb-4">
-                  <label className="block text-sm font-medium mb-2">Check-in Date</label>
-                  <input
-                    type="date"
-                    name="checkInDate"
-                    className={`w-full p-2 rounded-md border ${
-                      theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'
-                    }`}
-                    value={checkInDate}
-                    onChange={handleDateChange}
-                  />
-                </div>
-                
-                <div className="mb-4">
-                  <label className="block text-sm font-medium mb-2">Check-out Date</label>
-                  <input
-                    type="date"
-                    name="checkOutDate"
-                    className={`w-full p-2 rounded-md border ${
-                      theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'
-                    }`}
-                    value={checkOutDate}
-                    onChange={handleDateChange}
-                  />
-                </div>
-                
-                <div className="mb-6">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="font-semibold">Price:</span>
-                    <div>
-                      {selectedRoomId && (
-                        <>
-                          <span className="text-xl font-semibold text-india-orange">
-                            ₹{hotel.rooms.find(room => room.id === selectedRoomId)?.discountedPrice?.toLocaleString() || hotel.rooms.find(room => room.id === selectedRoomId)?.price?.toLocaleString()}
-                          </span>
-                          {hotel.rooms.find(room => room.id === selectedRoomId)?.discountedPrice && (
-                            <span className="ml-2 text-sm line-through text-muted-foreground">
-                              ₹{hotel.rooms.find(room => room.id === selectedRoomId)?.price?.toLocaleString()}
-                            </span>
-                          )}
-                        </>
-                      )}
-                    </div>
-                  </div>
-                  <p className="text-xs text-muted-foreground text-right">per night</p>
-                  
-                  <div className={`h-px w-full my-4 ${
-                    theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'
-                  }`}></div>
-                </div>
-                
-                <div className="mb-4">
-                  <label className="block text-sm font-medium mb-2">Number of Adults</label>
-                  <input
-                    type="number"
-                    className={`w-full p-2 rounded-md border ${
-                      theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'
-                    }`}
-                    value={adults}
-                    onChange={(e) => setAdults(parseInt(e.target.value))}
-                    min="1"
-                  />
-                </div>
-                
-                <div className="mb-4">
-                  <label className="block text-sm font-medium mb-2">Number of Children</label>
-                  <input
-                    type="number"
-                    className={`w-full p-2 rounded-md border ${
-                      theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'
-                    }`}
-                    value={children}
-                    onChange={(e) => setChildren(parseInt(e.target.value))}
-                    min="0"
-                  />
-                </div>
-                
-                <div className="mb-4">
-                  <div className="flex justify-between mb-2">
-                    <span>Room Cost</span>
-                    <span>₹{selectedRoomId && (hotel.rooms.find(room => room.id === selectedRoomId)?.discountedPrice || hotel.rooms.find(room => room.id === selectedRoomId)?.price)?.toLocaleString()}</span>
-                  </div>
-                  <div className="flex justify-between mb-2">
-                    <span>Taxes & Fees</span>
-                    <span>₹{selectedRoomId && Math.round(((hotel.rooms.find(room => room.id === selectedRoomId)?.discountedPrice || hotel.rooms.find(room => room.id === selectedRoomId)?.price) || 0) * 0.18).toLocaleString()}</span>
-                  </div>
-                  <div className={`h-px w-full my-2 ${
-                    theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'
-                  }`}></div>
-                  <div className="flex justify-between font-semibold">
-                    <span>Total</span>
-                    <span>₹{selectedRoomId && Math.round(((hotel.rooms.find(room => room.id === selectedRoomId)?.discountedPrice || hotel.rooms.find(room => room.id === selectedRoomId)?.price) || 0) * 1.18).toLocaleString()}</span>
-                  </div>
-                </div>
-                
-                <Button 
-                  className="w-full bg-india-orange hover:bg-india-orange/90 text-white"
-                  onClick={handleBookNow}
-                >
+                <Button className="w-full bg-india-orange hover:bg-india-orange/90 text-white" onClick={handleBookNow}>
                   Book Now
                 </Button>
-                
-                <p className="text-xs text-muted-foreground text-center mt-4">
-                  No payment required now. We'll contact you to finalize the booking.
-                </p>
-              </div>
+              </>
+            ) : (
+              <p className="text-gray-700 dark:text-gray-300">Please select a room to book.</p>
+            )}
+          </div>
+        </section>
+
+        {/* Image Gallery Modal */}
+        {showGallery && (
+          <div className="fixed top-0 left-0 w-full h-full bg-black/80 z-50 flex items-center justify-center">
+            <div className="relative w-full max-w-4xl max-h-full">
+              <Button
+                variant="secondary"
+                size="icon"
+                className="absolute top-4 right-4 z-50"
+                onClick={closeGallery}
+              >
+                <X className="h-5 w-5" />
+              </Button>
+              <ImageGallery images={galleryImages} />
             </div>
           </div>
-        </motion.div>
-      </div>
-      
-      {/* Image Gallery Modal */}
-      {showGallery && (
-        <ImageGallery 
-          images={hotel.images}
-          name={hotel.name}
-          onClose={() => setShowGallery(false)}
-        />
-      )}
+        )}
+      </motion.div>
     </Layout>
   );
 };

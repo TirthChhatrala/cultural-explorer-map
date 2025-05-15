@@ -49,7 +49,11 @@ const Index = () => {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="lg:w-1/2"
           >
-            <EnhancedMap />
+            <EnhancedMap 
+              interactive={true} 
+              showControls={true} 
+              showStateInfo={true} 
+            />
           </motion.div>
         </div>
       </section>
