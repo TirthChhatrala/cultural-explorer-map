@@ -1,10 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Layout from '../components/Layout';
 import { useTheme } from '../context/ThemeContext';
 import { hotels } from '../data/tripData';
-import { MapPin, Phone, Link, Star, ChevronLeft, CheckCircle, XCircle } from 'lucide-react';
+import { MapPin, Phone, Link, Star, ChevronLeft, Calendar as CalendarIcon } from 'lucide-react';
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -28,7 +29,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
-import { CalendarIcon } from "@radix-ui/react-icons"
 import { format } from "date-fns"
 import { useToast } from "@/components/ui/use-toast"
 import { useForm } from "react-hook-form"
@@ -43,6 +43,7 @@ interface Room {
   capacity: number;
   beds?: number;
   images: string[];
+  amenities?: string[]; // Added missing amenities property from component use
 }
 
 interface Hotel {
