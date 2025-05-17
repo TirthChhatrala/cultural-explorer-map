@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Layout from '../components/Layout';
 import { useTheme } from '../context/ThemeContext';
-import { hotels } from '../data/tripData';
+import { hotels } from '../data/hotelData'; // Changed import to use hotelData instead of tripData
 import { MapPin, Phone, Link, Star, ChevronLeft, Calendar as CalendarIcon } from 'lucide-react';
 import { Button } from "@/components/ui/button"
 import {
@@ -34,33 +33,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-
-interface Room {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  capacity: number;
-  beds?: number;
-  images: string[];
-  amenities?: string[]; // Added missing amenities property from component use
-}
-
-interface Hotel {
-  id: string;
-  name: string;
-  description: string;
-  location: string;
-  state: string;
-  price: number;
-  rating: number;
-  amenities: string[];
-  image: string;
-  images: string[];
-  contact: string;
-  website: string;
-  rooms: Room[];
-}
+import { Hotel, Room } from '../data/hotelData';  // Import the types directly from hotelData
 
 interface ImageGalleryProps {
   images: string[];
