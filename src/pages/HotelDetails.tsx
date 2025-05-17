@@ -3,20 +3,45 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Layout from '../components/Layout';
 import { useTheme } from '../context/ThemeContext';
-import { MapPin, Star, Check, X, Info, Calendar } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useToast } from '../hooks/use-toast';
-import RoomCard from '../components/hotels/RoomCard';
-import ImageGallery from '../components/hotels/ImageGallery';
+import { hotels } from '../data/tripData';
+import { MapPin, Phone, Link, Star, ChevronLeft, CheckCircle, XCircle } from 'lucide-react';
+import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Calendar } from "@/components/ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { cn } from "@/lib/utils"
+import { CalendarIcon } from "@radix-ui/react-icons"
+import { format } from "date-fns"
+import { useToast } from "@/components/ui/use-toast"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
 
-// Adding capacity to Room interface to fix the type error
 interface Room {
   id: string;
   name: string;
   description: string;
   price: number;
-  capacity: number; // Added this field
-  amenities: string[];
+  capacity: number;
+  beds?: number;
   images: string[];
 }
 
@@ -25,177 +50,157 @@ interface Hotel {
   name: string;
   description: string;
   location: string;
-  rating: number;
+  state: string;
   price: number;
-  images: string[];
+  rating: number;
   amenities: string[];
+  image: string;
+  images: string[];
+  contact: string;
+  website: string;
   rooms: Room[];
 }
 
-// Sample hotel data for demonstration
-const hotelData: Hotel = {
-  id: "grand-palace-hotel",
-  name: "Grand Palace Hotel",
-  description: "A luxurious 5-star hotel located in the heart of the city, offering stunning views of the skyline and unparalleled service.",
-  location: "Central Business District, Mumbai",
-  rating: 4.8,
-  price: 12000,
-  images: [
-    "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3",
-    "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3",
-    "https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3",
-    "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3",
-    "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
-  ],
-  amenities: [
-    "Free Wi-Fi",
-    "Swimming Pool",
-    "Fitness Center",
-    "Spa",
-    "Restaurant",
-    "Bar/Lounge",
-    "24-hour Front Desk",
-    "Room Service",
-    "Business Center",
-    "Airport Shuttle",
-    "Concierge Service",
-    "Laundry Service",
-    "Dry Cleaning",
-    "Babysitting",
-    "Currency Exchange",
-    "ATM on Site"
-  ],
-  rooms: [
-    {
-      id: "deluxe-room",
-      name: "Deluxe Room",
-      description: "Spacious room with a king-size bed, modern amenities, and city views.",
-      price: 12000,
-      capacity: 2,
-      amenities: [
-        "King-size bed",
-        "40-inch LED TV",
-        "Mini bar",
-        "Safe",
-        "Air conditioning",
-        "Free Wi-Fi"
-      ],
-      images: [
-        "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3",
-        "https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
-      ]
-    },
-    {
-      id: "executive-suite",
-      name: "Executive Suite",
-      description: "Luxurious suite with separate living area, premium amenities, and panoramic city views.",
-      price: 18000,
-      capacity: 2,
-      amenities: [
-        "King-size bed",
-        "Separate living area",
-        "55-inch LED TV",
-        "Premium toiletries",
-        "Jacuzzi",
-        "Mini bar",
-        "Safe",
-        "Air conditioning",
-        "Free Wi-Fi"
-      ],
-      images: [
-        "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3",
-        "https://images.unsplash.com/photo-1591088398332-8a7791972843?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
-      ]
-    },
-    {
-      id: "presidential-suite",
-      name: "Presidential Suite",
-      description: "The epitome of luxury with multiple rooms, private butler service, and the best views in the hotel.",
-      price: 35000,
-      capacity: 4,
-      amenities: [
-        "Master bedroom with king-size bed",
-        "Second bedroom with queen-size bed",
-        "Dining area",
-        "Full kitchen",
-        "Private butler service",
-        "Multiple 65-inch LED TVs",
-        "Premium sound system",
-        "Private terrace",
-        "Jacuzzi",
-        "Mini bar",
-        "Safe",
-        "Air conditioning",
-        "Free Wi-Fi"
-      ],
-      images: [
-        "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3",
-        "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
-      ]
-    }
-  ]
+interface ImageGalleryProps {
+  images: string[];
+  name: string;
+  onClose: () => void;
+}
+
+const ImageGallery: React.FC<ImageGalleryProps> = ({ images, name, onClose }) => {
+  const { theme } = useTheme();
+  return (
+    <Dialog open={true} onOpenChange={() => onClose()}>
+      <DialogContent className="sm:max-w-[825px]">
+        <DialogHeader>
+          <DialogTitle>{name} - Gallery</DialogTitle>
+          <DialogDescription>
+            All the images related to this property.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid grid-cols-3 gap-4">
+          {images.map((image, index) => (
+            <img key={index} src={image} alt={`${name} - ${index}`} className="rounded-md" />
+          ))}
+        </div>
+        <Button className="mt-4" onClick={() => onClose()}>Close</Button>
+      </DialogContent>
+    </Dialog>
+  );
 };
 
-const HotelDetails: React.FC = () => {
+interface RoomCardProps {
+  room: Room;
+  onClick: (room: Room) => void;
+}
+
+const RoomCard: React.FC<RoomCardProps> = ({ room, onClick }) => {
   const { theme } = useTheme();
+  return (
+    <div
+      className={`border rounded-lg p-4 cursor-pointer transition-shadow hover:shadow-md ${
+        theme === 'dark' ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'
+      }`}
+      onClick={() => onClick(room)}
+    >
+      <h3 className="text-lg font-semibold">{room.name}</h3>
+      <p className="text-muted-foreground">{room.description}</p>
+      <div className="mt-2 flex justify-between items-center">
+        <div>
+          <span className="text-sm">Capacity: {room.capacity}</span>
+          <span className="ml-2 text-sm">Beds: {room.beds}</span>
+        </div>
+        <span className="text-india-orange font-semibold">₹{room.price}</span>
+      </div>
+    </div>
+  );
+};
+
+const bookingSchema = z.object({
+  name: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
+  }),
+  email: z.string().email({
+    message: "Please enter a valid email address.",
+  }),
+  phone: z.string().regex(/^(\+?\d{1,4}[-.\s]?)?(\(?\d{1,}\)?[-.\s]?)?(\d{1,}[-.\s]?){1,}$/, {
+    message: "Please enter a valid phone number.",
+  }),
+  adults: z.string().refine((value) => {
+    const num = parseInt(value, 10);
+    return !isNaN(num) && num > 0;
+  }, {
+    message: "Number of adults must be greater than 0.",
+  }),
+  children: z.string().optional(),
+  checkIn: z.date({
+    required_error: "A date of checkIn is required.",
+  }),
+  checkOut: z.date({
+    required_error: "A date of checkOut is required.",
+  }),
+  message: z.string().optional(),
+})
+
+const HotelDetails = () => {
   const { hotelId } = useParams<{ hotelId: string }>();
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const { theme } = useTheme();
+  const [hotel, setHotel] = useState<Hotel | undefined>(undefined);
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
-  const [showGallery, setShowGallery] = useState(false);
-  const [galleryImages, setGalleryImages] = useState<string[]>([]);
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
+  const { toast } = useToast()
 
-  // Fetch hotel details (replace with actual data fetching)
-  const [hotel, setHotel] = useState<Hotel | null>(null);
+  const form = useForm<z.infer<typeof bookingSchema>>({
+    resolver: zodResolver(bookingSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      adults: "1",
+      children: "0",
+      checkIn: new Date(),
+      checkOut: new Date(),
+      message: "",
+    },
+  })
+
+  function onSubmit(values: z.infer<typeof bookingSchema>) {
+    toast({
+      title: "You submitted the following values:",
+      description: (
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4 font-mono text-white">
+          <code className="break-words">{JSON.stringify(values, null, 2)}</code>
+        </pre>
+      ),
+    })
+  }
 
   useEffect(() => {
-    // Simulate fetching hotel data based on hotelId
-    // In a real application, you would fetch this data from an API
-    if (hotelId === hotelData.id) {
-      setHotel(hotelData);
-    } else {
-      // Handle hotel not found
-      toast({
-        title: "Hotel Not Found",
-        description: "The requested hotel could not be found.",
-        variant: "destructive",
-      });
-      navigate('/hotels');
+    if (hotelId) {
+      const foundHotel = hotels.find(hotel => hotel.id === hotelId);
+      if (foundHotel) {
+        setHotel(foundHotel);
+      } else {
+        navigate('/hotels');
+      }
     }
-  }, [hotelId, navigate, toast]);
+  }, [hotelId, navigate]);
+
+  if (!hotel) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center h-screen">
+          <span className="loading loading-spinner text-india-orange loading-lg"></span>
+        </div>
+      </Layout>
+    );
+  }
 
   const handleRoomSelect = (room: Room) => {
     setSelectedRoom(room);
+    setSelectedImages(room.images);
   };
-
-  const handleBookNow = () => {
-    if (selectedRoom) {
-      // Implement booking logic here
-      toast({
-        title: "Booking Confirmed",
-        description: `You have booked the ${selectedRoom.name} at ${hotel?.name}.`,
-      });
-    } else {
-      toast({
-        title: "No Room Selected",
-        description: "Please select a room to book.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const openGallery = (images: string[]) => {
-    setGalleryImages(images);
-    setShowGallery(true);
-  };
-
-  const closeGallery = () => {
-    setShowGallery(false);
-  };
-
-  if (!hotel) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <Layout>
@@ -203,102 +208,320 @@ const HotelDetails: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
-        className="container mx-auto mt-8 mb-16 px-4"
+        className="max-w-5xl mx-auto px-4 py-8"
       >
-        {/* Hotel Header */}
-        <section className="mb-8">
-          <div className="mb-4">
-            <Button variant="ghost" onClick={() => navigate('/hotels')}>
-              <X className="mr-2 h-4 w-4" />
-              Back to Hotels
-            </Button>
-          </div>
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div>
-              <h1 className="text-3xl font-bold font-display">{hotel.name}</h1>
-              <div className="flex items-center text-gray-500 dark:text-gray-400">
-                <MapPin className="mr-2 h-4 w-4" />
-                {hotel.location}
+        <Button variant="ghost" onClick={() => navigate('/hotels')} className="mb-4">
+          <ChevronLeft className="mr-2 h-4 w-4" />
+          Back to Hotels
+        </Button>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div>
+            <div className="relative rounded-xl overflow-hidden shadow-md">
+              <img
+                src={hotel.image}
+                alt={hotel.name}
+                className="w-full h-64 object-cover"
+              />
+              <div className="absolute top-4 left-4">
+                <span className="inline-block px-3 py-1 bg-india-orange/90 text-white rounded-full text-sm font-medium">
+                  {hotel.rating} <Star size={14} className="inline-block align-text-top" />
+                </span>
+              </div>
+              <div className="absolute bottom-0 left-0 p-4 w-full bg-gradient-to-t from-black/80 to-transparent">
+                <h1 className="text-2xl font-bold text-white">{hotel.name}</h1>
+                <div className="flex items-center text-gray-300 mt-1">
+                  <MapPin size={16} className="mr-1" />
+                  <span>{hotel.location}, {hotel.state}</span>
+                </div>
               </div>
             </div>
-            <div className="flex items-center">
-              <span className="mr-2 text-xl font-semibold">{hotel.rating}</span>
-              <Star className="text-yellow-500 h-5 w-5" />
+
+            <div className="mt-6">
+              <h2 className="text-xl font-semibold">Hotel Overview</h2>
+              <p className="text-muted-foreground mt-2">{hotel.description}</p>
+            </div>
+
+            <div className="mt-6">
+              <h2 className="text-xl font-semibold">Amenities</h2>
+              <ul className="mt-2 list-disc list-inside text-muted-foreground">
+                {hotel.amenities.map((amenity, index) => (
+                  <li key={index}>{amenity}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mt-6">
+              <h2 className="text-xl font-semibold">Contact Information</h2>
+              <div className="mt-2 text-muted-foreground">
+                <div className="flex items-center">
+                  <Phone size={16} className="mr-2" />
+                  <span>{hotel.contact}</span>
+                </div>
+                <div className="flex items-center mt-1">
+                  <Link size={16} className="mr-2" />
+                  <a href={hotel.website} target="_blank" rel="noopener noreferrer" className="text-india-orange hover:underline">
+                    Visit Website
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline">View Gallery</Button>
+                </DialogTrigger>
+                <ImageGallery 
+                  images={hotel.images} 
+                  name={hotel.name}
+                  onClose={() => {}}
+                />
+              </Dialog>
             </div>
           </div>
-        </section>
 
-        {/* Image Gallery */}
-        <section className="mb-8">
-          <ImageGallery images={hotel.images} onImageClick={openGallery} />
-        </section>
-
-        {/* Hotel Details */}
-        <section className="mb-8 grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
-            <h2 className="text-2xl font-semibold font-display mb-4">About {hotel.name}</h2>
-            <p className="text-gray-700 dark:text-gray-300">{hotel.description}</p>
-          </div>
-          <div>
-            <h3 className="text-xl font-semibold font-display mb-4">Amenities</h3>
-            <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
-              {hotel.amenities.map((amenity, index) => (
-                <li key={index}>{amenity}</li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        {/* Room Selection */}
-        <section>
-          <h2 className="text-2xl font-semibold font-display mb-4">Rooms & Suites</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {hotel.rooms.map((room) => (
-              <RoomCard
-                key={room.id}
-                room={room}
-                selected={selectedRoom?.id === room.id}
-                onSelect={handleRoomSelect}
-              />
-            ))}
-          </div>
-        </section>
-
-        {/* Booking Section */}
-        <section className="mt-8">
-          <div className={`p-6 rounded-lg ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} shadow-md`}>
-            <h3 className="text-xl font-semibold font-display mb-4">Book Your Stay</h3>
-            {selectedRoom ? (
-              <>
-                <p className="text-gray-700 dark:text-gray-300 mb-4">
-                  You have selected the <span className="font-medium">{selectedRoom.name}</span> for ₹{selectedRoom.price.toLocaleString()} per night.
+            <div className="shadow-md rounded-xl overflow-hidden">
+              <div className="px-4 py-5 sm:px-6 bg-muted">
+                <h3 className="text-lg font-medium leading-6">Rooms & Pricing</h3>
+                <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
+                  Explore our available rooms and select the perfect one for your stay.
                 </p>
-                <Button className="w-full bg-india-orange hover:bg-india-orange/90 text-white" onClick={handleBookNow}>
-                  Book Now
-                </Button>
-              </>
-            ) : (
-              <p className="text-gray-700 dark:text-gray-300">Please select a room to book.</p>
-            )}
-          </div>
-        </section>
-
-        {/* Image Gallery Modal */}
-        {showGallery && (
-          <div className="fixed top-0 left-0 w-full h-full bg-black/80 z-50 flex items-center justify-center">
-            <div className="relative w-full max-w-4xl max-h-full">
-              <Button
-                variant="secondary"
-                size="icon"
-                className="absolute top-4 right-4 z-50"
-                onClick={closeGallery}
-              >
-                <X className="h-5 w-5" />
-              </Button>
-              <ImageGallery images={galleryImages} />
+              </div>
+              <div className="divide-y divide-gray-200 dark:divide-gray-700">
+                {hotel.rooms.map((room) => (
+                  <RoomCard
+                    key={room.id}
+                    room={{
+                      ...room,
+                      beds: room.beds || 1 // Add the missing beds property with a default value
+                    }}
+                    onClick={() => handleRoomSelect(room)}
+                  />
+                ))}
+              </div>
+              {selectedRoom && (
+                <div className="bg-white dark:bg-gray-800 px-4 py-5 sm:px-6">
+                  <h4 className="text-md font-semibold">Selected Room: {selectedRoom.name}</h4>
+                  <p className="text-muted-foreground mt-1">{selectedRoom.description}</p>
+                  <p className="text-india-orange font-semibold mt-2">Price: ₹{selectedRoom.price}</p>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button className="mt-4">View Room Images</Button>
+                    </DialogTrigger>
+                    <ImageGallery
+                      images={selectedImages} 
+                      name="Room Images"
+                      onClose={() => setSelectedImages([])}
+                    />
+                  </Dialog>
+                </div>
+              )}
+            </div>
+            <div className="mt-6 shadow-md rounded-xl overflow-hidden">
+              <div className="px-4 py-5 sm:px-6 bg-muted">
+                <h3 className="text-lg font-medium leading-6">Booking Form</h3>
+                <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
+                  Fill in your details to book your stay at {hotel.name}.
+                </p>
+              </div>
+              <div className="px-4 py-5">
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter your name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter your email" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Phone Number</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter your phone number" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <div className="flex gap-4">
+                      <FormField
+                        control={form.control}
+                        name="adults"
+                        render={({ field }) => (
+                          <FormItem className="w-1/2">
+                            <FormLabel>Adults</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => (
+                                  <SelectItem key={num} value={num.toString()}>{num}</SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="children"
+                        render={({ field }) => (
+                          <FormItem className="w-1/2">
+                            <FormLabel>Children (Optional)</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {Array.from({ length: 10 }, (_, i) => i).map((num) => (
+                                  <SelectItem key={num} value={num.toString()}>{num}</SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="flex gap-4">
+                      <FormField
+                        control={form.control}
+                        name="checkIn"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-col">
+                            <FormLabel>Check In</FormLabel>
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <FormControl>
+                                  <Button
+                                    variant={"outline"}
+                                    className={cn(
+                                      "w-[240px] pl-3 text-left font-normal",
+                                      !field.value && "text-muted-foreground"
+                                    )}
+                                  >
+                                    {field.value ? (
+                                      format(field.value, "PPP")
+                                    ) : (
+                                      <span>Pick a date</span>
+                                    )}
+                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                  </Button>
+                                </FormControl>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-auto p-0" align="start">
+                                <Calendar
+                                  mode="single"
+                                  selected={field.value}
+                                  onSelect={field.onChange}
+                                  disabled={(date) =>
+                                    date < new Date()
+                                  }
+                                  initialFocus
+                                />
+                              </PopoverContent>
+                            </Popover>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="checkOut"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-col">
+                            <FormLabel>Check Out</FormLabel>
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <FormControl>
+                                  <Button
+                                    variant={"outline"}
+                                    className={cn(
+                                      "w-[240px] pl-3 text-left font-normal",
+                                      !field.value && "text-muted-foreground"
+                                    )}
+                                  >
+                                    {field.value ? (
+                                      format(field.value, "PPP")
+                                    ) : (
+                                      <span>Pick a date</span>
+                                    )}
+                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                  </Button>
+                                </FormControl>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-auto p-0" align="start">
+                                <Calendar
+                                  mode="single"
+                                  selected={field.value}
+                                  onSelect={field.onChange}
+                                  disabled={(date) =>
+                                    date < new Date()
+                                  }
+                                  initialFocus
+                                />
+                              </PopoverContent>
+                            </Popover>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <FormField
+                      control={form.control}
+                      name="message"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Message (Optional)</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Enter any special requests or questions"
+                              className="resize-none"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <Button type="submit">Book Now</Button>
+                  </form>
+                </Form>
+              </div>
             </div>
           </div>
-        )}
+        </div>
       </motion.div>
     </Layout>
   );
