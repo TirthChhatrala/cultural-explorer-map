@@ -4,6 +4,17 @@ import { states } from '../data/states';
 import { useTheme } from '../context/ThemeContext';
 import { Route, Navigation } from 'lucide-react';
 
+// Extend the State type to include centroids for route visualization
+interface State {
+  id: string;
+  name: string;
+  path: string;
+  centroid?: {
+    x: number;
+    y: number;
+  };
+}
+
 interface MapProps {
   onStateHover: (stateId: string | null) => void;
   onStateClick: (stateId: string) => void;
@@ -31,7 +42,7 @@ const Map: React.FC<MapProps> = ({
     
     // Get centroids for selected states
     const stateCentroids = selectedStates.map(stateId => {
-      const state = states.find(s => s.id === stateId);
+      const state = states.find(s => s.id === stateId) as State | undefined;
       if (!state || !state.centroid) return null;
       return { id: stateId, x: state.centroid.x, y: state.centroid.y };
     }).filter(Boolean);
