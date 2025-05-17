@@ -8,7 +8,7 @@ import { trips } from '../data/tripData';
 import { states } from '../data/states';
 import TripCard from '../components/trips/TripCard';
 import TripFilter from '../components/trips/TripFilter';
-import { Bed, Crown, Diamond, Beach, Mountain, Church, Tent, Wallet, Suitcase, Landmark, TreeDeciduous } from 'lucide-react';
+import { Tent, Wallet, Map, Crown, Diamond, Church, Mountain, Ticket, TreeDeciduous, Landmark } from 'lucide-react';
 
 // Define trip categories with icons and descriptions
 const tripCategories = [
@@ -16,7 +16,7 @@ const tripCategories = [
     id: 'Small',
     title: 'Small Trip',
     description: 'Quick getaways perfect for busy schedules',
-    icon: Suitcase,
+    icon: Ticket,
     color: 'bg-blue-500'
   },
   {
@@ -58,7 +58,7 @@ const tripCategories = [
     id: 'Beach',
     title: 'Beach Vacation',
     description: 'Relax on India\'s beautiful coastal shores',
-    icon: Beach,
+    icon: Map,
     color: 'bg-cyan-500'
   },
   {

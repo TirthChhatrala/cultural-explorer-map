@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { MapPin, Info, Newspaper, Calendar, Users, User, Shield, LogOut, Settings } from 'lucide-react';
+import { MapPin, Info, Newspaper, Calendar, Users, Shield, User, LogOut, Settings, Map } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../hooks/use-toast';
@@ -75,6 +75,7 @@ const Header = () => {
           <NavLink to="/festivals" label="Festivals & Events" icon={<Calendar className="w-4 h-4" />} active={location.pathname === '/festivals'} />
           <NavLink to="/political-parties" label="Political Parties" icon={<Users className="w-4 h-4" />} active={location.pathname === '/political-parties'} />
           <NavLink to="/freedom-fighters" label="Freedom Fighters" icon={<Shield className="w-4 h-4" />} active={location.pathname === '/freedom-fighters'} />
+          <NavLink to="/trips" label="Trips" icon={<Map className="w-4 h-4" />} active={location.pathname === '/trips'} />
         </nav>
         
         <div className="hidden md:flex items-center space-x-4">
@@ -179,6 +180,7 @@ const Header = () => {
             <MobileNavLink to="/festivals" label="Festivals & Events" icon={<Calendar className="w-5 h-5" />} active={location.pathname === '/festivals'} onClick={() => setMobileMenuOpen(false)} />
             <MobileNavLink to="/political-parties" label="Political Parties" icon={<Users className="w-5 h-5" />} active={location.pathname === '/political-parties'} onClick={() => setMobileMenuOpen(false)} />
             <MobileNavLink to="/freedom-fighters" label="Freedom Fighters" icon={<Shield className="w-5 h-5" />} active={location.pathname === '/freedom-fighters'} onClick={() => setMobileMenuOpen(false)} />
+            <MobileNavLink to="/trips" label="Trips" icon={<Map className="w-5 h-5" />} active={location.pathname === '/trips'} onClick={() => setMobileMenuOpen(false)} />
             
             <div className="pt-3 border-t border-gray-200 flex space-x-4">
               {isAuthenticated ? (
