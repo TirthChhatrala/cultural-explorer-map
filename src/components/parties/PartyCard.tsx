@@ -1,7 +1,21 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { MapPin } from 'lucide-react';
+import { MapPin, Flag, Users, Calendar, Award } from 'lucide-react';
+import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from "../ui/table";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger
+} from "@/components/ui/tabs";
 
 interface PartyCardProps {
   name: string;
@@ -13,6 +27,14 @@ interface PartyCardProps {
   logo: string;
   color: string;
   states: string[];
+  type: 'national' | 'state' | 'regional';
+  historicalDetails?: string;
+  achievements?: string[];
+  currentRepresentation?: {
+    loksabha?: number;
+    rajyasabha?: number;
+    stateAssemblies?: number;
+  };
   delay?: number;
   theme: 'dark' | 'light';
 }
@@ -27,9 +49,15 @@ const PartyCard: React.FC<PartyCardProps> = ({
   logo,
   color,
   states,
+  type,
+  historicalDetails,
+  achievements,
+  currentRepresentation,
   delay = 0,
   theme
 }) => {
+  const [expanded, setExpanded] = useState(false);
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
@@ -58,6 +86,15 @@ const PartyCard: React.FC<PartyCardProps> = ({
               <div className="mt-2 text-sm text-muted-foreground">
                 <p>Founded: {founded}</p>
               </div>
+              <div className="mt-2">
+                <span className={`inline-block px-2 py-1 text-xs rounded-full ${
+                  theme === 'dark' 
+                    ? 'bg-gray-700 text-gray-300' 
+                    : 'bg-gray-100 text-gray-700'
+                }`}>
+                  {type.charAt(0).toUpperCase() + type.slice(1)} Party
+                </span>
+              </div>
             </div>
           </div>
           
@@ -75,7 +112,7 @@ const PartyCard: React.FC<PartyCardProps> = ({
             
             <p className="text-muted-foreground mb-4">{description}</p>
             
-            <div>
+            <div className="mb-4">
               <span className="text-sm font-medium flex items-center gap-1 mb-2">
                 <MapPin className="w-4 h-4" /> Prominent in:
               </span>
@@ -94,6 +131,92 @@ const PartyCard: React.FC<PartyCardProps> = ({
                 ))}
               </div>
             </div>
+            
+            <button
+              onClick={() => setExpanded(!expanded)}
+              className={`w-full px-4 py-2 text-center rounded-md mt-2 transition-colors ${
+                theme === 'dark'
+                  ? 'bg-gray-700 hover:bg-gray-600 text-white'
+                  : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
+              }`}
+            >
+              {expanded ? 'Show Less' : 'Show More Details'}
+            </button>
+            
+            {expanded && (
+              <div className="mt-4 border-t pt-4">
+                <Tabs defaultValue="historical">
+                  <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="historical">Historical Details</TabsTrigger>
+                    <TabsTrigger value="current">Current Representation</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="historical" className="mt-4">
+                    <div className="space-y-4">
+                      {historicalDetails && (
+                        <div>
+                          <span className="text-sm font-medium flex items-center gap-1 mb-2">
+                            <Calendar className="w-4 h-4" /> History:
+                          </span>
+                          <p className="text-muted-foreground text-sm">{historicalDetails}</p>
+                        </div>
+                      )}
+                      
+                      {achievements && achievements.length > 0 && (
+                        <div>
+                          <span className="text-sm font-medium flex items-center gap-1 mb-2">
+                            <Award className="w-4 h-4" /> Key Achievements:
+                          </span>
+                          <ul className="list-disc pl-5 text-sm text-muted-foreground">
+                            {achievements.map((achievement, index) => (
+                              <li key={index}>{achievement}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  </TabsContent>
+                  <TabsContent value="current" className="mt-4">
+                    {currentRepresentation ? (
+                      <div className="space-y-4">
+                        <span className="text-sm font-medium flex items-center gap-1 mb-2">
+                          <Users className="w-4 h-4" /> Current Representation:
+                        </span>
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Legislature</TableHead>
+                              <TableHead className="text-right">Seats</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {currentRepresentation.loksabha !== undefined && (
+                              <TableRow>
+                                <TableCell>Lok Sabha</TableCell>
+                                <TableCell className="text-right">{currentRepresentation.loksabha}</TableCell>
+                              </TableRow>
+                            )}
+                            {currentRepresentation.rajyasabha !== undefined && (
+                              <TableRow>
+                                <TableCell>Rajya Sabha</TableCell>
+                                <TableCell className="text-right">{currentRepresentation.rajyasabha}</TableCell>
+                              </TableRow>
+                            )}
+                            {currentRepresentation.stateAssemblies !== undefined && (
+                              <TableRow>
+                                <TableCell>State Assemblies</TableCell>
+                                <TableCell className="text-right">{currentRepresentation.stateAssemblies}</TableCell>
+                              </TableRow>
+                            )}
+                          </TableBody>
+                        </Table>
+                      </div>
+                    ) : (
+                      <p className="text-muted-foreground text-sm">No current representation data available.</p>
+                    )}
+                  </TabsContent>
+                </Tabs>
+              </div>
+            )}
           </div>
         </div>
       </div>
