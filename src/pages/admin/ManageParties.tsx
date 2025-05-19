@@ -29,6 +29,7 @@ const ManageParties = () => {
   const [logo, setLogo] = useState('');
   const [color, setColor] = useState('#FF0000');
   const [selectedStates, setSelectedStates] = useState<string[]>([]);
+  const [partyType, setPartyType] = useState<'national' | 'state' | 'regional'>('national');
   
   const [editPartyId, setEditPartyId] = useState<number | null>(null);
   
@@ -43,7 +44,8 @@ const ManageParties = () => {
       description: "The Bharatiya Janata Party is one of the two major political parties in India, along with the Indian National Congress.",
       logo: "/lovable-uploads/87e03e01-1cae-414e-8e9d-f0e1eb9b6b92.png",
       color: "#FF9933",
-      states: ["gujarat", "uttar-pradesh", "madhya-pradesh"]
+      states: ["gujarat", "uttar-pradesh", "madhya-pradesh"],
+      type: "national"
     },
     {
       id: 2,
@@ -55,7 +57,8 @@ const ManageParties = () => {
       description: "The Indian National Congress is a political party that was dominant in India from independence until the 1990s.",
       logo: "/lovable-uploads/87e03e01-1cae-414e-8e9d-f0e1eb9b6b92.png",
       color: "#0078D7",
-      states: ["rajasthan", "punjab", "karnataka"]
+      states: ["rajasthan", "punjab", "karnataka"],
+      type: "national"
     }
   ]);
 
@@ -83,6 +86,7 @@ const ManageParties = () => {
         setLogo(partyToEdit.logo);
         setColor(partyToEdit.color);
         setSelectedStates(partyToEdit.states);
+        setPartyType(partyToEdit.type);
       }
     }
   }, [editPartyId, parties]);
@@ -114,7 +118,8 @@ const ManageParties = () => {
               description,
               logo,
               color,
-              states: selectedStates
+              states: selectedStates,
+              type: partyType
             };
           }
           return party;
@@ -137,7 +142,8 @@ const ManageParties = () => {
         description,
         logo,
         color,
-        states: selectedStates
+        states: selectedStates,
+        type: partyType
       };
       
       setParties([...parties, newParty]);
@@ -162,6 +168,7 @@ const ManageParties = () => {
     setLogo('');
     setColor('#FF0000');
     setSelectedStates([]);
+    setPartyType('national');
     setEditPartyId(null);
   };
 
@@ -281,6 +288,20 @@ const ManageParties = () => {
                       required
                     />
                   </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Party Type</label>
+                  <select
+                    value={partyType}
+                    onChange={(e) => setPartyType(e.target.value as 'national' | 'state' | 'regional')}
+                    className="w-full rounded-md border border-input bg-transparent px-3 py-2"
+                    required
+                  >
+                    <option value="national">National</option>
+                    <option value="state">State</option>
+                    <option value="regional">Regional</option>
+                  </select>
                 </div>
                 
                 <div className="space-y-2">

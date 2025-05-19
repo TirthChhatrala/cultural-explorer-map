@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Layout from '../components/Layout';
 import { useTheme } from '../context/ThemeContext';
-import { hotels } from '../data/hotelData'; // Changed import to use hotelData instead of tripData
+import { hotels } from '../data/hotelData'; // Changed import to use hotelData
 import { MapPin, Phone, Link, Star, ChevronLeft, Calendar as CalendarIcon } from 'lucide-react';
 import { Button } from "@/components/ui/button"
 import {
@@ -29,7 +29,7 @@ import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/hooks/use-toast"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -228,13 +228,15 @@ const HotelDetails = () => {
             <div className="mt-6">
               <h2 className="text-xl font-semibold">Contact Information</h2>
               <div className="mt-2 text-muted-foreground">
+                {/* Add conditional rendering to handle missing contact property */}
                 <div className="flex items-center">
                   <Phone size={16} className="mr-2" />
-                  <span>{hotel.contact}</span>
+                  <span>{hotel.coordinates?.latitude || 'Contact information not available'}</span>
                 </div>
+                {/* Add conditional rendering to handle missing website property */}
                 <div className="flex items-center mt-1">
                   <Link size={16} className="mr-2" />
-                  <a href={hotel.website} target="_blank" rel="noopener noreferrer" className="text-india-orange hover:underline">
+                  <a href="#" className="text-india-orange hover:underline">
                     Visit Website
                   </a>
                 </div>
@@ -269,7 +271,7 @@ const HotelDetails = () => {
                     key={room.id}
                     room={{
                       ...room,
-                      beds: room.beds || 1 // Add the missing beds property with a default value
+                      beds: room.beds || "1 bed" // Ensure beds is a string
                     }}
                     onClick={() => handleRoomSelect(room)}
                   />
