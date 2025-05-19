@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { 
   MapPin, Info, Newspaper, Calendar, Users, User, 
   Shield, LogOut, Plus, Edit, Trash, Image, Upload,
-  Percent // Added for trips management
+  Percent, Utensils, CloudSun, Shirt, Landmark, Book
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
@@ -79,6 +79,46 @@ const AdminDashboard = () => {
       icon: <Percent size={24} />,
       link: "/admin/trips",
       action: "Manage Trips"
+    },
+    {
+      title: "Cultural Information",
+      description: "Manage cultural and local information content",
+      icon: <Book size={24} />,
+      link: "/cultural-information",
+      action: "Manage Content"
+    }
+  ];
+
+  const culturalSections = [
+    {
+      title: "Cuisine & Food",
+      description: "Manage information about regional cuisines",
+      icon: <Utensils size={24} />,
+      link: "/cuisine-food",
+    },
+    {
+      title: "Tourist Attractions",
+      description: "Update tourist attraction details",
+      icon: <MapPin size={24} />,
+      link: "/tourist-attractions",
+    },
+    {
+      title: "Weather Patterns",
+      description: "Edit regional climate information",
+      icon: <CloudSun size={24} />,
+      link: "/weather-patterns",
+    },
+    {
+      title: "Traditional Clothing",
+      description: "Manage data about regional attire",
+      icon: <Shirt size={24} />,
+      link: "/traditional-clothing",
+    },
+    {
+      title: "Historical Sites",
+      description: "Edit information about historical monuments",
+      icon: <Landmark size={24} />,
+      link: "/historical-sites",
     }
   ];
 
@@ -173,6 +213,34 @@ const AdminDashboard = () => {
             </motion.div>
           ))}
         </div>
+
+        <section className="mb-16">
+          <h2 className="text-2xl font-display font-semibold mb-6">Cultural Information Sections</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {culturalSections.map((section, index) => (
+              <motion.div
+                key={section.title}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                onClick={() => navigate(section.link)}
+                className={`cursor-pointer p-4 rounded-xl flex flex-col items-center text-center ${
+                  theme === 'dark' 
+                    ? 'bg-gray-800 hover:bg-gray-700 border border-gray-700' 
+                    : 'bg-white hover:bg-gray-50 border border-gray-200'
+                } transition-all duration-300 shadow-sm hover:shadow`}
+              >
+                <div className={`w-10 h-10 mb-3 rounded-full flex items-center justify-center ${
+                  theme === 'dark' ? 'bg-gray-700 text-red-400' : 'bg-red-500/10 text-red-500'
+                }`}>
+                  {section.icon}
+                </div>
+                <h3 className="font-semibold mb-1">{section.title}</h3>
+                <p className="text-xs text-muted-foreground">{section.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </section>
 
         <section className="mb-16">
           <div className={`rounded-xl p-8 ${

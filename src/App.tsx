@@ -32,6 +32,12 @@ import ManageTrips from "./pages/admin/ManageTrips";
 import CustomTrip from "./pages/CustomTrip";
 import Hotels from "./pages/Hotels";
 import HotelDetails from "./pages/HotelDetails";
+import CulturalInformation from "./pages/CulturalInformation";
+import CuisineFood from "./pages/CuisineFood";
+import TouristAttractions from "./pages/TouristAttractions";
+import WeatherPatterns from "./pages/WeatherPatterns";
+import TraditionalClothing from "./pages/TraditionalClothing";
+import HistoricalSites from "./pages/HistoricalSites";
 
 const queryClient = new QueryClient();
 
@@ -60,6 +66,12 @@ const App = () => (
                 <Route path="/custom-trip" element={<CustomTrip />} />
                 <Route path="/hotels" element={<Hotels />} />
                 <Route path="/hotels/:hotelId" element={<HotelDetails />} />
+                <Route path="/cultural-information" element={<CulturalInformation />} />
+                <Route path="/cuisine-food" element={<CuisineFood />} />
+                <Route path="/tourist-attractions" element={<TouristAttractions />} />
+                <Route path="/weather-patterns" element={<WeatherPatterns />} />
+                <Route path="/traditional-clothing" element={<TraditionalClothing />} />
+                <Route path="/historical-sites" element={<HistoricalSites />} />
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/states" element={<ManageStates />} />
                 <Route path="/admin/news" element={<ManageNews />} />

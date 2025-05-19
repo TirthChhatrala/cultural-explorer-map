@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   MapPin, Info, Newspaper, Calendar, Users, Shield, User, 
-  LogOut, Utensils, Camera, Sun, Shirt, Book, Landmark 
+  LogOut, Utensils, CloudSun, Shirt, Landmark, Book 
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
@@ -74,46 +74,46 @@ const Dashboard = () => {
       category: "main"
     },
     {
+      title: "Cultural Information",
+      description: "Explore India's diverse cultural heritage",
+      icon: <Book size={24} />,
+      link: "/cultural-information",
+      category: "main"
+    },
+    {
       title: "Cuisine & Food",
       description: "Explore regional delicacies and traditional foods",
       icon: <Utensils size={24} />,
-      link: "/cuisine",
-      category: "coming-soon"
+      link: "/cuisine-food",
+      category: "cultural"
     },
     {
       title: "Tourist Attractions",
       description: "Discover beautiful places to visit across India",
-      icon: <Camera size={24} />,
-      link: "/attractions",
-      category: "coming-soon"
+      icon: <MapPin size={24} />,
+      link: "/tourist-attractions",
+      category: "cultural"
     },
     {
       title: "Weather Patterns",
       description: "Real-time weather data for all Indian states",
-      icon: <Sun size={24} />,
-      link: "/weather",
-      category: "coming-soon"
+      icon: <CloudSun size={24} />,
+      link: "/weather-patterns",
+      category: "cultural"
     },
     {
       title: "Traditional Clothing",
       description: "Explore the diverse traditional attire of India",
       icon: <Shirt size={24} />,
-      link: "/clothing",
-      category: "coming-soon"
-    },
-    {
-      title: "Cultural Heritage",
-      description: "Discover India's rich cultural history and traditions",
-      icon: <Book size={24} />,
-      link: "/culture",
-      category: "coming-soon"
+      link: "/traditional-clothing",
+      category: "cultural"
     },
     {
       title: "Historical Sites",
       description: "Explore famous historical monuments and places",
       icon: <Landmark size={24} />,
       link: "/historical-sites",
-      category: "coming-soon"
+      category: "cultural"
     }
   ];
 
@@ -174,7 +174,7 @@ const Dashboard = () => {
           </div>
         </section>
         
-        <h2 className="text-2xl font-display font-semibold mb-6">Available Sections</h2>
+        <h2 className="text-2xl font-display font-semibold mb-6">Main Sections</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {pageLinks.filter(page => page.category === "main").map((page, index) => (
             <motion.div
@@ -203,33 +203,31 @@ const Dashboard = () => {
           ))}
         </div>
         
-        <h2 className="text-2xl font-display font-semibold mb-6">Coming Soon</h2>
+        <h2 className="text-2xl font-display font-semibold mb-6">Cultural Sections</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {pageLinks.filter(page => page.category === "coming-soon").map((page, index) => (
+          {pageLinks.filter(page => page.category === "cultural").map((page, index) => (
             <motion.div
               key={page.title}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <div 
+              <Link 
+                to={page.link}
                 className={`block h-full p-6 rounded-xl ${
                   theme === 'dark' 
-                    ? 'bg-gray-800 border border-gray-700 opacity-70' 
-                    : 'bg-white border border-gray-200 opacity-70'
-                } transition-all duration-300 shadow-sm`}
+                    ? 'bg-gray-800 hover:bg-gray-700 border border-gray-700' 
+                    : 'bg-white hover:bg-gray-50 border border-gray-200'
+                } transition-all duration-300 shadow-sm hover:shadow`}
               >
                 <div className={`w-12 h-12 mb-4 rounded-full flex items-center justify-center ${
-                  theme === 'dark' ? 'bg-gray-700 text-gray-400' : 'bg-gray-200 text-gray-500'
+                  theme === 'dark' ? 'bg-gray-700 text-india-orange' : 'bg-india-orange/10 text-india-orange'
                 }`}>
                   {page.icon}
                 </div>
                 <h3 className="text-xl font-display font-semibold mb-2">{page.title}</h3>
                 <p className="text-muted-foreground">{page.description}</p>
-                <div className="mt-3 inline-block px-3 py-1 text-xs rounded-full bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300">
-                  Coming Soon
-                </div>
-              </div>
+              </Link>
             </motion.div>
           ))}
         </div>
