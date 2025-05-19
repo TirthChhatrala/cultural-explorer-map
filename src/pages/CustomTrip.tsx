@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -40,7 +39,7 @@ const transportOptions = [
 
 const CustomTrip = () => {
   const { theme } = useTheme();
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   
@@ -62,13 +61,14 @@ const CustomTrip = () => {
   const [activeTab, setActiveTab] = useState('destinations');
   
   useEffect(() => {
-    if (!user) {
+    // Enforce login requirement
+    if (!isAuthenticated) {
       toast({
         title: 'Authentication required',
         description: 'Please log in to create a custom trip',
         variant: 'destructive',
       });
-      navigate('/login');
+      navigate('/login', { replace: true });
       return;
     }
     
@@ -82,7 +82,7 @@ const CustomTrip = () => {
     
     setStartDate(twoWeeksFromNow);
     setEndDate(threeWeeksFromNow);
-  }, [user, navigate, toast]);
+  }, [isAuthenticated, navigate, toast]);
   
   const handleStateSelection = (stateId: string) => {
     setSelectedStates(prevStates => {
@@ -154,8 +154,9 @@ const CustomTrip = () => {
     const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   };
-  
-  if (!user) return null;
+
+  // Return null if not authenticated
+  if (!isAuthenticated) return null;
   
   return (
     <Layout>

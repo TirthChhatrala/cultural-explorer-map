@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Layout from '../components/Layout';
@@ -8,6 +7,8 @@ import { trips } from '../data/tripData';
 import { states } from '../data/states';
 import TripCard from '../components/trips/TripCard';
 import TripFilter from '../components/trips/TripFilter';
+import { useAuth } from '../context/AuthContext';
+import { useToast } from '../hooks/use-toast';
 import { Tent, Wallet, Map, Crown, Diamond, Church, Mountain, Ticket, TreeDeciduous, Landmark } from 'lucide-react';
 
 // Define trip categories with icons and descriptions
@@ -87,6 +88,8 @@ const tripCategories = [
 const Trips = () => {
   const { theme } = useTheme();
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  const { toast } = useToast();
   
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -124,6 +127,20 @@ const Trips = () => {
     return matchesSearch && matchesCategory && matchesState && matchesDuration && matchesPrice;
   });
 
+  // Handler for the Create Custom Trip button
+  const handleCreateCustomTrip = () => {
+    if (!isAuthenticated) {
+      toast({
+        title: 'Authentication required',
+        description: 'Please log in to create a custom trip',
+        variant: 'destructive',
+      });
+      navigate('/login');
+    } else {
+      navigate('/custom-trip');
+    }
+  };
+
   // Get trips by category for the category view
   const getTripsByCategory = (categoryId: string) => {
     return trips.filter(trip => trip.category === categoryId);
@@ -152,7 +169,7 @@ const Trips = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="px-6 py-3 bg-india-orange text-white rounded-lg shadow-md hover:bg-india-orange/90 transition-colors"
-                onClick={() => navigate('/custom-trip')}
+                onClick={handleCreateCustomTrip}
               >
                 Create Custom Trip
               </motion.button>
