@@ -4,7 +4,8 @@ import Layout from '../components/Layout';
 import { motion } from 'framer-motion';
 import { 
   MapPin, Info, Newspaper, Calendar, Users, User, 
-  Shield, LogOut, Plus, Edit, Trash, Image, Upload
+  Shield, LogOut, Plus, Edit, Trash, Image, Upload,
+  Percent // Added for trips management
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
@@ -71,6 +72,13 @@ const AdminDashboard = () => {
       icon: <Shield size={24} />,
       link: "/admin/freedom-fighters",
       action: "Manage Profiles"
+    },
+    {
+      title: "Trip Management",
+      description: "Manage trip requests, packages and discounts",
+      icon: <Percent size={24} />,
+      link: "/admin/trips",
+      action: "Manage Trips"
     }
   ];
 
