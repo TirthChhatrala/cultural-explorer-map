@@ -6,7 +6,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import { CustomTripRequest } from '../data/tripData';
-import { Check, X, Clock, Loader, Circle } from 'lucide-react';
+import { Check, X, Clock, Loader, Circle, User, Calendar, MapPin } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import {
@@ -32,6 +32,31 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 
+interface TravelerInfo {
+  name: string;
+  age: string;
+  gender: string;
+  idType: string;
+  idNumber: string;
+}
+
+interface Booking {
+  bookingId: string;
+  tripId: string;
+  tripTitle: string;
+  userEmail: string;
+  userName: string;
+  phone: string;
+  travelers: number;
+  travelDate: string;
+  bookingDate: string;
+  travelerDetails?: TravelerInfo[];
+  customizations?: string[];
+  notes?: string;
+  totalCost: number;
+  status: string;
+}
+
 const MyTrips = () => {
   const { theme } = useTheme();
   const { user, isAuthenticated } = useAuth();
@@ -40,9 +65,11 @@ const MyTrips = () => {
   
   const [activeTab, setActiveTab] = useState<'requests' | 'bookings'>('requests');
   const [tripRequests, setTripRequests] = useState<CustomTripRequest[]>([]);
-  const [bookedTrips, setBookedTrips] = useState<any[]>([]);
+  const [bookedTrips, setBookedTrips] = useState<Booking[]>([]);
   const [selectedTrip, setSelectedTrip] = useState<CustomTripRequest | null>(null);
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [bookingDetailsOpen, setBookingDetailsOpen] = useState(false);
 
   // Load trip data from localStorage
   useEffect(() => {
@@ -54,7 +81,7 @@ const MyTrips = () => {
       
       // Load booked trips (regular package trips)
       const allBookings = JSON.parse(localStorage.getItem('bookedTrips') || '[]');
-      const userBookings = allBookings.filter((booking: any) => booking.userEmail === user.email);
+      const userBookings = allBookings.filter((booking: Booking) => booking.userEmail === user.email);
       setBookedTrips(userBookings);
     }
   }, [isAuthenticated, user]);
@@ -146,6 +173,12 @@ const MyTrips = () => {
     setSelectedTrip(trip);
     setDetailsOpen(true);
   };
+  
+  // View booking details
+  const viewBookingDetails = (booking: Booking) => {
+    setSelectedBooking(booking);
+    setBookingDetailsOpen(true);
+  };
 
   // Render trip request cards
   const renderTripRequests = () => {
@@ -228,7 +261,7 @@ const MyTrips = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {bookedTrips.map((booking, index) => (
           <motion.div
-            key={index}
+            key={booking.bookingId || index}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -249,26 +282,33 @@ const MyTrips = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">Travel Date</p>
-                    <p>{formatDate(booking.travelDate)}</p>
+                  <div className="flex gap-2 items-center">
+                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                    <p><span className="text-sm font-medium text-muted-foreground">Travel Date:</span> {formatDate(booking.travelDate)}</p>
                   </div>
-                  <div className="flex justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-muted-foreground">Travelers</p>
-                      <p>{booking.travelers}</p>
-                    </div>
-                    <div>
+                  <div className="flex gap-2 items-center">
+                    <User className="h-4 w-4 text-muted-foreground" />
+                    <p><span className="text-sm font-medium text-muted-foreground">Travelers:</span> {booking.travelers}</p>
+                  </div>
+                  <div className="mt-2 pt-2 border-t">
+                    <div className="flex justify-between items-center">
                       <p className="text-sm font-medium text-muted-foreground">Total Cost</p>
-                      <p>₹{booking.totalCost.toLocaleString()}</p>
+                      <p className="font-semibold">₹{booking.totalCost.toLocaleString()}</p>
                     </div>
                   </div>
                 </div>
               </CardContent>
-              <CardFooter>
+              <CardFooter className="flex gap-2">
                 <Button
                   variant="outline"
-                  className="w-full"
+                  className="flex-1"
+                  onClick={() => viewBookingDetails(booking)}
+                >
+                  View Details
+                </Button>
+                <Button
+                  variant="default"
+                  className="flex-1"
                   onClick={() => navigate(`/trips/${booking.tripId}`)}
                 >
                   View Trip
@@ -317,7 +357,7 @@ const MyTrips = () => {
           </TabsContent>
         </Tabs>
 
-        {/* Trip details dialog */}
+        {/* Trip requests details dialog */}
         <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
           <DialogContent className="sm:max-w-lg">
             <DialogHeader>
@@ -405,6 +445,117 @@ const MyTrips = () => {
                     </p>
                   </div>
                 )}
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
+        
+        {/* Booked trips details dialog */}
+        <Dialog open={bookingDetailsOpen} onOpenChange={setBookingDetailsOpen}>
+          <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Booking Details</DialogTitle>
+              <DialogDescription>
+                Your trip booking information
+              </DialogDescription>
+            </DialogHeader>
+            {selectedBooking && (
+              <div className="space-y-5">
+                <div>
+                  <h3 className="text-lg font-semibold">{selectedBooking.tripTitle}</h3>
+                  <div className="flex items-center text-sm text-muted-foreground mt-1">
+                    <Calendar className="h-4 w-4 mr-1" />
+                    <p>Booked on {formatDate(selectedBooking.bookingDate)}</p>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <h4 className="text-sm font-medium text-muted-foreground">Booking ID</h4>
+                    <p>{selectedBooking.bookingId}</p>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-medium text-muted-foreground">Status</h4>
+                    <Badge variant="outline" className="bg-green-100 text-green-800 border-green-300 dark:bg-green-900/30 dark:text-green-500 dark:border-green-800">
+                      {selectedBooking.status}
+                    </Badge>
+                  </div>
+                </div>
+                
+                <div>
+                  <h4 className="text-sm font-medium text-muted-foreground mb-1">Travel Date</h4>
+                  <p>{formatDate(selectedBooking.travelDate)}</p>
+                </div>
+                
+                <div>
+                  <h4 className="text-sm font-medium text-muted-foreground mb-2">Traveler Details</h4>
+                  <div className="space-y-4">
+                    {selectedBooking.travelerDetails ? (
+                      selectedBooking.travelerDetails.map((traveler, index) => (
+                        <div key={index} className="p-3 border rounded-md">
+                          <div className="flex justify-between mb-2">
+                            <h5 className="font-medium text-sm">{index === 0 ? 'Primary Traveler' : `Traveler ${index + 1}`}</h5>
+                            <Badge variant="outline">{traveler.gender}</Badge>
+                          </div>
+                          <div className="grid grid-cols-2 gap-y-2 text-sm">
+                            <div>
+                              <span className="text-muted-foreground">Name:</span> {traveler.name}
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground">Age:</span> {traveler.age}
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground">ID:</span> {traveler.idType}
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground">ID Number:</span> {traveler.idNumber.slice(0, 4)}****
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="flex gap-2">
+                        <User className="h-4 w-4 text-muted-foreground" />
+                        <p>{selectedBooking.travelers} travelers</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+                {selectedBooking.customizations && selectedBooking.customizations.length > 0 && (
+                  <div>
+                    <h4 className="text-sm font-medium text-muted-foreground mb-1">Selected Customizations</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedBooking.customizations.map(custom => (
+                        <Badge key={custom} variant="secondary">{custom.replace(/-/g, ' ')}</Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                {selectedBooking.notes && (
+                  <div>
+                    <h4 className="text-sm font-medium text-muted-foreground mb-1">Special Requests</h4>
+                    <p className="text-sm">{selectedBooking.notes}</p>
+                  </div>
+                )}
+                
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="text-sm font-medium mb-2">Payment Summary</h4>
+                  <div className="flex justify-between font-semibold">
+                    <span>Total Amount</span>
+                    <span>₹{selectedBooking.totalCost.toLocaleString()}</span>
+                  </div>
+                </div>
+                
+                <div className="flex justify-center pt-2">
+                  <Button 
+                    onClick={() => navigate(`/trips/${selectedBooking.tripId}`)}
+                    variant="default"
+                  >
+                    View Trip Details
+                  </Button>
+                </div>
               </div>
             )}
           </DialogContent>
