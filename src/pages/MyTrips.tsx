@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
@@ -6,7 +5,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import { CustomTripRequest } from '../data/tripData';
-import { Check, X, Clock, Loader, Circle, User, Calendar, MapPin } from 'lucide-react';
+import { Check, X, Clock, Loader, Circle, User, Calendar, MapPin, Building, Heart } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import {
@@ -40,6 +39,14 @@ interface TravelerInfo {
   idNumber: string;
 }
 
+interface TripPreferences {
+  accommodationPreference?: string;
+  dietaryRestrictions?: string[];
+  travelPace?: string;
+  activities?: string[];
+  specialRequests?: string;
+}
+
 interface Booking {
   bookingId: string;
   tripId: string;
@@ -52,6 +59,7 @@ interface Booking {
   bookingDate: string;
   travelerDetails?: TravelerInfo[];
   customizations?: string[];
+  preferences?: TripPreferences;
   notes?: string;
   totalCost: number;
   status: string;
@@ -214,14 +222,20 @@ const MyTrips = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">Destinations</p>
-                    <p>{getStateNames(trip.states)}</p>
+                  <div className="flex gap-2 items-center">
+                    <MapPin className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">Destinations</p>
+                      <p>{getStateNames(trip.states)}</p>
+                    </div>
                   </div>
                   <div className="flex justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-muted-foreground">Dates</p>
-                      <p>{formatDate(trip.startDate)} - {formatDate(trip.endDate)}</p>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4 text-muted-foreground" />
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">Dates</p>
+                        <p>{formatDate(trip.startDate)} - {formatDate(trip.endDate)}</p>
+                      </div>
                     </div>
                     <div>
                       <p className="text-sm font-medium text-muted-foreground">Budget</p>
@@ -290,6 +304,17 @@ const MyTrips = () => {
                     <User className="h-4 w-4 text-muted-foreground" />
                     <p><span className="text-sm font-medium text-muted-foreground">Travelers:</span> {booking.travelers}</p>
                   </div>
+                  
+                  {booking.preferences?.accommodationPreference && (
+                    <div className="flex gap-2 items-center">
+                      <Building className="h-4 w-4 text-muted-foreground" />
+                      <p>
+                        <span className="text-sm font-medium text-muted-foreground">Accommodation:</span> {' '}
+                        <span className="capitalize">{booking.preferences.accommodationPreference}</span>
+                      </p>
+                    </div>
+                  )}
+                  
                   <div className="mt-2 pt-2 border-t">
                     <div className="flex justify-between items-center">
                       <p className="text-sm font-medium text-muted-foreground">Total Cost</p>
@@ -486,6 +511,62 @@ const MyTrips = () => {
                   <h4 className="text-sm font-medium text-muted-foreground mb-1">Travel Date</h4>
                   <p>{formatDate(selectedBooking.travelDate)}</p>
                 </div>
+                
+                {selectedBooking.preferences && (
+                  <div className="space-y-3 p-3 border rounded-md">
+                    <h4 className="text-sm font-medium flex items-center mb-1">
+                      <Heart className="h-4 w-4 mr-1" />
+                      Trip Preferences
+                    </h4>
+                    
+                    {selectedBooking.preferences.accommodationPreference && (
+                      <div className="flex justify-between">
+                        <span className="text-sm text-muted-foreground">Accommodation:</span>
+                        <span className="text-sm capitalize">{selectedBooking.preferences.accommodationPreference}</span>
+                      </div>
+                    )}
+                    
+                    {selectedBooking.preferences.travelPace && (
+                      <div className="flex justify-between">
+                        <span className="text-sm text-muted-foreground">Travel pace:</span>
+                        <span className="text-sm capitalize">{selectedBooking.preferences.travelPace}</span>
+                      </div>
+                    )}
+                    
+                    {selectedBooking.preferences.dietaryRestrictions && selectedBooking.preferences.dietaryRestrictions.length > 0 && (
+                      <div>
+                        <span className="text-sm text-muted-foreground">Dietary restrictions:</span>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {selectedBooking.preferences.dietaryRestrictions.map(restriction => (
+                            <Badge key={restriction} variant="secondary" className="text-xs">
+                              {restriction}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {selectedBooking.preferences.activities && selectedBooking.preferences.activities.length > 0 && (
+                      <div>
+                        <span className="text-sm text-muted-foreground">Preferred activities:</span>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {selectedBooking.preferences.activities.map(activity => (
+                            <Badge key={activity} variant="secondary" className="text-xs">
+                              {activity.replace(/-/g, ' ')}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {selectedBooking.preferences.specialRequests && (
+                      <div>
+                        <span className="text-sm text-muted-foreground">Special requests:</span>
+                        <p className="text-sm mt-1">{selectedBooking.preferences.specialRequests}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
                 
                 <div>
                   <h4 className="text-sm font-medium text-muted-foreground mb-2">Traveler Details</h4>

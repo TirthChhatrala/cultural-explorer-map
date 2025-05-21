@@ -1,10 +1,9 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { trips, Review } from '../data/tripData';
+import { trips, Review, hotels, Hotel } from '../data/tripData';
 import Layout from '../components/Layout';
 import { motion } from 'framer-motion';
-import { Calendar, Star, MapPin, IndianRupee, Clock, MessageSquare, Camera, User, Plus, Minus } from 'lucide-react';
+import { Calendar, Star, MapPin, IndianRupee, Clock, MessageSquare, Camera, User, Plus, Minus, Building, Bed } from 'lucide-react';
 import EnhancedMap from '../components/EnhancedMap';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
@@ -18,6 +17,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import TripReview from '../components/trips/TripReview';
 import ReviewDisplay from '../components/trips/ReviewDisplay';
+import { TripPreferenceForm, TripPreferences } from '../components/trips/TripPreferenceForm';
 
 interface TravelerInfo {
   name: string;
@@ -52,6 +52,13 @@ const TripDetails = () => {
   const [customizations, setCustomizations] = useState<string[]>([]);
   const [totalPrice, setTotalPrice] = useState(trip?.price || 0);
   
+  // New booking state variables
+  const [showPreferenceForm, setShowPreferenceForm] = useState(false);
+  const [preferences, setPreferences] = useState<TripPreferences | null>(null);
+  
+  // Find hotels related to the trip
+  const [tripHotels, setTripHotels] = useState<Hotel[]>([]);
+  
   // Available customizations with their price impacts
   const availableCustomizations = [
     { id: 'premium-transport', label: 'Premium Transport', priceIncrease: 2000 },
@@ -59,6 +66,17 @@ const TripDetails = () => {
     { id: 'special-meals', label: 'Special Dietary Meals', priceIncrease: 1500 },
     { id: 'photo-package', label: 'Professional Photo Package', priceIncrease: 2500 },
   ];
+
+  useEffect(() => {
+    // Find hotels related to this trip
+    if (trip) {
+      const relatedHotels = hotels.filter(hotel => 
+        trip.states.includes(hotel.state)
+      ).slice(0, 3); // Limit to 3 hotels for display
+      
+      setTripHotels(relatedHotels);
+    }
+  }, [trip]);
 
   // Calculate total price whenever relevant factors change
   useEffect(() => {
@@ -132,6 +150,31 @@ const TripDetails = () => {
     setTravelerInfo(updated);
   };
 
+  const handlePreferenceComplete = (formPreferences: TripPreferences) => {
+    setPreferences(formPreferences);
+    setShowPreferenceForm(false);
+    
+    toast({
+      title: "Preferences saved",
+      description: "We'll take these into account for your trip",
+    });
+  };
+
+  const handleStartBooking = () => {
+    if (!isAuthenticated) {
+      toast({
+        title: "Authentication required",
+        description: "Please log in to book this trip",
+        variant: "destructive",
+      });
+      navigate('/login');
+      return;
+    }
+    
+    setShowPreferenceForm(true);
+    setOpen(true);
+  };
+
   const handleBooking = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
@@ -189,6 +232,7 @@ const TripDetails = () => {
       travelerDetails: travelerInfo,
       customizations,
       notes: message,
+      preferences: preferences || undefined,
       totalCost: finalPrice,
       status: 'Confirmed'
     };
@@ -248,11 +292,15 @@ const TripDetails = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
             <div className="lg:col-span-2">
               <Tabs value={activeTab} onValueChange={setActiveTab}>
-                <TabsList className="grid w-full grid-cols-3">
+                <TabsList className="grid w-full grid-cols-4">
                   <TabsTrigger value="itinerary">Itinerary</TabsTrigger>
+                  <TabsTrigger value="hotels" className="flex items-center gap-1">
+                    <Building className="h-4 w-4" />
+                    <span>Hotels</span>
+                  </TabsTrigger>
                   <TabsTrigger value="reviews" className="flex items-center gap-1">
                     <MessageSquare className="h-4 w-4" />
-                    <span>Reviews ({reviews.length})</span>
+                    <span>Reviews</span>
                   </TabsTrigger>
                   <TabsTrigger value="photos" className="flex items-center gap-1">
                     <Camera className="h-4 w-4" />
@@ -261,9 +309,9 @@ const TripDetails = () => {
                 </TabsList>
                 
                 <TabsContent value="itinerary" className="mt-4">
-                  <div className="bg-white rounded-xl shadow-md p-6">
+                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
                     <h2 className="text-2xl font-bold mb-4">Overview</h2>
-                    <p className="text-gray-700">{trip.description}</p>
+                    <p className="text-gray-700 dark:text-gray-300">{trip.description}</p>
                     <div className="mt-6 flex items-center justify-between">
                       <div className="flex items-center">
                         <Calendar className="mr-2 h-5 w-5 text-gray-500" />
@@ -280,12 +328,12 @@ const TripDetails = () => {
                     </div>
                   </div>
 
-                  <div className="bg-white rounded-xl shadow-md p-6 mt-8">
+                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 mt-8">
                     <h2 className="text-2xl font-bold mb-4">Itinerary</h2>
                     {trip.itinerary.map((day) => (
                       <div key={day.day} className="mb-4">
                         <h3 className="text-xl font-semibold mb-2">Day {day.day}</h3>
-                        <p className="text-gray-700">
+                        <p className="text-gray-700 dark:text-gray-300">
                           {day.attractions.join(', ')}
                         </p>
                         <p className="text-sm text-gray-500">
@@ -299,6 +347,62 @@ const TripDetails = () => {
                         </p>
                       </div>
                     ))}
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="hotels" className="mt-4">
+                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+                    <h2 className="text-2xl font-bold mb-4">Accommodations</h2>
+                    <p className="text-gray-700 dark:text-gray-300 mb-6">
+                      During this trip, you will stay at selected accommodations that offer comfort and convenience.
+                    </p>
+                    
+                    {tripHotels.length > 0 ? (
+                      <div className="space-y-6">
+                        {tripHotels.map((hotel) => (
+                          <div key={hotel.id} className="border rounded-lg overflow-hidden flex flex-col md:flex-row">
+                            <div className="md:w-1/3 relative">
+                              <img 
+                                src={hotel.image} 
+                                alt={hotel.name} 
+                                className="h-48 md:h-full w-full object-cover"
+                              />
+                            </div>
+                            <div className="p-4 md:w-2/3">
+                              <div className="flex justify-between items-start">
+                                <h3 className="text-lg font-semibold">{hotel.name}</h3>
+                                <div className="flex items-center">
+                                  <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                                  <span className="ml-1">{hotel.rating}</span>
+                                </div>
+                              </div>
+                              <p className="text-sm text-gray-500 mb-2">{hotel.location}</p>
+                              <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">{hotel.description}</p>
+                              <div className="flex flex-wrap gap-2">
+                                {hotel.amenities.slice(0, 5).map((amenity, idx) => (
+                                  <span key={idx} className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+                                    {amenity}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                        
+                        <div className="text-center mt-4">
+                          <Button variant="outline" onClick={() => navigate('/hotels')}>
+                            View More Hotels
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-center py-10 border rounded-lg">
+                        <Bed className="mx-auto h-10 w-10 text-gray-400" />
+                        <p className="mt-2 text-gray-500">
+                          Hotel information for this trip will be provided soon.
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </TabsContent>
                 
@@ -389,213 +493,224 @@ const TripDetails = () => {
 
                 <Dialog open={open} onOpenChange={setOpen}>
                   <DialogTrigger asChild>
-                    <Button variant="default" className="w-full">Book Now</Button>
+                    <Button variant="default" className="w-full" onClick={handleStartBooking}>Book Now</Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
                       <DialogTitle>Book Your Trip</DialogTitle>
                       <DialogDescription>
-                        Fill in your details to book this amazing trip.
+                        {showPreferenceForm ? 
+                          "Tell us about your preferences to help us customize your trip" :
+                          "Fill in your details to book this amazing trip"
+                        }
                       </DialogDescription>
                     </DialogHeader>
-                    <form onSubmit={handleBooking} className="grid gap-4 py-4">
-                      <div className="space-y-4">
-                        <div>
-                          <h3 className="text-lg font-semibold mb-2 flex items-center">
-                            <Calendar className="h-5 w-5 mr-2" />
-                            Travel Date
-                          </h3>
-                          <Input 
-                            type="date" 
-                            id="date" 
-                            value={bookingDate}
-                            onChange={(e) => setBookingDate(e.target.value)}
-                            required 
-                          />
-                        </div>
-                        
-                        <div>
-                          <h3 className="text-lg font-semibold mb-2 flex items-center">
-                            <User className="h-5 w-5 mr-2" />
-                            Number of Travelers
-                          </h3>
-                          <div className="flex items-center space-x-2 mb-4">
-                            <Button 
-                              type="button" 
-                              variant="outline" 
-                              size="icon"
-                              onClick={() => travelers > 1 && setTravelers(travelers - 1)}
-                            >
-                              <Minus className="h-4 w-4" />
-                            </Button>
-                            <span className="text-xl font-medium w-8 text-center">{travelers}</span>
-                            <Button 
-                              type="button" 
-                              variant="outline" 
-                              size="icon"
-                              onClick={() => setTravelers(travelers + 1)}
-                            >
-                              <Plus className="h-4 w-4" />
-                            </Button>
+                    
+                    {showPreferenceForm ? (
+                      <TripPreferenceForm 
+                        onComplete={handlePreferenceComplete} 
+                        onBack={() => setOpen(false)}
+                      />
+                    ) : (
+                      <form onSubmit={handleBooking} className="grid gap-4 py-4">
+                        <div className="space-y-4">
+                          <div>
+                            <h3 className="text-lg font-semibold mb-2 flex items-center">
+                              <Calendar className="h-5 w-5 mr-2" />
+                              Travel Date
+                            </h3>
+                            <Input 
+                              type="date" 
+                              id="date" 
+                              value={bookingDate}
+                              onChange={(e) => setBookingDate(e.target.value)}
+                              required 
+                            />
                           </div>
-                        </div>
-                        
-                        <div className="space-y-6">
-                          <h3 className="text-lg font-semibold">Traveler Information</h3>
                           
-                          {travelerInfo.map((traveler, index) => (
-                            <div key={index} className="space-y-4 p-4 border rounded-lg">
-                              <h4 className="font-medium">
-                                {index === 0 ? 'Primary Traveler' : `Traveler ${index + 1}`}
-                              </h4>
-                              
-                              <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                  <Label htmlFor={`name-${index}`}>Full Name</Label>
-                                  <Input 
-                                    id={`name-${index}`}
-                                    value={traveler.name}
-                                    onChange={(e) => updateTravelerInfo(index, 'name', e.target.value)}
-                                    required
-                                  />
-                                </div>
-                                <div>
-                                  <Label htmlFor={`age-${index}`}>Age</Label>
-                                  <Input 
-                                    id={`age-${index}`}
-                                    type="number"
-                                    min="0"
-                                    value={traveler.age}
-                                    onChange={(e) => updateTravelerInfo(index, 'age', e.target.value)}
-                                    required
-                                  />
-                                </div>
-                              </div>
-                              
-                              <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                  <Label htmlFor={`gender-${index}`}>Gender</Label>
-                                  <Select 
-                                    value={traveler.gender} 
-                                    onValueChange={(value) => updateTravelerInfo(index, 'gender', value)}
-                                  >
-                                    <SelectTrigger id={`gender-${index}`}>
-                                      <SelectValue placeholder="Select Gender" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                      <SelectItem value="male">Male</SelectItem>
-                                      <SelectItem value="female">Female</SelectItem>
-                                      <SelectItem value="other">Other</SelectItem>
-                                    </SelectContent>
-                                  </Select>
-                                </div>
-                                <div>
-                                  <Label htmlFor={`idType-${index}`}>ID Type</Label>
-                                  <Select 
-                                    value={traveler.idType} 
-                                    onValueChange={(value) => updateTravelerInfo(index, 'idType', value)}
-                                  >
-                                    <SelectTrigger id={`idType-${index}`}>
-                                      <SelectValue placeholder="Select ID Type" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                      <SelectItem value="aadhar">Aadhar Card</SelectItem>
-                                      <SelectItem value="passport">Passport</SelectItem>
-                                      <SelectItem value="driving">Driving License</SelectItem>
-                                      <SelectItem value="voter">Voter ID</SelectItem>
-                                    </SelectContent>
-                                  </Select>
-                                </div>
-                              </div>
-                              
-                              <div>
-                                <Label htmlFor={`idNumber-${index}`}>ID Number</Label>
-                                <Input 
-                                  id={`idNumber-${index}`}
-                                  value={traveler.idNumber}
-                                  onChange={(e) => updateTravelerInfo(index, 'idNumber', e.target.value)}
-                                  required
-                                />
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                        
-                        <div>
-                          <h3 className="text-lg font-semibold mb-2">Contact Information</h3>
-                          <div className="space-y-4">
-                            <div>
-                              <Label htmlFor="phone">Phone Number</Label>
-                              <Input id="phone" required />
+                          <div>
+                            <h3 className="text-lg font-semibold mb-2 flex items-center">
+                              <User className="h-5 w-5 mr-2" />
+                              Number of Travelers
+                            </h3>
+                            <div className="flex items-center space-x-2 mb-4">
+                              <Button 
+                                type="button" 
+                                variant="outline" 
+                                size="icon"
+                                onClick={() => travelers > 1 && setTravelers(travelers - 1)}
+                              >
+                                <Minus className="h-4 w-4" />
+                              </Button>
+                              <span className="text-xl font-medium w-8 text-center">{travelers}</span>
+                              <Button 
+                                type="button" 
+                                variant="outline" 
+                                size="icon"
+                                onClick={() => setTravelers(travelers + 1)}
+                              >
+                                <Plus className="h-4 w-4" />
+                              </Button>
                             </div>
                           </div>
-                        </div>
-                        
-                        <div>
-                          <h3 className="text-lg font-semibold mb-2">Customizations</h3>
-                          <div className="space-y-2">
-                            {availableCustomizations.map(custom => (
-                              <div key={custom.id} className="flex items-center justify-between">
-                                <div className="flex items-center">
-                                  <input 
-                                    type="checkbox" 
-                                    id={`custom-${custom.id}`}
-                                    className="mr-2"
-                                    checked={customizations.includes(custom.id)}
-                                    onChange={() => handleCustomizationToggle(custom.id)}
-                                  />
-                                  <Label htmlFor={`custom-${custom.id}`}>{custom.label}</Label>
+                          
+                          <div>
+                            <h3 className="text-lg font-semibold mb-2">Customizations</h3>
+                            <div className="space-y-2">
+                              {availableCustomizations.map(custom => (
+                                <div key={custom.id} className="flex items-center justify-between">
+                                  <div className="flex items-center">
+                                    <input 
+                                      type="checkbox" 
+                                      id={`custom-${custom.id}`}
+                                      className="mr-2"
+                                      checked={customizations.includes(custom.id)}
+                                      onChange={() => handleCustomizationToggle(custom.id)}
+                                    />
+                                    <Label htmlFor={`custom-${custom.id}`}>{custom.label}</Label>
+                                  </div>
+                                  <span className="text-sm text-muted-foreground">+₹{custom.priceIncrease.toLocaleString()}</span>
                                 </div>
-                                <span className="text-sm text-muted-foreground">+₹{custom.priceIncrease.toLocaleString()}</span>
+                              ))}
+                            </div>
+                          </div>
+                          
+                          <div className="space-y-6">
+                            <h3 className="text-lg font-semibold">Traveler Information</h3>
+                            
+                            {travelerInfo.map((traveler, index) => (
+                              <div key={index} className="space-y-4 p-4 border rounded-lg">
+                                <h4 className="font-medium">
+                                  {index === 0 ? 'Primary Traveler' : `Traveler ${index + 1}`}
+                                </h4>
+                                
+                                <div className="grid grid-cols-2 gap-4">
+                                  <div>
+                                    <Label htmlFor={`name-${index}`}>Full Name</Label>
+                                    <Input 
+                                      id={`name-${index}`}
+                                      value={traveler.name}
+                                      onChange={(e) => updateTravelerInfo(index, 'name', e.target.value)}
+                                      required
+                                    />
+                                  </div>
+                                  <div>
+                                    <Label htmlFor={`age-${index}`}>Age</Label>
+                                    <Input 
+                                      id={`age-${index}`}
+                                      type="number"
+                                      min="0"
+                                      value={traveler.age}
+                                      onChange={(e) => updateTravelerInfo(index, 'age', e.target.value)}
+                                      required
+                                    />
+                                  </div>
+                                </div>
+                                
+                                <div className="grid grid-cols-2 gap-4">
+                                  <div>
+                                    <Label htmlFor={`gender-${index}`}>Gender</Label>
+                                    <Select 
+                                      value={traveler.gender} 
+                                      onValueChange={(value) => updateTravelerInfo(index, 'gender', value)}
+                                    >
+                                      <SelectTrigger id={`gender-${index}`}>
+                                        <SelectValue placeholder="Select Gender" />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        <SelectItem value="male">Male</SelectItem>
+                                        <SelectItem value="female">Female</SelectItem>
+                                        <SelectItem value="other">Other</SelectItem>
+                                      </SelectContent>
+                                    </Select>
+                                  </div>
+                                  <div>
+                                    <Label htmlFor={`idType-${index}`}>ID Type</Label>
+                                    <Select 
+                                      value={traveler.idType} 
+                                      onValueChange={(value) => updateTravelerInfo(index, 'idType', value)}
+                                    >
+                                      <SelectTrigger id={`idType-${index}`}>
+                                        <SelectValue placeholder="Select ID Type" />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        <SelectItem value="aadhar">Aadhar Card</SelectItem>
+                                        <SelectItem value="passport">Passport</SelectItem>
+                                        <SelectItem value="driving">Driving License</SelectItem>
+                                        <SelectItem value="voter">Voter ID</SelectItem>
+                                      </SelectContent>
+                                    </Select>
+                                  </div>
+                                </div>
+                                
+                                <div>
+                                  <Label htmlFor={`idNumber-${index}`}>ID Number</Label>
+                                  <Input 
+                                    id={`idNumber-${index}`}
+                                    value={traveler.idNumber}
+                                    onChange={(e) => updateTravelerInfo(index, 'idNumber', e.target.value)}
+                                    required
+                                  />
+                                </div>
                               </div>
                             ))}
                           </div>
-                        </div>
-                        
-                        <div>
-                          <Label htmlFor="message">Special Requests</Label>
-                          <Textarea id="message" placeholder="Any special requirements or requests?" />
-                        </div>
-                        
-                        <div className="bg-muted/50 p-4 rounded-lg">
-                          <h3 className="text-lg font-semibold mb-2">Price Summary</h3>
-                          <div className="space-y-1 mb-2">
-                            <div className="flex justify-between">
-                              <span>Base Price ({travelers} {travelers === 1 ? 'traveler' : 'travelers'})</span>
-                              <span>₹{((trip.discountedPrice || trip.price) * travelers).toLocaleString()}</span>
-                            </div>
-                            
-                            {customizations.length > 0 && customizations.map(customId => {
-                              const custom = availableCustomizations.find(c => c.id === customId);
-                              if (!custom) return null;
-                              return (
-                                <div key={custom.id} className="flex justify-between">
-                                  <span>{custom.label}</span>
-                                  <span>₹{custom.priceIncrease.toLocaleString()}</span>
-                                </div>
-                              );
-                            })}
-                            
-                            {travelers >= 4 && (
-                              <div className="flex justify-between text-green-600 dark:text-green-400">
-                                <span>Group Discount (5%)</span>
-                                <span>-₹{(totalPrice * 0.05).toLocaleString()}</span>
+                          
+                          <div>
+                            <h3 className="text-lg font-semibold mb-2">Contact Information</h3>
+                            <div className="space-y-4">
+                              <div>
+                                <Label htmlFor="phone">Phone Number</Label>
+                                <Input id="phone" required />
                               </div>
-                            )}
+                            </div>
                           </div>
-                          <div className="border-t pt-2 flex justify-between font-semibold">
-                            <span>Total</span>
-                            <span>₹{totalPrice.toLocaleString()}</span>
+                          
+                          <div>
+                            <Label htmlFor="message">Special Requests</Label>
+                            <Textarea id="message" placeholder="Any special requirements or requests?" />
+                          </div>
+                          
+                          <div className="bg-muted/50 p-4 rounded-lg">
+                            <h3 className="text-lg font-semibold mb-2">Price Summary</h3>
+                            <div className="space-y-1 mb-2">
+                              <div className="flex justify-between">
+                                <span>Base Price ({travelers} {travelers === 1 ? 'traveler' : 'travelers'})</span>
+                                <span>₹{((trip.discountedPrice || trip.price) * travelers).toLocaleString()}</span>
+                              </div>
+                              
+                              {customizations.length > 0 && customizations.map(customId => {
+                                const custom = availableCustomizations.find(c => c.id === customId);
+                                if (!custom) return null;
+                                return (
+                                  <div key={custom.id} className="flex justify-between">
+                                    <span>{custom.label}</span>
+                                    <span>₹{custom.priceIncrease.toLocaleString()}</span>
+                                  </div>
+                                );
+                              })}
+                              
+                              {travelers >= 4 && (
+                                <div className="flex justify-between text-green-600 dark:text-green-400">
+                                  <span>Group Discount (5%)</span>
+                                  <span>-₹{(totalPrice * 0.05).toLocaleString()}</span>
+                                </div>
+                              )}
+                            </div>
+                            <div className="border-t pt-2 flex justify-between font-semibold">
+                              <span>Total</span>
+                              <span>₹{totalPrice.toLocaleString()}</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      
-                      <div className="flex justify-end mt-4">
-                        <Button type="submit">
-                          Confirm Booking (₹{totalPrice.toLocaleString()})
-                        </Button>
-                      </div>
-                    </form>
+                        
+                        <div className="flex justify-end mt-4">
+                          <Button type="submit">
+                            Confirm Booking (₹{totalPrice.toLocaleString()})
+                          </Button>
+                        </div>
+                      </form>
+                    )}
                   </DialogContent>
                 </Dialog>
 
