@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../../components/Layout';
 import { useTheme } from '../../context/ThemeContext';
@@ -40,8 +39,20 @@ import {
   Percent, 
   Edit, 
   Trash, 
-  Image as ImageIcon 
+  Image as ImageIcon,
+  Receipt,
+  FileText,
+  Download
 } from 'lucide-react';
+
+interface TripReceipt {
+  id: string;
+  date: string;
+  userId: string;
+  amount: number;
+  description: string;
+  downloadedAt: string;
+}
 
 const ManageTrips = () => {
   const { theme } = useTheme();
@@ -50,7 +61,7 @@ const ManageTrips = () => {
   const { toast } = useToast();
   
   // State management
-  const [activeTab, setActiveTab] = useState<'requests' | 'packages' | 'images'>('requests');
+  const [activeTab, setActiveTab] = useState<'requests' | 'packages' | 'images' | 'receipts'>('requests');
   const [customRequests, setCustomRequests] = useState<CustomTripRequest[]>([
     {
       id: "req1",
@@ -120,7 +131,16 @@ const ManageTrips = () => {
   ]);
   const [newImageUrl, setNewImageUrl] = useState<string>("");
   const [galleryOpen, setGalleryOpen] = useState(false);
+  const [receipts, setReceipts] = useState<TripReceipt[]>([]);
+  const [receiptDetailsOpen, setReceiptDetailsOpen] = useState(false);
+  const [selectedReceipt, setSelectedReceipt] = useState<TripReceipt | null>(null);
   
+  // Load receipt data on component mount
+  useEffect(() => {
+    const storedReceipts = JSON.parse(localStorage.getItem('tripReceipts') || '[]');
+    setReceipts(storedReceipts);
+  }, []);
+
   // Request handling functions
   const handleStatusChange = (requestId: string, newStatus: CustomTripRequest['status']) => {
     setCustomRequests(requests => 
@@ -285,7 +305,7 @@ const ManageTrips = () => {
         
         <div className="mb-8">
           <div className="border-b border-gray-200 dark:border-gray-700">
-            <nav className="-mb-px flex space-x-8">
+            <nav className="-mb-px flex space-x-8 overflow-x-auto">
               <button
                 onClick={() => setActiveTab('requests')}
                 className={`py-4 px-1 border-b-2 font-medium text-sm ${
@@ -294,7 +314,7 @@ const ManageTrips = () => {
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:hover:text-gray-300'
                 }`}
               >
-                <div className="flex items-center">
+                <div className="flex items-center whitespace-nowrap">
                   <Calendar className="h-5 w-5 mr-2" />
                   Trip Requests
                 </div>
@@ -307,9 +327,22 @@ const ManageTrips = () => {
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:hover:text-gray-300'
                 }`}
               >
-                <div className="flex items-center">
+                <div className="flex items-center whitespace-nowrap">
                   <Percent className="h-5 w-5 mr-2" />
                   Package Discounts
+                </div>
+              </button>
+              <button
+                onClick={() => setActiveTab('receipts')}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'receipts'
+                    ? 'border-red-500 text-red-500'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:hover:text-gray-300'
+                }`}
+              >
+                <div className="flex items-center whitespace-nowrap">
+                  <Receipt className="h-5 w-5 mr-2" />
+                  Booking Receipts
                 </div>
               </button>
               <button
@@ -320,7 +353,7 @@ const ManageTrips = () => {
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:hover:text-gray-300'
                 }`}
               >
-                <div className="flex items-center">
+                <div className="flex items-center whitespace-nowrap">
                   <ImageIcon className="h-5 w-5 mr-2" />
                   Image Gallery
                 </div>
@@ -442,6 +475,64 @@ const ManageTrips = () => {
                     </TableCell>
                   </TableRow>
                 ))}
+              </TableBody>
+            </Table>
+          </div>
+        )}
+
+        {activeTab === 'receipts' && (
+          <div className="rounded-xl border mb-8 shadow-sm overflow-hidden">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Receipt ID</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead>User</TableHead>
+                  <TableHead>Description</TableHead>
+                  <TableHead>Amount</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {receipts.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                      No booking receipts available yet
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  receipts.map((receipt) => (
+                    <TableRow key={receipt.id}>
+                      <TableCell className="font-medium">{receipt.id}</TableCell>
+                      <TableCell>{new Date(receipt.date).toLocaleDateString()}</TableCell>
+                      <TableCell>{receipt.userId}</TableCell>
+                      <TableCell>{receipt.description}</TableCell>
+                      <TableCell>₹{receipt.amount.toLocaleString()}</TableCell>
+                      <TableCell>
+                        <div className="flex space-x-2">
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            className="flex items-center gap-1"
+                            onClick={() => viewReceiptDetails(receipt)}
+                          >
+                            <FileText className="h-4 w-4" />
+                            View
+                          </Button>
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            className="flex items-center gap-1"
+                            onClick={() => downloadReceipt(receipt)}
+                          >
+                            <Download className="h-4 w-4" />
+                            Download
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
               </TableBody>
             </Table>
           </div>
@@ -621,6 +712,64 @@ const ManageTrips = () => {
           <DialogFooter>
             <Button variant="outline" onClick={() => setDiscountOpen(false)}>Cancel</Button>
             <Button onClick={applyDiscount}>Apply Discount</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      
+      {/* Receipt details dialog */}
+      <Dialog open={receiptDetailsOpen} onOpenChange={setReceiptDetailsOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Receipt Details</DialogTitle>
+          </DialogHeader>
+          {selectedReceipt && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <h4 className="text-sm font-medium text-muted-foreground mb-1">Receipt ID</h4>
+                  <p>{selectedReceipt.id}</p>
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-muted-foreground mb-1">Date</h4>
+                  <p>{new Date(selectedReceipt.date).toLocaleDateString()}</p>
+                </div>
+              </div>
+
+              <div>
+                <h4 className="text-sm font-medium text-muted-foreground mb-1">User</h4>
+                <p>{selectedReceipt.userId}</p>
+              </div>
+
+              <div>
+                <h4 className="text-sm font-medium text-muted-foreground mb-1">Description</h4>
+                <p>{selectedReceipt.description}</p>
+              </div>
+
+              <div>
+                <h4 className="text-sm font-medium text-muted-foreground mb-1">Amount</h4>
+                <p className="font-semibold">₹{selectedReceipt.amount.toLocaleString()}</p>
+              </div>
+
+              <div>
+                <h4 className="text-sm font-medium text-muted-foreground mb-1">Downloaded At</h4>
+                <p>{new Date(selectedReceipt.downloadedAt).toLocaleString()}</p>
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setReceiptDetailsOpen(false)}>Close</Button>
+            <Button 
+              onClick={() => {
+                if (selectedReceipt) {
+                  downloadReceipt(selectedReceipt);
+                  setReceiptDetailsOpen(false);
+                }
+              }}
+              className="flex items-center gap-1"
+            >
+              <Download className="h-4 w-4" />
+              Download Receipt
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

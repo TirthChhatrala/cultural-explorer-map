@@ -30,6 +30,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
+import { ApprovedTripOptions } from '@/components/trips/ApprovedTripOptions';
 
 interface TravelerInfo {
   name: string;
@@ -188,79 +189,6 @@ const MyTrips = () => {
     setBookingDetailsOpen(true);
   };
 
-  // Render trip request cards
-  const renderTripRequests = () => {
-    if (tripRequests.length === 0) {
-      return (
-        <div className="text-center py-16">
-          <p className="text-muted-foreground text-lg mb-6">You haven't submitted any custom trip requests yet.</p>
-          <Button onClick={() => navigate('/custom-trip')}>Create Custom Trip</Button>
-        </div>
-      );
-    }
-
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {tripRequests.map((trip) => (
-          <motion.div
-            key={trip.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Card className="h-full">
-              <CardHeader>
-                <div className="flex justify-between items-start">
-                  <div>
-                    <CardTitle>Custom Trip Request</CardTitle>
-                    <CardDescription className="mt-1">
-                      {formatDate(trip.createdAt)}
-                    </CardDescription>
-                  </div>
-                  {renderStatusBadge(trip.status)}
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex gap-2 items-center">
-                    <MapPin className="h-4 w-4 text-muted-foreground" />
-                    <div>
-                      <p className="text-sm font-medium text-muted-foreground">Destinations</p>
-                      <p>{getStateNames(trip.states)}</p>
-                    </div>
-                  </div>
-                  <div className="flex justify-between">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-muted-foreground" />
-                      <div>
-                        <p className="text-sm font-medium text-muted-foreground">Dates</p>
-                        <p>{formatDate(trip.startDate)} - {formatDate(trip.endDate)}</p>
-                      </div>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-muted-foreground">Budget</p>
-                      <p>₹{trip.budget.toLocaleString()}</p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button
-                  variant="outline"
-                  className="w-full"
-                  onClick={() => viewTripDetails(trip)}
-                >
-                  View Details
-                </Button>
-              </CardFooter>
-            </Card>
-          </motion.div>
-        ))}
-      </div>
-    );
-  };
-
-  // Render booked trips
   const renderBookedTrips = () => {
     if (bookedTrips.length === 0) {
       return (
@@ -346,6 +274,93 @@ const MyTrips = () => {
     );
   };
 
+  // Render trip request cards
+  const renderTripRequests = () => {
+    if (tripRequests.length === 0) {
+      return (
+        <div className="text-center py-16">
+          <p className="text-muted-foreground text-lg mb-6">You haven't submitted any custom trip requests yet.</p>
+          <Button onClick={() => navigate('/custom-trip')}>Create Custom Trip</Button>
+        </div>
+      );
+    }
+
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {tripRequests.map((trip) => (
+          <motion.div
+            key={trip.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Card className="h-full">
+              <CardHeader>
+                <div className="flex justify-between items-start">
+                  <div>
+                    <CardTitle>Custom Trip Request</CardTitle>
+                    <CardDescription className="mt-1">
+                      {formatDate(trip.createdAt)}
+                    </CardDescription>
+                  </div>
+                  {renderStatusBadge(trip.status)}
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="flex gap-2 items-center">
+                    <MapPin className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">Destinations</p>
+                      <p>{getStateNames(trip.states)}</p>
+                    </div>
+                  </div>
+                  <div className="flex justify-between">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4 text-muted-foreground" />
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">Dates</p>
+                        <p>{formatDate(trip.startDate)} - {formatDate(trip.endDate)}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">Budget</p>
+                      <p>₹{trip.budget.toLocaleString()}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Show hotel & casino options for approved trips */}
+                {(trip.status === 'approved' || trip.status === 'in-progress') && (
+                  <div className="mt-4 pt-4 border-t">
+                    <p className="text-sm font-medium mb-2">Your trip has been approved! 🎉</p>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full"
+                      onClick={() => viewTripDetails(trip)}
+                    >
+                      View Accommodation & Activities
+                    </Button>
+                  </div>
+                )}
+              </CardContent>
+              <CardFooter>
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => viewTripDetails(trip)}
+                >
+                  View Details
+                </Button>
+              </CardFooter>
+            </Card>
+          </motion.div>
+        ))}
+      </div>
+    );
+  };
+
   if (!isAuthenticated) return null;
 
   return (
@@ -384,7 +399,7 @@ const MyTrips = () => {
 
         {/* Trip requests details dialog */}
         <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
-          <DialogContent className="sm:max-w-lg">
+          <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Trip Request Details</DialogTitle>
               <DialogDescription>
@@ -453,22 +468,17 @@ const MyTrips = () => {
                   </div>
                 )}
 
-                {selectedTrip.status === 'approved' && (
-                  <div className="p-4 border border-green-200 bg-green-50 dark:bg-green-900/10 dark:border-green-800 rounded-md">
-                    <p className="text-green-600 dark:text-green-400 font-medium">Your request has been approved!</p>
-                    <p className="text-sm text-green-500 dark:text-green-300 mt-1">
-                      We will contact you soon with more details.
-                    </p>
-                  </div>
-                )}
-
-                {selectedTrip.status === 'in-progress' && (
-                  <div className="p-4 border border-blue-200 bg-blue-50 dark:bg-blue-900/10 dark:border-blue-800 rounded-md">
-                    <p className="text-blue-600 dark:text-blue-400 font-medium">Your trip is being prepared</p>
-                    <p className="text-sm text-blue-500 dark:text-blue-300 mt-1">
-                      We're working on creating the perfect itinerary for you.
-                    </p>
-                  </div>
+                {(selectedTrip.status === 'approved' || selectedTrip.status === 'in-progress') && (
+                  <>
+                    <div className="p-4 border border-green-200 bg-green-50 dark:bg-green-900/10 dark:border-green-800 rounded-md mb-6">
+                      <p className="text-green-600 dark:text-green-400 font-medium">Your request has been approved!</p>
+                      <p className="text-sm text-green-500 dark:text-green-300 mt-1">
+                        You can now access accommodation and activity options.
+                      </p>
+                    </div>
+                    
+                    <ApprovedTripOptions trip={selectedTrip} />
+                  </>
                 )}
               </div>
             )}

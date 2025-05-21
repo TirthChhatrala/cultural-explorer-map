@@ -1,11 +1,13 @@
 
 import React, { useState } from 'react';
-import { CheckCircle2, FlagTriangleRight, Heart, Utensils, Map, Sun, Users } from 'lucide-react';
+import { CheckCircle2, FlagTriangleRight, Heart, Utensils, Map, Sun, Users, Hotel, Casino } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Separator } from '@/components/ui/separator';
+import { hotels } from '@/data/tripData';
 
 interface TripPreferenceFormProps {
   onComplete: (preferences: TripPreferences) => void;
@@ -18,6 +20,8 @@ export interface TripPreferences {
   travelPace: string;
   activities: string[];
   specialRequests: string;
+  preferredHotelTypes: string[];
+  entertainmentInterests: string[];
 }
 
 export function TripPreferenceForm({ onComplete, onBack }: TripPreferenceFormProps) {
@@ -27,6 +31,8 @@ export function TripPreferenceForm({ onComplete, onBack }: TripPreferenceFormPro
     travelPace: 'medium',
     activities: [],
     specialRequests: '',
+    preferredHotelTypes: [],
+    entertainmentInterests: [],
   });
 
   const dietaryOptions = [
@@ -46,6 +52,22 @@ export function TripPreferenceForm({ onComplete, onBack }: TripPreferenceFormPro
     { id: 'adventure', label: 'Adventure Activities' },
     { id: 'relaxation', label: 'Relaxation' },
   ];
+  
+  const hotelTypeOptions = [
+    { id: 'boutique', label: 'Boutique Hotels' },
+    { id: 'resort', label: 'Resorts' },
+    { id: 'heritage', label: 'Heritage Properties' },
+    { id: 'business', label: 'Business Hotels' },
+    { id: 'homestay', label: 'Homestays' },
+  ];
+  
+  const entertainmentOptions = [
+    { id: 'casinos', label: 'Casinos' },
+    { id: 'live-shows', label: 'Live Shows & Performances' },
+    { id: 'nightlife', label: 'Nightlife' },
+    { id: 'spa', label: 'Spa & Wellness' },
+    { id: 'local-experiences', label: 'Local Experiences' },
+  ];
 
   const handleDietaryChange = (restriction: string) => {
     setPreferences(prev => {
@@ -64,6 +86,26 @@ export function TripPreferenceForm({ onComplete, onBack }: TripPreferenceFormPro
         : [...prev.activities, activity];
       
       return { ...prev, activities: updated };
+    });
+  };
+  
+  const handleHotelTypeChange = (hotelType: string) => {
+    setPreferences(prev => {
+      const updated = prev.preferredHotelTypes.includes(hotelType)
+        ? prev.preferredHotelTypes.filter(item => item !== hotelType)
+        : [...prev.preferredHotelTypes, hotelType];
+      
+      return { ...prev, preferredHotelTypes: updated };
+    });
+  };
+  
+  const handleEntertainmentChange = (entertainment: string) => {
+    setPreferences(prev => {
+      const updated = prev.entertainmentInterests.includes(entertainment)
+        ? prev.entertainmentInterests.filter(item => item !== entertainment)
+        : [...prev.entertainmentInterests, entertainment];
+      
+      return { ...prev, entertainmentInterests: updated };
     });
   };
 
@@ -110,6 +152,25 @@ export function TripPreferenceForm({ onComplete, onBack }: TripPreferenceFormPro
           
           <div>
             <h4 className="text-sm font-medium flex items-center mb-3">
+              <Hotel className="w-4 h-4 mr-2" />
+              Preferred Hotel Types
+            </h4>
+            <div className="grid grid-cols-2 gap-2">
+              {hotelTypeOptions.map(option => (
+                <div key={option.id} className="flex items-center space-x-2">
+                  <Checkbox 
+                    id={`hotel-${option.id}`}
+                    checked={preferences.preferredHotelTypes.includes(option.id)}
+                    onCheckedChange={() => handleHotelTypeChange(option.id)}
+                  />
+                  <Label htmlFor={`hotel-${option.id}`}>{option.label}</Label>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div>
+            <h4 className="text-sm font-medium flex items-center mb-3">
               <Utensils className="w-4 h-4 mr-2" />
               Dietary Restrictions
             </h4>
@@ -152,6 +213,8 @@ export function TripPreferenceForm({ onComplete, onBack }: TripPreferenceFormPro
             </RadioGroup>
           </div>
           
+          <Separator className="my-4" />
+          
           <div>
             <h4 className="text-sm font-medium flex items-center mb-3">
               <Heart className="w-4 h-4 mr-2" />
@@ -166,6 +229,25 @@ export function TripPreferenceForm({ onComplete, onBack }: TripPreferenceFormPro
                     onCheckedChange={() => handleActivityChange(option.id)}
                   />
                   <Label htmlFor={`activity-${option.id}`}>{option.label}</Label>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div>
+            <h4 className="text-sm font-medium flex items-center mb-3">
+              <Casino className="w-4 h-4 mr-2" />
+              Entertainment & Recreation
+            </h4>
+            <div className="grid grid-cols-2 gap-2">
+              {entertainmentOptions.map(option => (
+                <div key={option.id} className="flex items-center space-x-2">
+                  <Checkbox 
+                    id={`entertainment-${option.id}`}
+                    checked={preferences.entertainmentInterests.includes(option.id)}
+                    onCheckedChange={() => handleEntertainmentChange(option.id)}
+                  />
+                  <Label htmlFor={`entertainment-${option.id}`}>{option.label}</Label>
                 </div>
               ))}
             </div>
