@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { trips, Review } from '../data/tripData';
@@ -22,7 +21,7 @@ const TripDetails = () => {
   const { tripId } = useParams();
   const trip = trips.find(trip => trip.id === tripId);
   const { theme } = useTheme();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -44,11 +43,60 @@ const TripDetails = () => {
 
   const handleBooking = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    if (!isAuthenticated || !trip) {
+      toast({
+        title: "Authentication required",
+        description: "Please log in to book this trip",
+        variant: "destructive",
+      });
+      navigate('/login');
+      return;
+    }
+    
+    const formData = new FormData(e.currentTarget);
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
+    const phone = formData.get('phone') as string;
+    const travelers = Number(formData.get('travelers'));
+    const date = formData.get('date') as string;
+    const message = formData.get('message') as string;
+    
+    // Calculate total cost
+    const totalCost = travelers * (trip.discountedPrice || trip.price);
+    
+    // Create booking object
+    const booking = {
+      bookingId: `BK-${Math.random().toString(36).substring(2, 10).toUpperCase()}`,
+      tripId: trip.id,
+      tripTitle: trip.title,
+      userEmail: user?.email,
+      userName: name,
+      phone,
+      travelers,
+      travelDate: date,
+      bookingDate: new Date().toISOString(),
+      notes: message,
+      totalCost,
+      status: 'Confirmed'
+    };
+    
+    // Save booking to localStorage
+    const existingBookings = JSON.parse(localStorage.getItem('bookedTrips') || '[]');
+    existingBookings.push(booking);
+    localStorage.setItem('bookedTrips', JSON.stringify(existingBookings));
+    
+    // Close dialog and show toast
     setOpen(false);
     toast({
       title: "Booking Confirmed",
       description: "Your trip booking has been received. We'll contact you soon!"
     });
+    
+    // Navigate to my trips
+    setTimeout(() => {
+      navigate('/my-trips');
+    }, 1000);
   };
 
   if (!trip) {

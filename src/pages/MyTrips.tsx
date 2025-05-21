@@ -1,0 +1,417 @@
+
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Layout from '../components/Layout';
+import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
+import { motion } from 'framer-motion';
+import { CustomTripRequest } from '../data/tripData';
+import { Check, X, Clock, Loader, Circle } from 'lucide-react';
+import { useToast } from '../hooks/use-toast';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
+
+const MyTrips = () => {
+  const { theme } = useTheme();
+  const { user, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  
+  const [activeTab, setActiveTab] = useState<'requests' | 'bookings'>('requests');
+  const [tripRequests, setTripRequests] = useState<CustomTripRequest[]>([]);
+  const [bookedTrips, setBookedTrips] = useState<any[]>([]);
+  const [selectedTrip, setSelectedTrip] = useState<CustomTripRequest | null>(null);
+  const [detailsOpen, setDetailsOpen] = useState(false);
+
+  // Load trip data from localStorage
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      // Load custom trip requests
+      const allRequests = JSON.parse(localStorage.getItem('customTripRequests') || '[]');
+      const userRequests = allRequests.filter((req: CustomTripRequest) => req.userId === user.email);
+      setTripRequests(userRequests);
+      
+      // Load booked trips (regular package trips)
+      const allBookings = JSON.parse(localStorage.getItem('bookedTrips') || '[]');
+      const userBookings = allBookings.filter((booking: any) => booking.userEmail === user.email);
+      setBookedTrips(userBookings);
+    }
+  }, [isAuthenticated, user]);
+  
+  // If not authenticated, redirect to login
+  useEffect(() => {
+    if (!isAuthenticated) {
+      toast({
+        title: "Authentication required",
+        description: "Please log in to view your trips",
+        variant: "destructive",
+      });
+      navigate('/login');
+    }
+  }, [isAuthenticated, navigate, toast]);
+
+  // Get status badge based on status value
+  const renderStatusBadge = (status: CustomTripRequest['status']) => {
+    switch (status) {
+      case 'pending':
+        return (
+          <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-yellow-300 dark:bg-yellow-900/30 dark:text-yellow-500 dark:border-yellow-800 flex items-center gap-1">
+            <Clock className="h-3 w-3" />
+            Pending
+          </Badge>
+        );
+      case 'approved':
+        return (
+          <Badge variant="outline" className="bg-green-100 text-green-800 border-green-300 dark:bg-green-900/30 dark:text-green-500 dark:border-green-800 flex items-center gap-1">
+            <Check className="h-3 w-3" />
+            Approved
+          </Badge>
+        );
+      case 'rejected':
+        return (
+          <Badge variant="outline" className="bg-red-100 text-red-800 border-red-300 dark:bg-red-900/30 dark:text-red-500 dark:border-red-800 flex items-center gap-1">
+            <X className="h-3 w-3" />
+            Rejected
+          </Badge>
+        );
+      case 'in-progress':
+        return (
+          <Badge variant="outline" className="bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-900/30 dark:text-blue-500 dark:border-blue-800 flex items-center gap-1">
+            <Loader className="h-3 w-3 animate-spin" />
+            In Progress
+          </Badge>
+        );
+      case 'completed':
+        return (
+          <Badge variant="outline" className="bg-purple-100 text-purple-800 border-purple-300 dark:bg-purple-900/30 dark:text-purple-500 dark:border-purple-800 flex items-center gap-1">
+            <Circle className="h-3 w-3 fill-current" />
+            Completed
+          </Badge>
+        );
+      default:
+        return <Badge>{status}</Badge>;
+    }
+  };
+
+  // Helper function to format dates
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  };
+
+  // Helper function to map state IDs to names
+  const getStateNames = (stateIds: string[]) => {
+    const stateMap: { [key: string]: string } = {
+      'rajasthan': 'Rajasthan',
+      'kerala': 'Kerala',
+      'himachalpradesh': 'Himachal Pradesh',
+      'uttarakhand': 'Uttarakhand',
+      'goa': 'Goa',
+      'delhi': 'Delhi',
+      'uttarpradesh': 'Uttar Pradesh',
+      'tamil_nadu': 'Tamil Nadu',
+      'karnataka': 'Karnataka',
+      'punjab': 'Punjab'
+    };
+    
+    return stateIds.map(id => stateMap[id] || id).join(', ');
+  };
+
+  // View trip details
+  const viewTripDetails = (trip: CustomTripRequest) => {
+    setSelectedTrip(trip);
+    setDetailsOpen(true);
+  };
+
+  // Render trip request cards
+  const renderTripRequests = () => {
+    if (tripRequests.length === 0) {
+      return (
+        <div className="text-center py-16">
+          <p className="text-muted-foreground text-lg mb-6">You haven't submitted any custom trip requests yet.</p>
+          <Button onClick={() => navigate('/custom-trip')}>Create Custom Trip</Button>
+        </div>
+      );
+    }
+
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {tripRequests.map((trip) => (
+          <motion.div
+            key={trip.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Card className="h-full">
+              <CardHeader>
+                <div className="flex justify-between items-start">
+                  <div>
+                    <CardTitle>Custom Trip Request</CardTitle>
+                    <CardDescription className="mt-1">
+                      {formatDate(trip.createdAt)}
+                    </CardDescription>
+                  </div>
+                  {renderStatusBadge(trip.status)}
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">Destinations</p>
+                    <p>{getStateNames(trip.states)}</p>
+                  </div>
+                  <div className="flex justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">Dates</p>
+                      <p>{formatDate(trip.startDate)} - {formatDate(trip.endDate)}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">Budget</p>
+                      <p>₹{trip.budget.toLocaleString()}</p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => viewTripDetails(trip)}
+                >
+                  View Details
+                </Button>
+              </CardFooter>
+            </Card>
+          </motion.div>
+        ))}
+      </div>
+    );
+  };
+
+  // Render booked trips
+  const renderBookedTrips = () => {
+    if (bookedTrips.length === 0) {
+      return (
+        <div className="text-center py-16">
+          <p className="text-muted-foreground text-lg mb-6">You haven't booked any trips yet.</p>
+          <Button onClick={() => navigate('/trips')}>Explore Trip Packages</Button>
+        </div>
+      );
+    }
+
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {bookedTrips.map((booking, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+          >
+            <Card className="h-full">
+              <CardHeader>
+                <div className="flex justify-between items-start">
+                  <div>
+                    <CardTitle>{booking.tripTitle}</CardTitle>
+                    <CardDescription className="mt-1">
+                      Booked on {formatDate(booking.bookingDate)}
+                    </CardDescription>
+                  </div>
+                  <Badge variant="outline" className="bg-green-100 text-green-800 border-green-300 dark:bg-green-900/30 dark:text-green-500 dark:border-green-800">
+                    {booking.status || 'Confirmed'}
+                  </Badge>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">Travel Date</p>
+                    <p>{formatDate(booking.travelDate)}</p>
+                  </div>
+                  <div className="flex justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">Travelers</p>
+                      <p>{booking.travelers}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">Total Cost</p>
+                      <p>₹{booking.totalCost.toLocaleString()}</p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => navigate(`/trips/${booking.tripId}`)}
+                >
+                  View Trip
+                </Button>
+              </CardFooter>
+            </Card>
+          </motion.div>
+        ))}
+      </div>
+    );
+  };
+
+  if (!isAuthenticated) return null;
+
+  return (
+    <Layout>
+      <div className="max-w-6xl mx-auto px-4 py-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+        >
+          <section className="text-center mb-10">
+            <span className="inline-block px-3 py-1 bg-india-orange/10 text-india-orange rounded-full text-sm font-medium mb-4">
+              My Experiences
+            </span>
+            <h1 className="text-3xl md:text-4xl font-display font-bold mb-4">
+              My Trips
+            </h1>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Track the status of your custom trip requests and view your booked trips
+            </p>
+          </section>
+        </motion.div>
+
+        <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'requests' | 'bookings')}>
+          <TabsList className="grid w-full grid-cols-2 mb-8">
+            <TabsTrigger value="requests" className="text-base">Custom Trip Requests</TabsTrigger>
+            <TabsTrigger value="bookings" className="text-base">Booked Trips</TabsTrigger>
+          </TabsList>
+          <TabsContent value="requests" className="mt-0">
+            {renderTripRequests()}
+          </TabsContent>
+          <TabsContent value="bookings" className="mt-0">
+            {renderBookedTrips()}
+          </TabsContent>
+        </Tabs>
+
+        {/* Trip details dialog */}
+        <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
+          <DialogContent className="sm:max-w-lg">
+            <DialogHeader>
+              <DialogTitle>Trip Request Details</DialogTitle>
+              <DialogDescription>
+                Your custom trip request information
+              </DialogDescription>
+            </DialogHeader>
+            {selectedTrip && (
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-semibold">Status</h3>
+                  {renderStatusBadge(selectedTrip.status)}
+                </div>
+
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground mb-1">Request Date</h3>
+                  <p>{formatDate(selectedTrip.createdAt)}</p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <h3 className="text-sm font-medium text-muted-foreground mb-1">Start Date</h3>
+                    <p>{formatDate(selectedTrip.startDate)}</p>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-medium text-muted-foreground mb-1">End Date</h3>
+                    <p>{formatDate(selectedTrip.endDate)}</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <h3 className="text-sm font-medium text-muted-foreground mb-1">Travelers</h3>
+                    <p>{selectedTrip.travelers}</p>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-medium text-muted-foreground mb-1">Transport</h3>
+                    <p className="capitalize">{selectedTrip.transportMode}</p>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground mb-1">Destinations</h3>
+                  <p>{getStateNames(selectedTrip.states)}</p>
+                </div>
+
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground mb-1">Budget</h3>
+                  <p>₹{selectedTrip.budget.toLocaleString()}</p>
+                </div>
+
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground mb-1">Preferences</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedTrip.preferences.map(pref => (
+                      <Badge key={pref} variant="outline">{pref}</Badge>
+                    ))}
+                  </div>
+                </div>
+
+                {selectedTrip.status === 'rejected' && (
+                  <div className="p-4 border border-red-200 bg-red-50 dark:bg-red-900/10 dark:border-red-800 rounded-md">
+                    <p className="text-red-600 dark:text-red-400 font-medium">This request was declined</p>
+                    <p className="text-sm text-red-500 dark:text-red-300 mt-1">
+                      Please create a new request with adjusted preferences or budget.
+                    </p>
+                  </div>
+                )}
+
+                {selectedTrip.status === 'approved' && (
+                  <div className="p-4 border border-green-200 bg-green-50 dark:bg-green-900/10 dark:border-green-800 rounded-md">
+                    <p className="text-green-600 dark:text-green-400 font-medium">Your request has been approved!</p>
+                    <p className="text-sm text-green-500 dark:text-green-300 mt-1">
+                      We will contact you soon with more details.
+                    </p>
+                  </div>
+                )}
+
+                {selectedTrip.status === 'in-progress' && (
+                  <div className="p-4 border border-blue-200 bg-blue-50 dark:bg-blue-900/10 dark:border-blue-800 rounded-md">
+                    <p className="text-blue-600 dark:text-blue-400 font-medium">Your trip is being prepared</p>
+                    <p className="text-sm text-blue-500 dark:text-blue-300 mt-1">
+                      We're working on creating the perfect itinerary for you.
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
+      </div>
+    </Layout>
+  );
+};
+
+export default MyTrips;
