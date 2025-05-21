@@ -31,6 +31,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { ApprovedTripOptions } from '@/components/trips/ApprovedTripOptions';
+import { TripSummary } from '@/components/trips/TripSummary';
 
 interface TravelerInfo {
   name: string;
@@ -79,6 +80,7 @@ const MyTrips = () => {
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [bookingDetailsOpen, setBookingDetailsOpen] = useState(false);
+  const [completedTrips, setCompletedTrips] = useState<string[]>([]);
 
   // Load trip data from localStorage
   useEffect(() => {
@@ -92,6 +94,10 @@ const MyTrips = () => {
       const allBookings = JSON.parse(localStorage.getItem('bookedTrips') || '[]');
       const userBookings = allBookings.filter((booking: Booking) => booking.userEmail === user.email);
       setBookedTrips(userBookings);
+      
+      // Load completed trips
+      const completed = JSON.parse(localStorage.getItem('completedTrips') || '[]');
+      setCompletedTrips(completed);
     }
   }, [isAuthenticated, user]);
   
@@ -274,7 +280,7 @@ const MyTrips = () => {
     );
   };
 
-  // Render trip request cards
+  // Render trip request cards with the ability to show completed status
   const renderTripRequests = () => {
     if (tripRequests.length === 0) {
       return (
@@ -303,7 +309,14 @@ const MyTrips = () => {
                       {formatDate(trip.createdAt)}
                     </CardDescription>
                   </div>
-                  {renderStatusBadge(trip.status)}
+                  <div className="flex flex-col gap-2 items-end">
+                    {renderStatusBadge(trip.status)}
+                    {completedTrips.includes(trip.id) && (
+                      <Badge variant="outline" className="bg-purple-100 text-purple-800 border-purple-300 dark:bg-purple-900/30 dark:text-purple-400 dark:border-purple-800">
+                        Completed
+                      </Badge>
+                    )}
+                  </div>
                 </div>
               </CardHeader>
               <CardContent>
@@ -341,6 +354,21 @@ const MyTrips = () => {
                       onClick={() => viewTripDetails(trip)}
                     >
                       View Accommodation & Activities
+                    </Button>
+                  </div>
+                )}
+                
+                {/* Show download summary option for all trips */}
+                {completedTrips.includes(trip.id) && (
+                  <div className="mt-4 pt-4 border-t">
+                    <p className="text-sm font-medium mb-2">Your trip is complete!</p>
+                    <Button 
+                      variant="default" 
+                      size="sm" 
+                      className="w-full"
+                      onClick={() => viewTripDetails(trip)}
+                    >
+                      View Trip Summary
                     </Button>
                   </div>
                 )}
@@ -410,74 +438,120 @@ const MyTrips = () => {
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <h3 className="text-lg font-semibold">Status</h3>
-                  {renderStatusBadge(selectedTrip.status)}
-                </div>
-
-                <div>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-1">Request Date</h3>
-                  <p>{formatDate(selectedTrip.createdAt)}</p>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <h3 className="text-sm font-medium text-muted-foreground mb-1">Start Date</h3>
-                    <p>{formatDate(selectedTrip.startDate)}</p>
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-medium text-muted-foreground mb-1">End Date</h3>
-                    <p>{formatDate(selectedTrip.endDate)}</p>
+                  <div className="flex gap-2">
+                    {renderStatusBadge(selectedTrip.status)}
+                    {completedTrips.includes(selectedTrip.id) && (
+                      <Badge variant="outline" className="bg-purple-100 text-purple-800 border-purple-300 dark:bg-purple-900/30 dark:text-purple-400 dark:border-purple-800">
+                        Completed
+                      </Badge>
+                    )}
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <h3 className="text-sm font-medium text-muted-foreground mb-1">Travelers</h3>
-                    <p>{selectedTrip.travelers}</p>
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-medium text-muted-foreground mb-1">Transport</h3>
-                    <p className="capitalize">{selectedTrip.transportMode}</p>
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-1">Destinations</h3>
-                  <p>{getStateNames(selectedTrip.states)}</p>
-                </div>
-
-                <div>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-1">Budget</h3>
-                  <p>₹{selectedTrip.budget.toLocaleString()}</p>
-                </div>
-
-                <div>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-1">Preferences</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedTrip.preferences.map(pref => (
-                      <Badge key={pref} variant="outline">{pref}</Badge>
-                    ))}
-                  </div>
-                </div>
-
-                {selectedTrip.status === 'rejected' && (
-                  <div className="p-4 border border-red-200 bg-red-50 dark:bg-red-900/10 dark:border-red-800 rounded-md">
-                    <p className="text-red-600 dark:text-red-400 font-medium">This request was declined</p>
-                    <p className="text-sm text-red-500 dark:text-red-300 mt-1">
-                      Please create a new request with adjusted preferences or budget.
-                    </p>
+                {/* Show trip summary if the trip is marked as completed */}
+                {completedTrips.includes(selectedTrip.id) && (
+                  <div className="my-6 border-t pt-6">
+                    <TripSummary trip={selectedTrip} />
                   </div>
                 )}
-
-                {(selectedTrip.status === 'approved' || selectedTrip.status === 'in-progress') && (
+                
+                {/* Show regular trip details if not viewing summary */}
+                {!completedTrips.includes(selectedTrip.id) && (
                   <>
-                    <div className="p-4 border border-green-200 bg-green-50 dark:bg-green-900/10 dark:border-green-800 rounded-md mb-6">
-                      <p className="text-green-600 dark:text-green-400 font-medium">Your request has been approved!</p>
-                      <p className="text-sm text-green-500 dark:text-green-300 mt-1">
-                        You can now access accommodation and activity options.
-                      </p>
+                    <div>
+                      <h3 className="text-sm font-medium text-muted-foreground mb-1">Request Date</h3>
+                      <p>{formatDate(selectedTrip.createdAt)}</p>
                     </div>
-                    
-                    <ApprovedTripOptions trip={selectedTrip} />
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <h3 className="text-sm font-medium text-muted-foreground mb-1">Start Date</h3>
+                        <p>{formatDate(selectedTrip.startDate)}</p>
+                      </div>
+                      <div>
+                        <h3 className="text-sm font-medium text-muted-foreground mb-1">End Date</h3>
+                        <p>{formatDate(selectedTrip.endDate)}</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <h3 className="text-sm font-medium text-muted-foreground mb-1">Travelers</h3>
+                        <p>{selectedTrip.travelers}</p>
+                      </div>
+                      <div>
+                        <h3 className="text-sm font-medium text-muted-foreground mb-1">Transport</h3>
+                        <p className="capitalize">{selectedTrip.transportMode}</p>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3 className="text-sm font-medium text-muted-foreground mb-1">Destinations</h3>
+                      <p>{getStateNames(selectedTrip.states)}</p>
+                    </div>
+
+                    <div>
+                      <h3 className="text-sm font-medium text-muted-foreground mb-1">Budget</h3>
+                      <p>₹{selectedTrip.budget.toLocaleString()}</p>
+                    </div>
+
+                    <div>
+                      <h3 className="text-sm font-medium text-muted-foreground mb-1">Preferences</h3>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedTrip.preferences.map(pref => (
+                          <Badge key={pref} variant="outline">{pref}</Badge>
+                        ))}
+                      </div>
+                    </div>
+
+                    {selectedTrip.status === 'rejected' && (
+                      <div className="p-4 border border-red-200 bg-red-50 dark:bg-red-900/10 dark:border-red-800 rounded-md">
+                        <p className="text-red-600 dark:text-red-400 font-medium">This request was declined</p>
+                        <p className="text-sm text-red-500 dark:text-red-300 mt-1">
+                          Please create a new request with adjusted preferences or budget.
+                        </p>
+                      </div>
+                    )}
+
+                    {(selectedTrip.status === 'approved' || selectedTrip.status === 'in-progress') && (
+                      <>
+                        <div className="p-4 border border-green-200 bg-green-50 dark:bg-green-900/10 dark:border-green-800 rounded-md mb-6">
+                          <p className="text-green-600 dark:text-green-400 font-medium">Your request has been approved!</p>
+                          <p className="text-sm text-green-500 dark:text-green-300 mt-1">
+                            You can now access accommodation and activity options.
+                          </p>
+                        </div>
+                        
+                        <ApprovedTripOptions trip={selectedTrip} />
+                        
+                        {/* Option to mark trip as completed */}
+                        {!completedTrips.includes(selectedTrip.id) && selectedTrip.status === 'approved' && (
+                          <div className="mt-6 pt-6 border-t">
+                            <Button
+                              onClick={() => {
+                                const completed = [...completedTrips, selectedTrip.id];
+                                setCompletedTrips(completed);
+                                localStorage.setItem('completedTrips', JSON.stringify(completed));
+                                
+                                toast({
+                                  title: "Trip Marked as Completed",
+                                  description: "You can now view and download your trip summary",
+                                });
+                                
+                                // Force re-render
+                                setDetailsOpen(false);
+                                setTimeout(() => {
+                                  viewTripDetails(selectedTrip);
+                                }, 100);
+                              }}
+                              className="w-full"
+                            >
+                              Mark Trip as Completed
+                            </Button>
+                          </div>
+                        )}
+                      </>
+                    )}
                   </>
                 )}
               </div>

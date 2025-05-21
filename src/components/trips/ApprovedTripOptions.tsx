@@ -1,11 +1,12 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Hotel, Casino, Receipt, Download } from 'lucide-react';
+import { Hotel, Receipt, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { CustomTripRequest } from '@/data/tripData';
+import { ReceiptGenerator } from './ReceiptGenerator';
 
 interface ApprovedTripOptionsProps {
   trip: CustomTripRequest;
@@ -73,10 +74,27 @@ export const ApprovedTripOptions = ({ trip }: ApprovedTripOptionsProps) => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Casino className="h-5 w-5" />
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+              <rect x="2" y="4" width="20" height="16" rx="2" />
+              <path d="M4 8h.01" />
+              <path d="M4 12h.01" />
+              <path d="M4 16h.01" />
+              <path d="M8 8h.01" />
+              <path d="M8 12h.01" />
+              <path d="M8 16h.01" />
+              <path d="M12 8h.01" />
+              <path d="M12 12h.01" />
+              <path d="M12 16h.01" />
+              <path d="M16 8h.01" />
+              <path d="M16 12h.01" />
+              <path d="M16 16h.01" />
+              <path d="M20 8h.01" />
+              <path d="M20 12h.01" />
+              <path d="M20 16h.01" />
+            </svg>
             Entertainment & Activities
           </CardTitle>
-          <CardDescription>Explore casinos and entertainment options</CardDescription>
+          <CardDescription>Explore entertainment options and activities</CardDescription>
         </CardHeader>
         <CardContent>
           <p>Discover entertainment options and activities in {trip.states.join(', ')}.</p>
