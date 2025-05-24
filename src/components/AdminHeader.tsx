@@ -53,11 +53,9 @@ const AdminHeader = () => {
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
             <Link to="/admin" className="flex items-center">
-              <img
-                src="/logo.svg"
-                alt="Indian Cultural Explorer"
-                className="h-8 w-8 mr-2"
-              />
+              <div className="h-8 w-8 mr-2 bg-orange-500 rounded-full flex items-center justify-center">
+                <span className="text-white font-bold text-sm">ICE</span>
+              </div>
               <span className="font-display font-bold text-xl hidden sm:inline-block">
                 Admin Panel
               </span>

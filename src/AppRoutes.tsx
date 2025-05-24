@@ -35,6 +35,7 @@ import Trips from './pages/Trips';
 import TripDetails from './pages/TripDetails';
 import CustomTrip from './pages/CustomTrip';
 import MyTrips from './pages/MyTrips';
+import Contact from './pages/Contact';
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -72,6 +73,7 @@ const AppRoutes = () => {
         <Route path="/trips/:tripId" element={<TripDetails />} />
         <Route path="/custom-trip" element={<CustomTrip />} />
         <Route path="/my-trips" element={<MyTrips />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>

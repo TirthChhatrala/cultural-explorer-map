@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -44,7 +45,7 @@ interface HotelAmenity {
 
 const TripDetails = () => {
   const { theme } = useTheme();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const { tripId } = useParams<{ tripId: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -69,6 +70,43 @@ const TripDetails = () => {
       navigate('/404');
     }
   }, [tripId, navigate]);
+
+  const handleBookNow = () => {
+    if (!isAuthenticated) {
+      toast({
+        title: "Login Required",
+        description: "Please log in to book this trip.",
+        variant: "destructive",
+      });
+      navigate('/login');
+      return;
+    }
+
+    // Create booking record
+    const booking = {
+      id: `booking-${Date.now()}`,
+      tripId: trip.id,
+      userId: user?.email,
+      tripTitle: trip.title,
+      price: trip.discountedPrice || trip.price,
+      bookingDate: new Date().toISOString(),
+      status: 'confirmed',
+      travelers: 1
+    };
+
+    // Save to localStorage (simulating database)
+    const existingBookings = JSON.parse(localStorage.getItem('tripBookings') || '[]');
+    existingBookings.push(booking);
+    localStorage.setItem('tripBookings', JSON.stringify(existingBookings));
+
+    toast({
+      title: "Booking Confirmed!",
+      description: `Your booking for ${trip.title} has been confirmed.`,
+    });
+
+    // Redirect to user dashboard
+    navigate('/my-trips');
+  };
   
   const handlePreferencesSubmit = (preferences: TripPreferences) => {
     setUserPreferences(preferences);
@@ -97,12 +135,10 @@ const TripDetails = () => {
     category,
     rating,
     duration,
-    maxTravelers,
     price,
     discountedPrice,
     states: stateIds,
     itinerary,
-    hotelAmenities
   } = trip;
 
   const stateNames = stateIds.map((stateId: string) => {
@@ -110,7 +146,35 @@ const TripDetails = () => {
     return state ? state.name : 'Unknown State';
   });
 
+  const hotelAmenities = [
+    { name: 'Free WiFi', icon: Wifi },
+    { name: 'Swimming Pool', icon: Mountain },
+    { name: 'Restaurant', icon: Utensils },
+    { name: 'Room Service', icon: Coffee },
+    { name: 'Car Parking', icon: Car },
+    { name: 'Security', icon: Shield }
+  ];
+
   const renderItinerary = (itinerary: ItineraryItem[]) => {
+    if (!itinerary || itinerary.length === 0) {
+      return (
+        <div className="space-y-4">
+          <div className="mb-4">
+            <h4 className="text-lg font-semibold mb-1">Day 1: Arrival & Welcome</h4>
+            <p className="text-muted-foreground">Arrive at destination, hotel check-in, welcome dinner</p>
+          </div>
+          <div className="mb-4">
+            <h4 className="text-lg font-semibold mb-1">Day 2: Sightseeing</h4>
+            <p className="text-muted-foreground">Full day city tour with local guide</p>
+          </div>
+          <div className="mb-4">
+            <h4 className="text-lg font-semibold mb-1">Day 3: Cultural Experience</h4>
+            <p className="text-muted-foreground">Visit cultural sites and local markets</p>
+          </div>
+        </div>
+      );
+    }
+
     return itinerary.map(item => (
       <div key={item.day} className="mb-4">
         <h4 className="text-lg font-semibold mb-1">Day {item.day}: {item.title}</h4>
@@ -121,7 +185,7 @@ const TripDetails = () => {
 
   const renderHotelAmenities = (amenities: HotelAmenity[]) => {
     return amenities.map(amenity => (
-      <div key={amenity.name} className="flex items-center text-sm mr-4">
+      <div key={amenity.name} className="flex items-center text-sm mr-4 mb-2">
         <amenity.icon className="h-5 w-5 mr-2 text-muted-foreground" />
         <span>{amenity.name}</span>
       </div>
@@ -191,7 +255,7 @@ const TripDetails = () => {
                 </div>
                 <div className="flex items-center text-gray-600 dark:text-gray-400">
                   <Users className="h-5 w-5 mr-2" />
-                  <span>Up to {maxTravelers} Travelers</span>
+                  <span>Up to 10 Travelers</span>
                 </div>
               </div>
 
@@ -204,16 +268,14 @@ const TripDetails = () => {
                 ) : (
                   <span className="text-2xl font-bold text-india-orange">₹{price.toLocaleString()}</span>
                 )}
-                {isAuthenticated ? (
-                  <div className="mt-4 flex gap-3">
-                    <Button className="w-1/2">Book Now</Button>
-                    <Button variant="outline" className="w-1/2" onClick={() => setPreferencesOpen(true)}>
-                      Customize
-                    </Button>
-                  </div>
-                ) : (
-                  <p className="text-red-500 mt-4">Login to book this trip!</p>
-                )}
+                <div className="mt-4 flex gap-3">
+                  <Button className="w-1/2" onClick={handleBookNow}>
+                    Book Now
+                  </Button>
+                  <Button variant="outline" className="w-1/2" onClick={() => setPreferencesOpen(true)}>
+                    Customize
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
@@ -226,11 +288,7 @@ const TripDetails = () => {
                 <CardDescription>A detailed plan for your adventure</CardDescription>
               </CardHeader>
               <CardContent>
-                {itinerary && itinerary.length > 0 ? (
-                  renderItinerary(itinerary)
-                ) : (
-                  <p className="text-muted-foreground">Itinerary not available.</p>
-                )}
+                {renderItinerary(itinerary)}
               </CardContent>
             </Card>
 
@@ -241,11 +299,7 @@ const TripDetails = () => {
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap">
-                  {hotelAmenities && hotelAmenities.length > 0 ? (
-                    renderHotelAmenities(hotelAmenities)
-                  ) : (
-                    <p className="text-muted-foreground">No amenities listed.</p>
-                  )}
+                  {renderHotelAmenities(hotelAmenities)}
                 </div>
               </CardContent>
             </Card>

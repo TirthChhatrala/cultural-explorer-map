@@ -83,7 +83,7 @@ export const TripCard = ({ trip, states = [], index = 0, theme, onClick }: TripC
           </div>
           <div className="flex items-center text-sm text-muted-foreground">
             <Users className="h-4 w-4 mr-2" />
-            <span>Up to {trip.maxGroupSize || 10} travelers</span>
+            <span>Up to 10 travelers</span>
           </div>
         </div>
         
