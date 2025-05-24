@@ -82,22 +82,40 @@ const MyTrips = () => {
   const [bookingDetailsOpen, setBookingDetailsOpen] = useState(false);
   const [completedTrips, setCompletedTrips] = useState<string[]>([]);
 
-  // Load trip data from localStorage
+  // Load trip data from localStorage with real-time sync
   useEffect(() => {
     if (isAuthenticated && user) {
-      // Load custom trip requests
-      const allRequests = JSON.parse(localStorage.getItem('customTripRequests') || '[]');
-      const userRequests = allRequests.filter((req: CustomTripRequest) => req.userId === user.email);
-      setTripRequests(userRequests);
-      
-      // Load booked trips (regular package trips)
-      const allBookings = JSON.parse(localStorage.getItem('bookedTrips') || '[]');
-      const userBookings = allBookings.filter((booking: Booking) => booking.userEmail === user.email);
-      setBookedTrips(userBookings);
-      
-      // Load completed trips
-      const completed = JSON.parse(localStorage.getItem('completedTrips') || '[]');
-      setCompletedTrips(completed);
+      const loadTripData = () => {
+        // Load custom trip requests
+        const allRequests = JSON.parse(localStorage.getItem('customTripRequests') || '[]');
+        const userRequests = allRequests.filter((req: CustomTripRequest) => req.userId === user.email);
+        setTripRequests(userRequests);
+        
+        // Load booked trips (regular package trips)
+        const allBookings = JSON.parse(localStorage.getItem('bookedTrips') || '[]');
+        const userBookings = allBookings.filter((booking: any) => booking.userEmail === user.email);
+        setBookedTrips(userBookings);
+        
+        // Load completed trips
+        const completed = JSON.parse(localStorage.getItem('completedTrips') || '[]');
+        setCompletedTrips(completed);
+      };
+
+      // Initial load
+      loadTripData();
+
+      // Set up real-time sync listener
+      const handleStorageChange = (e: StorageEvent) => {
+        if (e.key === 'customTripRequests' || e.key === 'bookedTrips') {
+          loadTripData();
+        }
+      };
+
+      window.addEventListener('storage', handleStorageChange);
+
+      return () => {
+        window.removeEventListener('storage', handleStorageChange);
+      };
     }
   }, [isAuthenticated, user]);
   

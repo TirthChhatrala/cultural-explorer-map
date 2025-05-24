@@ -1,80 +1,108 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader } from '@/components/ui/card';
-import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { motion } from 'framer-motion';
+import { MapPin, Calendar, Users, Star } from 'lucide-react';
 import { Trip } from '../../data/tripData';
-import { Calendar, Clock, MapPin, Star } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 
 interface TripCardProps {
   trip: Trip;
-  className?: string;
+  states: string[];
+  index: number;
+  theme: string;
+  onClick: () => void;
 }
 
-export const TripCard = ({ trip, className = "" }: TripCardProps) => {
+export const TripCard = ({ trip, states, index, theme, onClick }: TripCardProps) => {
   return (
-    <Link to={`/trips/${trip.id}`} className="block transition-transform duration-300 hover:-translate-y-2">
-      <Card className={`overflow-hidden border h-full shadow-sm hover:shadow-md transition-shadow ${className} dark:bg-card dark:border-border`}>
-        <AspectRatio ratio={4/3} className="bg-muted">
-          <img 
-            src={trip.image || '/placeholder.svg'} 
-            alt={trip.title}
-            className="object-cover w-full h-full"
-          />
-          {trip.discountPercentage > 0 && (
-            <Badge className="absolute top-3 right-3 bg-india-orange">
-              {trip.discountPercentage}% off
-            </Badge>
-          )}
-        </AspectRatio>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className={`cursor-pointer transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl rounded-xl overflow-hidden border ${
+        theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+      }`}
+      onClick={onClick}
+    >
+      <div className="relative">
+        <img 
+          src={trip.image} 
+          alt={trip.title}
+          className="w-full h-48 object-cover"
+        />
+        {trip.featured && (
+          <div className="absolute top-3 left-3 bg-india-orange text-white px-2 py-1 rounded-full text-xs font-medium">
+            Featured
+          </div>
+        )}
+        {trip.discountedPrice && (
+          <div className="absolute top-3 right-3 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+            {Math.round((1 - trip.discountedPrice / trip.price) * 100)}% OFF
+          </div>
+        )}
+      </div>
+      
+      <div className="p-6">
+        <div className="flex items-center justify-between mb-2">
+          <span className="inline-block px-2 py-1 bg-india-orange/10 text-india-orange rounded-full text-xs font-medium">
+            {trip.category}
+          </span>
+          <div className="flex items-center">
+            <Star className="h-4 w-4 text-yellow-400 fill-current" />
+            <span className="ml-1 text-sm">{trip.rating}</span>
+          </div>
+        </div>
         
-        <CardHeader className="pb-2">
-          <div className="flex justify-between items-center">
-            <CardDescription className="flex items-center mb-1">
-              <MapPin className="h-3.5 w-3.5 mr-1 text-muted-foreground" />
-              {trip.states.join(', ')}
-            </CardDescription>
-            <div className="flex items-center text-yellow-500">
-              <Star className="h-4 w-4 fill-yellow-400 stroke-yellow-400 mr-1" />
-              <span className="text-sm font-medium">{trip.rating}</span>
-            </div>
+        <h3 className="text-lg font-display font-semibold mb-2 line-clamp-2">
+          {trip.title}
+        </h3>
+        
+        <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+          {trip.description}
+        </p>
+        
+        <div className="space-y-2 mb-4">
+          <div className="flex items-center text-sm text-muted-foreground">
+            <MapPin className="h-4 w-4 mr-2" />
+            <span>{states.join(', ')}</span>
           </div>
-          <h3 className="font-semibold text-lg leading-tight">{trip.title}</h3>
-        </CardHeader>
-        <CardContent className="pb-4">
-          <div className="flex flex-wrap text-sm text-muted-foreground">
-            <div className="flex items-center mr-4">
-              <Calendar className="h-3.5 w-3.5 mr-1" />
-              <span>{trip.duration} days</span>
-            </div>
-            
-            <div className="flex items-center">
-              <Clock className="h-3.5 w-3.5 mr-1" />
-              <span>Best time: {trip.bestTime}</span>
-            </div>
+          <div className="flex items-center text-sm text-muted-foreground">
+            <Calendar className="h-4 w-4 mr-2" />
+            <span>{trip.duration} days</span>
           </div>
-          
-          <div className="mt-4">
-            {trip.originalPrice && trip.originalPrice > trip.price ? (
-              <div className="flex items-baseline gap-2">
-                <p className="text-xl font-semibold">₹{trip.price.toLocaleString()}</p>
-                <p className="text-muted-foreground line-through text-sm">
-                  ₹{trip.originalPrice.toLocaleString()}
-                </p>
+          <div className="flex items-center text-sm text-muted-foreground">
+            <Users className="h-4 w-4 mr-2" />
+            <span>Up to {trip.maxTravelers} travelers</span>
+          </div>
+        </div>
+        
+        <div className="flex items-center justify-between">
+          <div>
+            {trip.discountedPrice ? (
+              <div className="flex items-center space-x-2">
+                <span className="text-lg font-bold text-india-orange">
+                  ₹{trip.discountedPrice.toLocaleString()}
+                </span>
+                <span className="text-sm text-muted-foreground line-through">
+                  ₹{trip.price.toLocaleString()}
+                </span>
               </div>
             ) : (
-              <p className="text-xl font-semibold">₹{trip.price.toLocaleString()}</p>
+              <span className="text-lg font-bold text-india-orange">
+                ₹{trip.price.toLocaleString()}
+              </span>
             )}
-            <p className="text-sm text-muted-foreground">per person</p>
           </div>
-        </CardContent>
-        
-        <CardFooter>
-          <Button className="w-full">View Details</Button>
-        </CardFooter>
-      </Card>
-    </Link>
+          <button
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              theme === 'dark'
+                ? 'bg-india-orange/20 text-india-orange hover:bg-india-orange/30'
+                : 'bg-india-orange/10 text-india-orange hover:bg-india-orange/20'
+            }`}
+          >
+            View Details
+          </button>
+        </div>
+      </div>
+    </motion.div>
   );
 };

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Layout from '../components/Layout';
@@ -5,7 +6,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useNavigate } from 'react-router-dom';
 import { trips } from '../data/tripData';
 import { states } from '../data/states';
-import TripCard from '../components/trips/TripCard';
+import { TripCard } from '../components/trips/TripCard';
 import TripFilter from '../components/trips/TripFilter';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../hooks/use-toast';

@@ -19,16 +19,8 @@ import {
   DialogTitle, 
   DialogFooter 
 } from '@/components/ui/dialog';
-import { 
-  Sheet, 
-  SheetContent, 
-  SheetHeader, 
-  SheetTitle, 
-  SheetFooter 
-} from '@/components/ui/sheet';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '../../hooks/use-toast';
 import { trips, CustomTripRequest, Trip } from '../../data/tripData';
 import { 
@@ -38,7 +30,6 @@ import {
   Loader, 
   Percent, 
   Edit, 
-  Trash, 
   Image as ImageIcon,
   Receipt,
   FileText,
@@ -177,13 +168,26 @@ const ManageTrips = () => {
     setReceipts(storedReceipts);
   }, []);
 
-  // Request handling functions
+  // Request handling functions with real-time sync
   const handleStatusChange = (requestId: string, newStatus: CustomTripRequest['status']) => {
     setCustomRequests(requests => 
       requests.map(req => 
         req.id === requestId ? { ...req, status: newStatus } : req
       )
     );
+    
+    // Update localStorage for real-time sync
+    const allRequests = JSON.parse(localStorage.getItem('customTripRequests') || '[]');
+    const updatedRequests = allRequests.map((req: CustomTripRequest) => 
+      req.id === requestId ? { ...req, status: newStatus } : req
+    );
+    localStorage.setItem('customTripRequests', JSON.stringify(updatedRequests));
+    
+    // Trigger storage event for real-time updates
+    window.dispatchEvent(new StorageEvent('storage', {
+      key: 'customTripRequests',
+      newValue: JSON.stringify(updatedRequests)
+    }));
     
     toast({
       title: `Request ${newStatus}`,
@@ -840,7 +844,7 @@ const ManageTrips = () => {
                   <img 
                     src={newImageUrl} 
                     alt="Preview" 
-                    className="w-full h-40 object-cover" 
+                    className="w-full h-40 object-cover"
                     onError={(e) => {
                       e.currentTarget.src = 'https://via.placeholder.com/400x200?text=Invalid+Image+URL';
                     }} 

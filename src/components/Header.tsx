@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
@@ -87,23 +88,17 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* Rest of the component with Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-2">
             <UserLinks />
             <ThemeToggle />
           </div>
 
-          {/* Mobile Navigation */}
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button
                 variant="ghost"
                 className="md:hidden p-2"
                 aria-label="Toggle menu"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setMobileMenuOpen(!mobileMenuOpen);
-                }}
               >
                 {mobileMenuOpen ? <X /> : <Menu />}
               </Button>
@@ -113,7 +108,6 @@ const Header = () => {
                 <SheetTitle>Menu</SheetTitle>
               </SheetHeader>
               <div className="flex flex-col space-y-3 py-4">
-                {/* Keep existing navigation links */}
                 {links.map((link) => (
                   <Link
                     key={link.path}
