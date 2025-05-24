@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,6 +18,7 @@ import UserLinks from './UserLinks';
 const Header = () => {
   const { theme } = useTheme();
   const { pathname } = useLocation();
+  const { isAdmin } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -33,6 +35,11 @@ const Header = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [scrolled]);
+
+  // Hide header on admin dashboard to avoid duplicate navbar
+  if (pathname === '/admin' || pathname.startsWith('/admin/')) {
+    return null;
+  }
 
   const links = [
     { path: '/', label: 'Home' },

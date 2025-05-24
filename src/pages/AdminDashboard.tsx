@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react';
-import Layout from '../components/Layout';
+import AdminHeader from '../components/AdminHeader';
 import { motion } from 'framer-motion';
 import { 
   MapPin, Info, Newspaper, Calendar, Users, User, 
@@ -134,8 +134,10 @@ const AdminDashboard = () => {
   if (!isAdmin) return null;
   
   return (
-    <Layout>
-      <div className="max-w-6xl mx-auto px-4">
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
+      <AdminHeader />
+      
+      <div className="max-w-6xl mx-auto px-4 py-8">
         <section className="text-center mb-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -253,16 +255,19 @@ const AdminDashboard = () => {
             >
               <h3 className="text-2xl font-display font-semibold mb-3">Website Statistics</h3>
               <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
-                Coming soon: View detailed statistics about user engagement and website traffic.
+                Access comprehensive analytics, user engagement metrics, traffic statistics, and monitoring dashboard from the Trip Management section.
               </p>
-              <button className="px-6 py-3 bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-400 rounded-lg font-medium cursor-not-allowed">
-                Statistics Dashboard (Coming Soon)
+              <button 
+                onClick={() => navigate('/admin/trips')}
+                className="px-6 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium transition-colors"
+              >
+                View Analytics Dashboard
               </button>
             </motion.div>
           </div>
         </section>
       </div>
-    </Layout>
+    </div>
   );
 };
 

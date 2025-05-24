@@ -19,6 +19,14 @@ import {
   DialogTitle, 
   DialogFooter 
 } from '@/components/ui/dialog';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+  SheetFooter,
+} from '@/components/ui/sheet';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '../../hooks/use-toast';
@@ -33,7 +41,12 @@ import {
   Image as ImageIcon,
   Receipt,
   FileText,
-  Download
+  Download,
+  Trash2 as Trash,
+  BarChart3,
+  Users,
+  TrendingUp,
+  FileDown
 } from 'lucide-react';
 
 interface TripReceipt {
@@ -45,6 +58,38 @@ interface TripReceipt {
   downloadedAt: string;
 }
 
+interface UserTripHistory {
+  id: string;
+  userId: string;
+  userName: string;
+  userEmail: string;
+  tripId: string;
+  tripTitle: string;
+  bookingDate: string;
+  totalAmount: number;
+  basePrice: number;
+  taxes: number;
+  profit: number;
+  status: 'completed' | 'ongoing' | 'cancelled';
+}
+
+interface WebsiteStatistics {
+  totalUsers: number;
+  totalTrips: number;
+  totalRevenue: number;
+  monthlyGrowth: number;
+  userEngagement: {
+    dailyActiveUsers: number;
+    weeklyActiveUsers: number;
+    monthlyActiveUsers: number;
+  };
+  trafficStats: {
+    pageViews: number;
+    uniqueVisitors: number;
+    bounceRate: number;
+  };
+}
+
 const ManageTrips = () => {
   const { theme } = useTheme();
   const { user, isAdmin } = useAuth();
@@ -52,7 +97,7 @@ const ManageTrips = () => {
   const { toast } = useToast();
   
   // State management
-  const [activeTab, setActiveTab] = useState<'requests' | 'packages' | 'images' | 'receipts'>('requests');
+  const [activeTab, setActiveTab] = useState<'requests' | 'packages' | 'images' | 'receipts' | 'statistics' | 'history'>('requests');
   const [customRequests, setCustomRequests] = useState<CustomTripRequest[]>([
     {
       id: "req1",
@@ -97,50 +142,6 @@ const ManageTrips = () => {
       preferences: ["nature", "ayurveda"],
       status: "approved",
       createdAt: "2025-05-10"
-    },
-    {
-      id: "req3",
-      userId: "user789",
-      userDetails: {
-        name: "Charlie Brown",
-        email: "charlie@example.com",
-        phone: "1122334455",
-        address: "789 Some St, City, State, 67890"
-      },
-      memberDetails: [
-        { name: "Lucy Brown", age: 28, relation: "Sister" }
-      ],
-      startDate: "2025-08-05",
-      endDate: "2025-08-15",
-      travelers: 6,
-      transportMode: "flight",
-      states: ["himachalpradesh", "uttarakhand"],
-      budget: 120000,
-      preferences: ["adventure", "trekking", "camping"],
-      status: "rejected",
-      createdAt: "2025-05-05"
-    },
-    {
-      id: "req4",
-      userId: "user321",
-      userDetails: {
-        name: "David Johnson",
-        email: "david@example.com",
-        phone: "2233445566",
-        address: "321 Different St, City, State, 98765"
-      },
-      memberDetails: [
-        { name: "Emma Johnson", age: 40, relation: "Wife" }
-      ],
-      startDate: "2025-09-20",
-      endDate: "2025-09-27",
-      travelers: 3,
-      transportMode: "bus",
-      states: ["goa"],
-      budget: 35000,
-      preferences: ["beaches", "nightlife", "water sports"],
-      status: "in-progress",
-      createdAt: "2025-05-01"
     }
   ]);
   
@@ -161,6 +162,52 @@ const ManageTrips = () => {
   const [receipts, setReceipts] = useState<TripReceipt[]>([]);
   const [receiptDetailsOpen, setReceiptDetailsOpen] = useState(false);
   const [selectedReceipt, setSelectedReceipt] = useState<TripReceipt | null>(null);
+  const [userTripHistory, setUserTripHistory] = useState<UserTripHistory[]>([
+    {
+      id: "hist1",
+      userId: "user123",
+      userName: "John Doe",
+      userEmail: "john@example.com",
+      tripId: "trip1",
+      tripTitle: "Golden Triangle Tour",
+      bookingDate: "2025-05-01",
+      totalAmount: 65000,
+      basePrice: 55000,
+      taxes: 5000,
+      profit: 5000,
+      status: "completed"
+    },
+    {
+      id: "hist2",
+      userId: "user456",
+      userName: "Alice Smith",
+      userEmail: "alice@example.com",
+      tripId: "trip2",
+      tripTitle: "Kerala Backwaters",
+      bookingDate: "2025-05-15",
+      totalAmount: 42000,
+      basePrice: 35000,
+      taxes: 3500,
+      profit: 3500,
+      status: "ongoing"
+    }
+  ]);
+  const [websiteStats, setWebsiteStats] = useState<WebsiteStatistics>({
+    totalUsers: 1250,
+    totalTrips: 89,
+    totalRevenue: 2850000,
+    monthlyGrowth: 15.8,
+    userEngagement: {
+      dailyActiveUsers: 125,
+      weeklyActiveUsers: 450,
+      monthlyActiveUsers: 850
+    },
+    trafficStats: {
+      pageViews: 15420,
+      uniqueVisitors: 8950,
+      bounceRate: 32.5
+    }
+  });
   
   // Load receipt data on component mount
   useEffect(() => {
@@ -176,14 +223,12 @@ const ManageTrips = () => {
       )
     );
     
-    // Update localStorage for real-time sync
     const allRequests = JSON.parse(localStorage.getItem('customTripRequests') || '[]');
     const updatedRequests = allRequests.map((req: CustomTripRequest) => 
       req.id === requestId ? { ...req, status: newStatus } : req
     );
     localStorage.setItem('customTripRequests', JSON.stringify(updatedRequests));
     
-    // Trigger storage event for real-time updates
     window.dispatchEvent(new StorageEvent('storage', {
       key: 'customTripRequests',
       newValue: JSON.stringify(updatedRequests)
@@ -201,6 +246,65 @@ const ManageTrips = () => {
     setDetailsOpen(true);
   };
   
+  const viewReceiptDetails = (receipt: TripReceipt) => {
+    setSelectedReceipt(receipt);
+    setReceiptDetailsOpen(true);
+  };
+
+  const downloadReceipt = (receipt: TripReceipt) => {
+    const receiptContent = `
+TRIP RECEIPT
+------------------
+Receipt ID: ${receipt.id}
+Date: ${new Date(receipt.date).toLocaleDateString()}
+User: ${receipt.userId}
+Description: ${receipt.description}
+Amount: ₹${receipt.amount.toLocaleString()}
+Downloaded: ${new Date().toLocaleString()}
+------------------
+Thank you for choosing Indian Cultural Explorer!
+    `;
+    
+    const blob = new Blob([receiptContent], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `receipt-${receipt.id}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    toast({
+      title: "Receipt Downloaded",
+      description: `Receipt ${receipt.id} has been downloaded`
+    });
+  };
+
+  const exportUserTripHistory = () => {
+    const csvContent = [
+      'User ID,User Name,User Email,Trip Title,Booking Date,Total Amount,Base Price,Taxes,Profit,Status',
+      ...userTripHistory.map(trip => 
+        `${trip.userId},${trip.userName},${trip.userEmail},${trip.tripTitle},${trip.bookingDate},${trip.totalAmount},${trip.basePrice},${trip.taxes},${trip.profit},${trip.status}`
+      )
+    ].join('\n');
+    
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'user-trip-history.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    toast({
+      title: "Data Exported",
+      description: "User trip history has been exported as CSV"
+    });
+  };
+  
   // Discount handling functions
   const openDiscountDialog = (trip: Trip) => {
     setSelectedTrip(trip);
@@ -216,11 +320,9 @@ const ManageTrips = () => {
     const updatedTrips = packageTrips.map(trip => {
       if (trip.id === selectedTrip.id) {
         if (discountAmount <= 0) {
-          // Remove discount
           const { discountedPrice, ...tripWithoutDiscount } = trip;
           return tripWithoutDiscount as Trip;
         } else {
-          // Apply discount
           const discountedPrice = trip.price - (trip.price * (discountAmount / 100));
           return { ...trip, discountedPrice };
         }
@@ -339,7 +441,7 @@ const ManageTrips = () => {
             Trip Management
           </h1>
           <p className="text-muted-foreground">
-            Manage trip packages and custom trip requests
+            Manage trip packages, requests, statistics and user history
           </p>
         </section>
         
@@ -383,6 +485,32 @@ const ManageTrips = () => {
                 <div className="flex items-center whitespace-nowrap">
                   <Receipt className="h-5 w-5 mr-2" />
                   Booking Receipts
+                </div>
+              </button>
+              <button
+                onClick={() => setActiveTab('statistics')}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'statistics'
+                    ? 'border-red-500 text-red-500'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:hover:text-gray-300'
+                }`}
+              >
+                <div className="flex items-center whitespace-nowrap">
+                  <BarChart3 className="h-5 w-5 mr-2" />
+                  Website Statistics
+                </div>
+              </button>
+              <button
+                onClick={() => setActiveTab('history')}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'history'
+                    ? 'border-red-500 text-red-500'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:hover:text-gray-300'
+                }`}
+              >
+                <div className="flex items-center whitespace-nowrap">
+                  <Users className="h-5 w-5 mr-2" />
+                  User Trip History
                 </div>
               </button>
               <button
@@ -580,6 +708,163 @@ const ManageTrips = () => {
             </Table>
           </div>
         )}
+
+        {activeTab === 'statistics' && (
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className={`rounded-xl p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} shadow-sm border`}>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Total Users</p>
+                    <p className="text-2xl font-bold">{websiteStats.totalUsers.toLocaleString()}</p>
+                  </div>
+                  <Users className="h-8 w-8 text-blue-500" />
+                </div>
+              </div>
+              
+              <div className={`rounded-xl p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} shadow-sm border`}>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Total Trips</p>
+                    <p className="text-2xl font-bold">{websiteStats.totalTrips}</p>
+                  </div>
+                  <Calendar className="h-8 w-8 text-green-500" />
+                </div>
+              </div>
+              
+              <div className={`rounded-xl p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} shadow-sm border`}>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Total Revenue</p>
+                    <p className="text-2xl font-bold">₹{(websiteStats.totalRevenue / 100000).toFixed(1)}L</p>
+                  </div>
+                  <TrendingUp className="h-8 w-8 text-india-orange" />
+                </div>
+              </div>
+              
+              <div className={`rounded-xl p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} shadow-sm border`}>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Monthly Growth</p>
+                    <p className="text-2xl font-bold">{websiteStats.monthlyGrowth}%</p>
+                  </div>
+                  <BarChart3 className="h-8 w-8 text-purple-500" />
+                </div>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className={`rounded-xl p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} shadow-sm border`}>
+                <h3 className="text-lg font-semibold mb-4">User Engagement</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Daily Active Users</span>
+                    <span className="font-medium">{websiteStats.userEngagement.dailyActiveUsers}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Weekly Active Users</span>
+                    <span className="font-medium">{websiteStats.userEngagement.weeklyActiveUsers}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Monthly Active Users</span>
+                    <span className="font-medium">{websiteStats.userEngagement.monthlyActiveUsers}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className={`rounded-xl p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} shadow-sm border`}>
+                <h3 className="text-lg font-semibold mb-4">Traffic Statistics</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Page Views</span>
+                    <span className="font-medium">{websiteStats.trafficStats.pageViews.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Unique Visitors</span>
+                    <span className="font-medium">{websiteStats.trafficStats.uniqueVisitors.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Bounce Rate</span>
+                    <span className="font-medium">{websiteStats.trafficStats.bounceRate}%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'history' && (
+          <div className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-semibold">User Trip History</h2>
+              <Button onClick={exportUserTripHistory} className="flex items-center gap-2">
+                <FileDown className="h-4 w-4" />
+                Export CSV
+              </Button>
+            </div>
+            
+            <div className="rounded-xl border shadow-sm overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>User</TableHead>
+                    <TableHead>Trip</TableHead>
+                    <TableHead>Booking Date</TableHead>
+                    <TableHead>Base Price</TableHead>
+                    <TableHead>Taxes</TableHead>
+                    <TableHead>Profit</TableHead>
+                    <TableHead>Total Amount</TableHead>
+                    <TableHead>Status</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {userTripHistory.map((trip) => (
+                    <TableRow key={trip.id}>
+                      <TableCell>
+                        <div className="text-sm">
+                          <p className="font-medium">{trip.userName}</p>
+                          <p className="text-muted-foreground">{trip.userEmail}</p>
+                        </div>
+                      </TableCell>
+                      <TableCell className="font-medium">{trip.tripTitle}</TableCell>
+                      <TableCell>{new Date(trip.bookingDate).toLocaleDateString()}</TableCell>
+                      <TableCell>₹{trip.basePrice.toLocaleString()}</TableCell>
+                      <TableCell>₹{trip.taxes.toLocaleString()}</TableCell>
+                      <TableCell>₹{trip.profit.toLocaleString()}</TableCell>
+                      <TableCell className="font-semibold">₹{trip.totalAmount.toLocaleString()}</TableCell>
+                      <TableCell>
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          trip.status === 'completed' 
+                            ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-500'
+                            : trip.status === 'ongoing'
+                            ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-500'
+                            : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-500'
+                        }`}>
+                          {trip.status}
+                        </span>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className={`rounded-xl p-4 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} shadow-sm border`}>
+                <p className="text-sm text-muted-foreground">Total Revenue</p>
+                <p className="text-2xl font-bold">₹{userTripHistory.reduce((sum, trip) => sum + trip.totalAmount, 0).toLocaleString()}</p>
+              </div>
+              <div className={`rounded-xl p-4 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} shadow-sm border`}>
+                <p className="text-sm text-muted-foreground">Total Taxes</p>
+                <p className="text-2xl font-bold">₹{userTripHistory.reduce((sum, trip) => sum + trip.taxes, 0).toLocaleString()}</p>
+              </div>
+              <div className={`rounded-xl p-4 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} shadow-sm border`}>
+                <p className="text-sm text-muted-foreground">Total Profit</p>
+                <p className="text-2xl font-bold">₹{userTripHistory.reduce((sum, trip) => sum + trip.profit, 0).toLocaleString()}</p>
+              </div>
+            </div>
+          </div>
+        )}
         
         {activeTab === 'images' && (
           <div className="rounded-xl border mb-8 shadow-sm p-6">
@@ -615,7 +900,6 @@ const ManageTrips = () => {
         )}
       </div>
       
-      {/* Request details dialog */}
       <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
@@ -710,7 +994,6 @@ const ManageTrips = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Discount dialog */}
       <Dialog open={discountOpen} onOpenChange={setDiscountOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
@@ -759,7 +1042,6 @@ const ManageTrips = () => {
         </DialogContent>
       </Dialog>
       
-      {/* Receipt details dialog */}
       <Dialog open={receiptDetailsOpen} onOpenChange={setReceiptDetailsOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
@@ -817,7 +1099,6 @@ const ManageTrips = () => {
         </DialogContent>
       </Dialog>
       
-      {/* Image gallery sheet */}
       <Sheet open={galleryOpen} onOpenChange={setGalleryOpen}>
         <SheetContent className="sm:max-w-md">
           <SheetHeader>
