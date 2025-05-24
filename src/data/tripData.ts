@@ -1,4 +1,3 @@
-
 export interface Hotel {
   id: string;
   name: string;
@@ -39,7 +38,9 @@ export interface Trip {
   description: string;
   image: string;
   price: number;
+  originalPrice?: number;
   discountedPrice?: number;
+  discountPercentage: number;
   duration: number; // in days
   states: string[];
   category: 'Small' | 'Luxury' | 'Royal' | 'Budget' | 'Adventure' | 'Spiritual' | 'Beach' | 'Hill' | 'Wildlife' | 'Cultural';
@@ -47,11 +48,23 @@ export interface Trip {
   rating: number;
   reviews: number;
   featured: boolean;
+  bestTime: string;
 }
 
 export interface CustomTripRequest {
   id: string;
   userId: string;
+  userDetails?: {
+    name: string;
+    email: string;
+    phone: string;
+    address: string;
+  };
+  memberDetails?: Array<{
+    name: string;
+    age: number;
+    relation: string;
+  }>;
   startDate: string;
   endDate: string;
   travelers: number;
@@ -61,6 +74,13 @@ export interface CustomTripRequest {
   preferences: string[];
   status: 'pending' | 'approved' | 'rejected' | 'in-progress' | 'completed';
   createdAt: string;
+  hotelBookings?: Array<{
+    hotelId: string;
+    checkIn: string;
+    checkOut: string;
+    rooms: number;
+    totalPrice: number;
+  }>;
 }
 
 export interface Review {
@@ -190,10 +210,13 @@ export const trips: Trip[] = [
     description: "Experience the royal heritage of Rajasthan with stays in heritage hotels and visits to majestic forts and palaces.",
     image: "https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=1000&auto=format&fit=crop",
     price: 75000,
+    originalPrice: 75000,
     discountedPrice: 67500,
+    discountPercentage: 10,
     duration: 7,
     states: ["rajasthan"],
     category: "Royal",
+    bestTime: "October to March",
     itinerary: [
       {
         day: 1,
@@ -206,7 +229,6 @@ export const trips: Trip[] = [
         accommodation: "hotel1",
         transportation: "Private car"
       },
-      // More days would be added here
     ],
     rating: 4.8,
     reviews: 120,
@@ -218,9 +240,12 @@ export const trips: Trip[] = [
     description: "Relax and unwind on a houseboat as you float through the serene backwaters of Kerala.",
     image: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=1000&auto=format&fit=crop",
     price: 45000,
+    originalPrice: 45000,
+    discountPercentage: 0,
     duration: 5,
     states: ["kerala"],
     category: "Luxury",
+    bestTime: "November to February",
     itinerary: [
       {
         day: 1,
@@ -233,7 +258,6 @@ export const trips: Trip[] = [
         accommodation: "hotel3",
         transportation: "Houseboat"
       },
-      // More days would be added here
     ],
     rating: 4.9,
     reviews: 95,
@@ -245,10 +269,13 @@ export const trips: Trip[] = [
     description: "Escape to the cool mountains of Himachal Pradesh with stays in scenic locations.",
     image: "https://images.unsplash.com/photo-1502943693086-33b5b1cfdf2f?q=80&w=1000&auto=format&fit=crop",
     price: 30000,
+    originalPrice: 30000,
     discountedPrice: 25500,
+    discountPercentage: 15,
     duration: 6,
     states: ["himachalpradesh"],
     category: "Hill",
+    bestTime: "March to June",
     itinerary: [
       {
         day: 1,
@@ -261,7 +288,6 @@ export const trips: Trip[] = [
         accommodation: "hotel4",
         transportation: "Car"
       },
-      // More days would be added here
     ],
     rating: 4.6,
     reviews: 82,
@@ -273,9 +299,12 @@ export const trips: Trip[] = [
     description: "Enjoy the sun, sand and sea in beautiful Goa with activities and beach time.",
     image: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=1000&auto=format&fit=crop",
     price: 35000,
+    originalPrice: 35000,
+    discountPercentage: 0,
     duration: 4,
     states: ["goa"],
     category: "Beach",
+    bestTime: "October to March",
     itinerary: [
       {
         day: 1,
@@ -288,7 +317,6 @@ export const trips: Trip[] = [
         accommodation: "hotel5",
         transportation: "Scooter"
       },
-      // More days would be added here
     ],
     rating: 4.7,
     reviews: 110,
@@ -300,10 +328,13 @@ export const trips: Trip[] = [
     description: "Explore the highlights of North India including the Taj Mahal on a budget.",
     image: "https://images.unsplash.com/photo-1564507592333-c60657eea523?q=80&w=1000&auto=format&fit=crop",
     price: 20000,
+    originalPrice: 20000,
     discountedPrice: 18000,
+    discountPercentage: 10,
     duration: 8,
     states: ["uttarpradesh", "delhi"],
     category: "Budget",
+    bestTime: "October to April",
     itinerary: [
       {
         day: 1,
@@ -316,7 +347,6 @@ export const trips: Trip[] = [
         accommodation: "Budget hotel",
         transportation: "Train"
       },
-      // More days would be added here
     ],
     rating: 4.4,
     reviews: 75,
@@ -328,9 +358,12 @@ export const trips: Trip[] = [
     description: "Experience the spiritual essence of India in the holy city of Varanasi.",
     image: "https://images.unsplash.com/photo-1561361058-c24e01901c1c?q=80&w=1000&auto=format&fit=crop",
     price: 25000,
+    originalPrice: 25000,
+    discountPercentage: 0,
     duration: 5,
     states: ["uttarpradesh"],
     category: "Spiritual",
+    bestTime: "October to March",
     itinerary: [
       {
         day: 1,
@@ -343,7 +376,6 @@ export const trips: Trip[] = [
         accommodation: "Riverside hotel",
         transportation: "Walking tour"
       },
-      // More days would be added here
     ],
     rating: 4.9,
     reviews: 65,
@@ -355,10 +387,13 @@ export const trips: Trip[] = [
     description: "Spot tigers and other wildlife in the famous Ranthambore National Park.",
     image: "https://images.unsplash.com/photo-1566742329846-ce32629a2c1e?q=80&w=1000&auto=format&fit=crop",
     price: 40000,
+    originalPrice: 40000,
     discountedPrice: 36000,
+    discountPercentage: 10,
     duration: 4,
     states: ["rajasthan"],
     category: "Wildlife",
+    bestTime: "October to April",
     itinerary: [
       {
         day: 1,
@@ -371,7 +406,6 @@ export const trips: Trip[] = [
         accommodation: "Jungle resort",
         transportation: "Jeep safari"
       },
-      // More days would be added here
     ],
     rating: 4.7,
     reviews: 88,
@@ -383,9 +417,12 @@ export const trips: Trip[] = [
     description: "Experience thrilling activities like river rafting, bungee jumping and more in Rishikesh.",
     image: "https://images.unsplash.com/photo-1544551763-77ef2d0cfc6c?q=80&w=1000&auto=format&fit=crop",
     price: 28000,
+    originalPrice: 28000,
+    discountPercentage: 0,
     duration: 5,
     states: ["uttarakhand"],
     category: "Adventure",
+    bestTime: "September to June",
     itinerary: [
       {
         day: 1,
@@ -398,7 +435,6 @@ export const trips: Trip[] = [
         accommodation: "Riverside camp",
         transportation: "Shared jeep"
       },
-      // More days would be added here
     ],
     rating: 4.8,
     reviews: 92,
@@ -410,9 +446,12 @@ export const trips: Trip[] = [
     description: "Explore the rich cultural heritage, temples, and cuisine of South India.",
     image: "https://images.unsplash.com/photo-1555394752-30cacce17cb8?q=80&w=1000&auto=format&fit=crop",
     price: 55000,
+    originalPrice: 55000,
+    discountPercentage: 0,
     duration: 10,
     states: ["tamil_nadu", "karnataka", "kerala"],
     category: "Cultural",
+    bestTime: "October to March",
     itinerary: [
       {
         day: 1,
@@ -425,7 +464,6 @@ export const trips: Trip[] = [
         accommodation: "Heritage hotel",
         transportation: "Car with driver"
       },
-      // More days would be added here
     ],
     rating: 4.6,
     reviews: 70,
@@ -437,9 +475,12 @@ export const trips: Trip[] = [
     description: "A short but comprehensive tour of India's capital city.",
     image: "https://images.unsplash.com/photo-1587474260584-136574528ed5?q=80&w=1000&auto=format&fit=crop",
     price: 15000,
+    originalPrice: 15000,
+    discountPercentage: 0,
     duration: 3,
     states: ["delhi"],
     category: "Small",
+    bestTime: "October to March",
     itinerary: [
       {
         day: 1,
@@ -452,10 +493,11 @@ export const trips: Trip[] = [
         accommodation: "City center hotel",
         transportation: "Metro and auto-rickshaw"
       },
-      // More days would be added here
     ],
     rating: 4.3,
     reviews: 45,
     featured: false
   }
 ];
+
+export const tripData = trips;

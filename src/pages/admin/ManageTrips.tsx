@@ -66,6 +66,15 @@ const ManageTrips = () => {
     {
       id: "req1",
       userId: "user123",
+      userDetails: {
+        name: "John Doe",
+        email: "john@example.com",
+        phone: "1234567890",
+        address: "123 Main St, City, State, 12345"
+      },
+      memberDetails: [
+        { name: "Jane Doe", age: 30, relation: "Spouse" }
+      ],
       startDate: "2025-06-15",
       endDate: "2025-06-22",
       travelers: 4,
@@ -79,6 +88,15 @@ const ManageTrips = () => {
     {
       id: "req2",
       userId: "user456",
+      userDetails: {
+        name: "Alice Smith",
+        email: "alice@example.com",
+        phone: "0987654321",
+        address: "456 Another St, City, State, 54321"
+      },
+      memberDetails: [
+        { name: "Bob Smith", age: 35, relation: "Husband" }
+      ],
       startDate: "2025-07-10",
       endDate: "2025-07-17",
       travelers: 2,
@@ -92,6 +110,15 @@ const ManageTrips = () => {
     {
       id: "req3",
       userId: "user789",
+      userDetails: {
+        name: "Charlie Brown",
+        email: "charlie@example.com",
+        phone: "1122334455",
+        address: "789 Some St, City, State, 67890"
+      },
+      memberDetails: [
+        { name: "Lucy Brown", age: 28, relation: "Sister" }
+      ],
       startDate: "2025-08-05",
       endDate: "2025-08-15",
       travelers: 6,
@@ -105,6 +132,15 @@ const ManageTrips = () => {
     {
       id: "req4",
       userId: "user321",
+      userDetails: {
+        name: "David Johnson",
+        email: "david@example.com",
+        phone: "2233445566",
+        address: "321 Different St, City, State, 98765"
+      },
+      memberDetails: [
+        { name: "Emma Johnson", age: 40, relation: "Wife" }
+      ],
       startDate: "2025-09-20",
       endDate: "2025-09-27",
       travelers: 3,
@@ -368,9 +404,11 @@ const ManageTrips = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead>Request ID</TableHead>
+                  <TableHead>User Details</TableHead>
                   <TableHead>Date</TableHead>
                   <TableHead>Destinations</TableHead>
                   <TableHead>Budget</TableHead>
+                  <TableHead>Trip Type</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
@@ -379,9 +417,21 @@ const ManageTrips = () => {
                 {customRequests.map(request => (
                   <TableRow key={request.id}>
                     <TableCell className="font-medium">{request.id}</TableCell>
+                    <TableCell>
+                      <div className="text-sm">
+                        <p className="font-medium">{request.userDetails?.name || 'N/A'}</p>
+                        <p className="text-muted-foreground">{request.userDetails?.email || request.userId}</p>
+                        <p className="text-muted-foreground">{request.travelers} travelers</p>
+                      </div>
+                    </TableCell>
                     <TableCell>{new Date(request.createdAt).toLocaleDateString()}</TableCell>
                     <TableCell>{getStateNames(request.states)}</TableCell>
                     <TableCell>₹{request.budget.toLocaleString()}</TableCell>
+                    <TableCell>
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-500">
+                        Custom Trip
+                      </span>
+                    </TableCell>
                     <TableCell>{renderStatusBadge(request.status)}</TableCell>
                     <TableCell>
                       <div className="flex space-x-2">
@@ -390,7 +440,7 @@ const ManageTrips = () => {
                           size="sm"
                           onClick={() => viewRequestDetails(request)}
                         >
-                          View
+                          View Details
                         </Button>
                         {request.status === 'pending' && (
                           <>
@@ -413,17 +463,6 @@ const ManageTrips = () => {
                               Reject
                             </Button>
                           </>
-                        )}
-                        {request.status === 'approved' && (
-                          <Button 
-                            variant="outline" 
-                            size="sm"
-                            className="text-blue-500 border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950"
-                            onClick={() => handleStatusChange(request.id, 'in-progress')}
-                          >
-                            <Loader className="h-4 w-4 mr-1" />
-                            Mark In Progress
-                          </Button>
                         )}
                       </div>
                     </TableCell>

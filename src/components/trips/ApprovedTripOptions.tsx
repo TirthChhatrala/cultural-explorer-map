@@ -1,11 +1,14 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Hotel, Receipt, Download } from 'lucide-react';
+import { Hotel, Receipt, Download, Gamepad2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { CustomTripRequest } from '@/data/tripData';
+import { hotels } from '@/data/tripData';
+import { HotelBookingForm } from './HotelBookingForm';
 import { ReceiptGenerator } from './ReceiptGenerator';
 
 interface ApprovedTripOptionsProps {
@@ -14,9 +17,29 @@ interface ApprovedTripOptionsProps {
 
 export const ApprovedTripOptions = ({ trip }: ApprovedTripOptionsProps) => {
   const { toast } = useToast();
+  const [hotelBookingOpen, setHotelBookingOpen] = useState(false);
+  const [selectedHotel, setSelectedHotel] = useState<any>(null);
+  
+  const handleHotelBooking = (hotel: any) => {
+    setSelectedHotel(hotel);
+    setHotelBookingOpen(true);
+  };
+
+  const handleBookingComplete = (bookingDetails: any) => {
+    setHotelBookingOpen(false);
+    
+    // Send booking data to admin dashboard
+    const existingBookings = JSON.parse(localStorage.getItem('adminHotelBookings') || '[]');
+    existingBookings.push({
+      ...bookingDetails,
+      tripId: trip.id,
+      userId: trip.userId,
+      submittedAt: new Date().toISOString()
+    });
+    localStorage.setItem('adminHotelBookings', JSON.stringify(existingBookings));
+  };
   
   const handleDownloadReceipt = () => {
-    // In a real app, this would generate a PDF receipt with booking details
     const receiptData = {
       id: trip.id,
       date: new Date().toISOString(),
@@ -25,7 +48,6 @@ export const ApprovedTripOptions = ({ trip }: ApprovedTripOptionsProps) => {
       description: `Custom Trip to ${trip.states.join(', ')}`
     };
     
-    // Simulate receipt download
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(receiptData, null, 2));
     const downloadAnchorNode = document.createElement('a');
     downloadAnchorNode.setAttribute("href", dataStr);
@@ -39,7 +61,6 @@ export const ApprovedTripOptions = ({ trip }: ApprovedTripOptionsProps) => {
       description: "Your booking receipt has been downloaded",
     });
     
-    // Send receipt data to admin dashboard
     const existingReceipts = JSON.parse(localStorage.getItem('tripReceipts') || '[]');
     existingReceipts.push({
       ...receiptData,
@@ -48,86 +69,112 @@ export const ApprovedTripOptions = ({ trip }: ApprovedTripOptionsProps) => {
     localStorage.setItem('tripReceipts', JSON.stringify(existingReceipts));
   };
 
+  // Filter hotels by trip states
+  const availableHotels = hotels.filter(hotel => 
+    trip.states.some(state => hotel.state === state)
+  );
+
   return (
-    <div className="space-y-5">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Hotel className="h-5 w-5" />
-            Hotel Accommodations
-          </CardTitle>
-          <CardDescription>Browse and book hotels for your approved trip</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p>Choose from our selection of partner hotels in {trip.states.join(', ')}.</p>
-          <p className="text-sm text-muted-foreground mt-2">
-            Your approved budget: ₹{trip.budget.toLocaleString()}
-          </p>
-        </CardContent>
-        <CardFooter>
-          <Button asChild className="w-full">
-            <Link to="/hotels">Browse Hotels</Link>
-          </Button>
-        </CardFooter>
-      </Card>
+    <>
+      <div className="space-y-5">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Hotel className="h-5 w-5" />
+              Hotel Accommodations
+            </CardTitle>
+            <CardDescription>Browse and book hotels for your approved trip</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p>Choose from our selection of partner hotels in {trip.states.join(', ')}.</p>
+            <p className="text-sm text-muted-foreground mt-2">
+              Your approved budget: ₹{trip.budget.toLocaleString()}
+            </p>
+            
+            {availableHotels.length > 0 && (
+              <div className="mt-4 space-y-3">
+                <h4 className="font-medium">Available Hotels:</h4>
+                <div className="grid gap-3">
+                  {availableHotels.slice(0, 3).map(hotel => (
+                    <div key={hotel.id} className="flex items-center justify-between p-3 border rounded-lg">
+                      <div>
+                        <h5 className="font-medium">{hotel.name}</h5>
+                        <p className="text-sm text-muted-foreground">{hotel.location}</p>
+                        <p className="text-sm font-medium">₹{hotel.price.toLocaleString()}/night</p>
+                      </div>
+                      <Button size="sm" onClick={() => handleHotelBooking(hotel)}>
+                        Book Now
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </CardContent>
+          <CardFooter>
+            <Button asChild className="w-full">
+              <Link to="/hotels">Browse All Hotels</Link>
+            </Button>
+          </CardFooter>
+        </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-              <rect x="2" y="4" width="20" height="16" rx="2" />
-              <path d="M4 8h.01" />
-              <path d="M4 12h.01" />
-              <path d="M4 16h.01" />
-              <path d="M8 8h.01" />
-              <path d="M8 12h.01" />
-              <path d="M8 16h.01" />
-              <path d="M12 8h.01" />
-              <path d="M12 12h.01" />
-              <path d="M12 16h.01" />
-              <path d="M16 8h.01" />
-              <path d="M16 12h.01" />
-              <path d="M16 16h.01" />
-              <path d="M20 8h.01" />
-              <path d="M20 12h.01" />
-              <path d="M20 16h.01" />
-            </svg>
-            Entertainment & Activities
-          </CardTitle>
-          <CardDescription>Explore entertainment options and activities</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p>Discover entertainment options and activities in {trip.states.join(', ')}.</p>
-          <p className="text-sm text-muted-foreground mt-2">
-            Recommended based on your preferences: {trip.preferences.join(', ')}
-          </p>
-        </CardContent>
-        <CardFooter>
-          <Button variant="outline" className="w-full">
-            Explore Activities
-          </Button>
-        </CardFooter>
-      </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Gamepad2 className="h-5 w-5" />
+              Entertainment & Activities
+            </CardTitle>
+            <CardDescription>Explore entertainment options and activities</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p>Discover entertainment options and activities in {trip.states.join(', ')}.</p>
+            <p className="text-sm text-muted-foreground mt-2">
+              Recommended based on your preferences: {trip.preferences.join(', ')}
+            </p>
+          </CardContent>
+          <CardFooter>
+            <Button variant="outline" className="w-full">
+              Explore Activities
+            </Button>
+          </CardFooter>
+        </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Receipt className="h-5 w-5" />
-            Booking Management
-          </CardTitle>
-          <CardDescription>Manage your bookings and receipts</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p>View and download receipts for all your bookings.</p>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline" className="flex items-center gap-2" onClick={handleDownloadReceipt}>
-            <Download className="h-4 w-4" />
-            Download Receipt
-          </Button>
-          <Button variant="secondary">View Itinerary</Button>
-        </CardFooter>
-      </Card>
-    </div>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Receipt className="h-5 w-5" />
+              Booking Management
+            </CardTitle>
+            <CardDescription>Manage your bookings and receipts</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p>View and download receipts for all your bookings.</p>
+          </CardContent>
+          <CardFooter className="flex justify-between">
+            <Button variant="outline" className="flex items-center gap-2" onClick={handleDownloadReceipt}>
+              <Download className="h-4 w-4" />
+              Download Receipt
+            </Button>
+            <Button variant="secondary">View Itinerary</Button>
+          </CardFooter>
+        </Card>
+      </div>
+
+      <Dialog open={hotelBookingOpen} onOpenChange={setHotelBookingOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Hotel Booking</DialogTitle>
+          </DialogHeader>
+          {selectedHotel && (
+            <HotelBookingForm
+              hotel={selectedHotel}
+              tripId={trip.id}
+              onBookingComplete={handleBookingComplete}
+              onClose={() => setHotelBookingOpen(false)}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
