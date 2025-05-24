@@ -3,6 +3,7 @@ import React from 'react';
 import { TripCard } from './TripCard';
 import { tripData } from '../../data/tripData';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 interface TripSuggestionsProps {
   className?: string;
@@ -10,8 +11,14 @@ interface TripSuggestionsProps {
 }
 
 export const TripSuggestions = ({ className = "", limit = 3 }: TripSuggestionsProps) => {
+  const navigate = useNavigate();
+  
   // Get featured trips (just taking the first few trips for this example)
   const featuredTrips = tripData.slice(0, limit);
+
+  const handleTripClick = (tripId: string) => {
+    navigate(`/trips/${tripId}`);
+  };
 
   return (
     <div className={className}>
@@ -34,7 +41,12 @@ export const TripSuggestions = ({ className = "", limit = 3 }: TripSuggestionsPr
             transition={{ duration: 0.5, delay: index * 0.1 }}
             className="dark:bg-transparent"
           >
-            <TripCard trip={trip} />
+            <TripCard 
+              trip={trip} 
+              states={trip.states || []}
+              index={index}
+              onClick={() => handleTripClick(trip.id)}
+            />
           </motion.div>
         ))}
       </div>

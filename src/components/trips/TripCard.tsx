@@ -3,25 +3,35 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Calendar, Users, Star } from 'lucide-react';
 import { Trip } from '../../data/tripData';
+import { useTheme } from '../../context/ThemeContext';
 
 interface TripCardProps {
   trip: Trip;
-  states: string[];
-  index: number;
-  theme: string;
-  onClick: () => void;
+  states?: string[];
+  index?: number;
+  theme?: string;
+  onClick?: () => void;
 }
 
-export const TripCard = ({ trip, states, index, theme, onClick }: TripCardProps) => {
+export const TripCard = ({ trip, states = [], index = 0, theme, onClick }: TripCardProps) => {
+  const { theme: contextTheme } = useTheme();
+  const currentTheme = theme || contextTheme;
+
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       className={`cursor-pointer transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl rounded-xl overflow-hidden border ${
-        theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+        currentTheme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
       }`}
-      onClick={onClick}
+      onClick={handleClick}
     >
       <div className="relative">
         <img 
@@ -61,10 +71,12 @@ export const TripCard = ({ trip, states, index, theme, onClick }: TripCardProps)
         </p>
         
         <div className="space-y-2 mb-4">
-          <div className="flex items-center text-sm text-muted-foreground">
-            <MapPin className="h-4 w-4 mr-2" />
-            <span>{states.join(', ')}</span>
-          </div>
+          {states.length > 0 && (
+            <div className="flex items-center text-sm text-muted-foreground">
+              <MapPin className="h-4 w-4 mr-2" />
+              <span>{states.join(', ')}</span>
+            </div>
+          )}
           <div className="flex items-center text-sm text-muted-foreground">
             <Calendar className="h-4 w-4 mr-2" />
             <span>{trip.duration} days</span>
@@ -94,7 +106,7 @@ export const TripCard = ({ trip, states, index, theme, onClick }: TripCardProps)
           </div>
           <button
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-              theme === 'dark'
+              currentTheme === 'dark'
                 ? 'bg-india-orange/20 text-india-orange hover:bg-india-orange/30'
                 : 'bg-india-orange/10 text-india-orange hover:bg-india-orange/20'
             }`}

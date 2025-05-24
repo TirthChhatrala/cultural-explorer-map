@@ -1,6 +1,5 @@
 
 import React from 'react';
-import Header from './Header';
 import { motion } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
 import { Sun, Moon } from 'lucide-react';
@@ -10,7 +9,6 @@ const Layout = ({ children }) => {
 
   return (
     <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-page-gradient'}`}>
-      <Header />
       <div 
         className="absolute inset-0 opacity-5 pointer-events-none"
         style={{
