@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -66,7 +65,6 @@ const TripDetails = () => {
       const related = trips.filter(t => t.category === foundTrip.category && t.id !== tripId);
       setRelatedTrips(related.slice(0, 3));
     } else {
-      // Redirect to homepage if trip not found
       navigate('/404');
     }
   }, [tripId, navigate]);
@@ -82,7 +80,7 @@ const TripDetails = () => {
       return;
     }
 
-    // Create booking record
+    // Create booking record with proper status
     const booking = {
       id: `booking-${Date.now()}`,
       tripId: trip.id,
@@ -91,10 +89,11 @@ const TripDetails = () => {
       price: trip.discountedPrice || trip.price,
       bookingDate: new Date().toISOString(),
       status: 'confirmed',
-      travelers: 1
+      travelers: 1,
+      type: 'static'
     };
 
-    // Save to localStorage (simulating database)
+    // Save to localStorage
     const existingBookings = JSON.parse(localStorage.getItem('tripBookings') || '[]');
     existingBookings.push(booking);
     localStorage.setItem('tripBookings', JSON.stringify(existingBookings));
@@ -104,7 +103,6 @@ const TripDetails = () => {
       description: `Your booking for ${trip.title} has been confirmed.`,
     });
 
-    // Redirect to user dashboard
     navigate('/my-trips');
   };
   
@@ -206,7 +204,6 @@ const TripDetails = () => {
         </Button>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Image and Trip Info */}
           <div>
             <div className="relative rounded-xl overflow-hidden shadow-md">
               <img
@@ -280,7 +277,6 @@ const TripDetails = () => {
             </div>
           </div>
 
-          {/* Itinerary and Amenities */}
           <div>
             <Card>
               <CardHeader>
@@ -306,7 +302,6 @@ const TripDetails = () => {
           </div>
         </div>
 
-        {/* Related Trips */}
         {relatedTrips.length > 0 && (
           <div className="mt-12">
             <h2 className="text-2xl font-bold font-display mb-6">You might also like</h2>
@@ -332,7 +327,6 @@ const TripDetails = () => {
         )}
       </motion.div>
       
-      {/* Trip preference form dialog */}
       <Dialog open={preferencesOpen} onOpenChange={setPreferencesOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>

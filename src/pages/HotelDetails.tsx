@@ -3,25 +3,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Layout from '../components/Layout';
 import { useTheme } from '../context/ThemeContext';
-import { hotels } from '../data/hotelData'; // Changed import to use hotelData
+import { useAuth } from '../context/AuthContext';
+import { hotels } from '../data/hotelData';
 import { MapPin, Phone, Link, Star, ChevronLeft, Calendar as CalendarIcon } from 'lucide-react';
 import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -33,7 +20,7 @@ import { useToast } from "@/hooks/use-toast"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Hotel, Room } from '../data/hotelData';  // Import the types directly from hotelData
+import { Hotel, Room } from '../data/hotelData';
 
 interface ImageGalleryProps {
   images: string[];
@@ -120,6 +107,7 @@ const HotelDetails = () => {
   const { hotelId } = useParams<{ hotelId: string }>();
   const navigate = useNavigate();
   const { theme } = useTheme();
+  const { isAuthenticated, user } = useAuth();
   const [hotel, setHotel] = useState<Hotel | undefined>(undefined);
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
@@ -140,14 +128,48 @@ const HotelDetails = () => {
   })
 
   function onSubmit(values: z.infer<typeof bookingSchema>) {
+    if (!isAuthenticated) {
+      toast({
+        title: "Login Required",
+        description: "Please log in to complete your booking.",
+        variant: "destructive",
+      });
+      navigate('/login');
+      return;
+    }
+
+    // Create booking record
+    const booking = {
+      id: `hotel-booking-${Date.now()}`,
+      hotelId: hotel?.id,
+      hotelName: hotel?.name,
+      userId: user?.email,
+      guestName: values.name,
+      guestEmail: values.email,
+      guestPhone: values.phone,
+      adults: values.adults,
+      children: values.children,
+      checkIn: values.checkIn.toISOString(),
+      checkOut: values.checkOut.toISOString(),
+      roomId: selectedRoom?.id,
+      roomName: selectedRoom?.name,
+      price: selectedRoom?.price || hotel?.price || 0,
+      message: values.message,
+      bookingDate: new Date().toISOString(),
+      status: 'confirmed'
+    };
+
+    // Save to localStorage
+    const existingBookings = JSON.parse(localStorage.getItem('hotelBookings') || '[]');
+    existingBookings.push(booking);
+    localStorage.setItem('hotelBookings', JSON.stringify(existingBookings));
+
     toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4 font-mono text-white">
-          <code className="break-words">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      ),
-    })
+      title: "Booking Confirmed!",
+      description: `Your booking at ${hotel?.name} has been confirmed.`,
+    });
+
+    navigate('/my-trips');
   }
 
   useEffect(() => {
@@ -297,9 +319,9 @@ const HotelDetails = () => {
             </div>
             <div className="mt-6 shadow-md rounded-xl overflow-hidden">
               <div className="px-4 py-5 sm:px-6 bg-muted">
-                <h3 className="text-lg font-medium leading-6">Booking Form</h3>
+                <h3 className="text-lg font-medium leading-6">Book Your Stay</h3>
                 <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
-                  Fill in your details to book your stay at {hotel.name}.
+                  Complete your booking at {hotel?.name} - No restrictions, instant confirmation!
                 </p>
               </div>
               <div className="px-4 py-5">
@@ -491,7 +513,9 @@ const HotelDetails = () => {
                         </FormItem>
                       )}
                     />
-                    <Button type="submit">Book Now</Button>
+                    <Button type="submit" className="w-full">
+                      Confirm Booking
+                    </Button>
                   </form>
                 </Form>
               </div>

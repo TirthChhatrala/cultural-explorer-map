@@ -50,6 +50,7 @@ const Header = () => {
     { path: '/festivals', label: 'Festivals' },
     { path: '/trips', label: 'Trips' },
     { path: '/hotels', label: 'Hotels' },
+    { path: '/casinos', label: 'Casinos' },
     { path: '/contact', label: 'Contact' },
   ];
 

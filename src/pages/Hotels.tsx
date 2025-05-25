@@ -83,7 +83,7 @@ const Hotels = () => {
               Find the Perfect <span className="text-india-orange">Accommodations</span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Discover top-rated hotels, resorts, and homestays across India for your next adventure.
+              Discover top-rated hotels, resorts, and homestays across India. Book instantly without any restrictions!
             </p>
             
             <div className="mt-8 max-w-2xl mx-auto">

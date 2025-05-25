@@ -36,6 +36,8 @@ import TripDetails from './pages/TripDetails';
 import CustomTrip from './pages/CustomTrip';
 import MyTrips from './pages/MyTrips';
 import Contact from './pages/Contact';
+import Casinos from './pages/Casinos';
+import CasinoDetails from './pages/CasinoDetails';
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -69,6 +71,8 @@ const AppRoutes = () => {
         <Route path="/admin/trips" element={<ManageTrips />} />
         <Route path="/hotels" element={<Hotels />} />
         <Route path="/hotels/:hotelId" element={<HotelDetails />} />
+        <Route path="/casinos" element={<Casinos />} />
+        <Route path="/casinos/:casinoId" element={<CasinoDetails />} />
         <Route path="/trips" element={<Trips />} />
         <Route path="/trips/:tripId" element={<TripDetails />} />
         <Route path="/custom-trip" element={<CustomTrip />} />
