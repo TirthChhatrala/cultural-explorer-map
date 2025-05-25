@@ -7,7 +7,7 @@ import { useAuth } from '../context/AuthContext';
 import { hotels } from '../data/hotelData';
 import { MapPin, Phone, Link, Star, ChevronLeft, Calendar as CalendarIcon } from 'lucide-react';
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -250,12 +250,10 @@ const HotelDetails = () => {
             <div className="mt-6">
               <h2 className="text-xl font-semibold">Contact Information</h2>
               <div className="mt-2 text-muted-foreground">
-                {/* Add conditional rendering to handle missing contact property */}
                 <div className="flex items-center">
                   <Phone size={16} className="mr-2" />
                   <span>{hotel.coordinates?.latitude || 'Contact information not available'}</span>
                 </div>
-                {/* Add conditional rendering to handle missing website property */}
                 <div className="flex items-center mt-1">
                   <Link size={16} className="mr-2" />
                   <a href="#" className="text-india-orange hover:underline">
@@ -270,11 +268,19 @@ const HotelDetails = () => {
                 <DialogTrigger asChild>
                   <Button variant="outline">View Gallery</Button>
                 </DialogTrigger>
-                <ImageGallery 
-                  images={hotel.images} 
-                  name={hotel.name}
-                  onClose={() => {}}
-                />
+                <DialogContent className="sm:max-w-[825px]">
+                  <DialogHeader>
+                    <DialogTitle>{hotel.name} - Gallery</DialogTitle>
+                    <DialogDescription>
+                      All the images related to this property.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="grid grid-cols-3 gap-4">
+                    {hotel.images.map((image, index) => (
+                      <img key={index} src={image} alt={`${hotel.name} - ${index}`} className="rounded-md" />
+                    ))}
+                  </div>
+                </DialogContent>
               </Dialog>
             </div>
           </div>
@@ -293,7 +299,7 @@ const HotelDetails = () => {
                     key={room.id}
                     room={{
                       ...room,
-                      beds: room.beds || "1 bed" // Ensure beds is a string
+                      beds: room.beds || "1 bed"
                     }}
                     onClick={() => handleRoomSelect(room)}
                   />
@@ -308,11 +314,19 @@ const HotelDetails = () => {
                     <DialogTrigger asChild>
                       <Button className="mt-4">View Room Images</Button>
                     </DialogTrigger>
-                    <ImageGallery
-                      images={selectedImages} 
-                      name="Room Images"
-                      onClose={() => setSelectedImages([])}
-                    />
+                    <DialogContent className="sm:max-w-[825px]">
+                      <DialogHeader>
+                        <DialogTitle>Room Images</DialogTitle>
+                        <DialogDescription>
+                          Images of the selected room.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="grid grid-cols-3 gap-4">
+                        {selectedImages.map((image, index) => (
+                          <img key={index} src={image} alt={`Room - ${index}`} className="rounded-md" />
+                        ))}
+                      </div>
+                    </DialogContent>
                   </Dialog>
                 </div>
               )}

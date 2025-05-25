@@ -8,6 +8,7 @@ import { trips } from '../data/tripData';
 import { states } from '../data/states';
 import { TripPreferenceForm } from '../components/trips/TripPreferenceForm';
 import { TripPreferences } from '../components/trips/TripPreferences';
+import PrivateTripBooking from '../components/trips/PrivateTripBooking';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -28,7 +29,8 @@ import {
   Bed,
   Bath,
   Coffee,
-  Shield
+  Shield,
+  Crown
 } from 'lucide-react';
 
 interface ItineraryItem {
@@ -52,6 +54,7 @@ const TripDetails = () => {
   const [trip, setTrip] = useState<any>(null);
   const [relatedTrips, setRelatedTrips] = useState<any[]>([]);
   const [preferencesOpen, setPreferencesOpen] = useState(false);
+  const [privatBookingOpen, setPrivateBookingOpen] = useState(false);
   const [userPreferences, setUserPreferences] = useState<TripPreferences>({});
 
   useEffect(() => {
@@ -104,6 +107,20 @@ const TripDetails = () => {
     });
 
     navigate('/my-trips');
+  };
+
+  const handlePrivateBooking = () => {
+    if (!isAuthenticated) {
+      toast({
+        title: "Login Required",
+        description: "Please log in to book a private trip.",
+        variant: "destructive",
+      });
+      navigate('/login');
+      return;
+    }
+
+    setPrivateBookingOpen(true);
   };
   
   const handlePreferencesSubmit = (preferences: TripPreferences) => {
@@ -266,13 +283,17 @@ const TripDetails = () => {
                   <span className="text-2xl font-bold text-india-orange">₹{price.toLocaleString()}</span>
                 )}
                 <div className="mt-4 flex gap-3">
-                  <Button className="w-1/2" onClick={handleBookNow}>
-                    Book Now
+                  <Button className="flex-1" onClick={handleBookNow}>
+                    Book Standard Trip
                   </Button>
-                  <Button variant="outline" className="w-1/2" onClick={() => setPreferencesOpen(true)}>
-                    Customize
+                  <Button variant="outline" className="flex-1" onClick={handlePrivateBooking}>
+                    <Crown className="h-4 w-4 mr-2" />
+                    Book Private
                   </Button>
                 </div>
+                <Button variant="ghost" className="w-full mt-2" onClick={() => setPreferencesOpen(true)}>
+                  Customize Preferences
+                </Button>
               </div>
             </div>
           </div>
@@ -344,6 +365,12 @@ const TripDetails = () => {
           />
         </DialogContent>
       </Dialog>
+
+      <PrivateTripBooking
+        trip={trip}
+        isOpen={privatBookingOpen}
+        onClose={() => setPrivateBookingOpen(false)}
+      />
     </Layout>
   );
 };
