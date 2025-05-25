@@ -125,6 +125,10 @@ const Dashboard = () => {
     });
     navigate('/');
   };
+
+  const handleContactSupport = () => {
+    navigate('/contact');
+  };
   
   if (!user) return null; // Don't render anything if not logged in
   
@@ -161,15 +165,26 @@ const Dashboard = () => {
                 </div>
               </div>
               
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={handleLogout}
-                className="flex items-center gap-2 px-6 py-3 rounded-lg bg-red-500 text-white hover:bg-red-600 transition-colors"
-              >
-                <LogOut size={18} />
-                Log Out
-              </motion.button>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleContactSupport}
+                  className="flex items-center gap-2 px-6 py-3 rounded-lg bg-india-orange text-white hover:bg-india-orange/90 transition-colors"
+                >
+                  Contact Support
+                </motion.button>
+                
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 px-6 py-3 rounded-lg bg-red-500 text-white hover:bg-red-600 transition-colors"
+                >
+                  <LogOut size={18} />
+                  Log Out
+                </motion.button>
+              </div>
             </div>
           </div>
         </section>

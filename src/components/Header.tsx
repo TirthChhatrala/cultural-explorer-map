@@ -51,7 +51,7 @@ const Header = () => {
     { path: '/trips', label: 'Trips' },
     { path: '/hotels', label: 'Hotels' },
     { path: '/casinos', label: 'Casinos' },
-    { path: '/contact', label: 'Contact' },
+    { path: '/booking', label: 'Booking' },
   ];
 
   return (
