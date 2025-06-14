@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import Layout from '../components/Layout';
-import ManualIndiaMap from '../components/ManualIndiaMap'; 
+import InteractiveIndiaMap from '../components/InteractiveIndiaMap'; 
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 
@@ -47,13 +46,9 @@ const Index = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="lg:w-1/2"
+            className="lg:w-1/2 h-96"
           >
-            <ManualIndiaMap 
-              interactive={true} 
-              showControls={true} 
-              showStateInfo={true} 
-            />
+            <InteractiveIndiaMap />
           </motion.div>
         </div>
       </section>

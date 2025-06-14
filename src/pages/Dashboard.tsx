@@ -29,7 +29,7 @@ const Dashboard = () => {
       });
     }
   }, [user, navigate, toast]);
-  
+
   const pageLinks = [
     {
       title: "Map Explorer",
@@ -129,11 +129,11 @@ const Dashboard = () => {
   const handleContactSupport = () => {
     toast({
       title: "Contact Support",
-      description: "For immediate assistance, call +91-800-123-4567 or email support@indianculturalexplorer.com",
+      description: "For immediate assistance, call +91-800-123-4567 or email support@indianculturalexplorer.com. Our team is available 24/7 for bookings, technical issues, and travel planning.",
     });
   };
   
-  if (!user) return null; // Don't render anything if not logged in
+  if (!user) return null;
   
   return (
     <Layout>
@@ -169,16 +169,6 @@ const Dashboard = () => {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-3">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={handleContactSupport}
-                  className="flex items-center gap-2 px-6 py-3 rounded-lg bg-india-orange text-white hover:bg-india-orange/90 transition-colors"
-                >
-                  <Phone size={18} />
-                  Contact Support
-                </motion.button>
-                
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -262,7 +252,7 @@ const Dashboard = () => {
             >
               <h3 className="text-2xl font-display font-semibold mb-3">Need Help?</h3>
               <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
-                Our comprehensive support team is available 24/7 to assist you with bookings, cultural information, technical issues, and travel planning.
+                Our comprehensive support team is available 24/7 to assist you with bookings, cultural information, technical issues, and travel planning. Get instant help or book our premium services.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button 
@@ -270,7 +260,7 @@ const Dashboard = () => {
                   className="px-6 py-3 bg-india-orange text-white rounded-lg font-medium hover:bg-india-orange/90 transition-colors flex items-center gap-2 justify-center"
                 >
                   <Phone size={18} />
-                  Get Support
+                  Contact Support
                 </button>
                 <button 
                   onClick={() => navigate('/booking')}
