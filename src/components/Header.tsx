@@ -48,9 +48,6 @@ const Header = () => {
     { path: '/freedom-fighters', label: 'Freedom Fighters' },
     { path: '/news', label: 'News' },
     { path: '/festivals', label: 'Festivals' },
-    { path: '/trips', label: 'Trips' },
-    { path: '/hotels', label: 'Hotels' },
-    { path: '/casinos', label: 'Casinos' },
     { path: '/booking', label: 'Booking' },
   ];
 

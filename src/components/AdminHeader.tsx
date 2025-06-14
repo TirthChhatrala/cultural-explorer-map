@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
-import { Menu, X, LogOut, Home } from 'lucide-react';
+import { Menu, X, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
@@ -13,24 +13,13 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import ThemeToggle from './ThemeToggle';
-import { useToast } from '../hooks/use-toast';
 
 const AdminHeader = () => {
   const { theme } = useTheme();
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const { toast } = useToast();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const handleLogout = () => {
-    logout();
-    toast({
-      title: "Logged out successfully",
-      description: "You have been logged out of your admin account",
-    });
-    navigate('/');
-  };
 
   const adminLinks = [
     { path: '/admin', label: 'Dashboard' },
@@ -38,8 +27,8 @@ const AdminHeader = () => {
     { path: '/admin/states', label: 'States' },
     { path: '/admin/news', label: 'News' },
     { path: '/admin/festivals', label: 'Festivals' },
-    { path: '/admin/political-parties', label: 'Political Parties' },
-    { path: '/admin/freedom-fighters', label: 'Freedom Fighters' },
+    { path: '/admin/parties', label: 'Political Parties' },
+    { path: '/admin/fighters', label: 'Freedom Fighters' },
     { path: '/admin/images', label: 'Images' },
   ];
 
@@ -88,15 +77,6 @@ const AdminHeader = () => {
               <Home className="h-4 w-4" />
               Visit Site
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleLogout}
-              className="flex items-center gap-2 text-red-500 border-red-500 hover:bg-red-50 dark:hover:bg-red-950"
-            >
-              <LogOut className="h-4 w-4" />
-              Logout
-            </Button>
             <ThemeToggle />
           </div>
 
@@ -129,7 +109,7 @@ const AdminHeader = () => {
                     {link.label}
                   </Link>
                 ))}
-                <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-2">
+                <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
                   <Button
                     variant="outline"
                     size="sm"
@@ -141,18 +121,6 @@ const AdminHeader = () => {
                   >
                     <Home className="h-4 w-4" />
                     Visit Site
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      handleLogout();
-                      setMobileMenuOpen(false);
-                    }}
-                    className="w-full flex items-center gap-2 text-red-500 border-red-500 hover:bg-red-50 dark:hover:bg-red-950"
-                  >
-                    <LogOut className="h-4 w-4" />
-                    Logout
                   </Button>
                 </div>
               </div>

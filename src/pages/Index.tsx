@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Layout from '../components/Layout';
-import EnhancedMap from '../components/EnhancedMap'; 
+import ManualIndiaMap from '../components/ManualIndiaMap'; 
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 
@@ -49,7 +49,7 @@ const Index = () => {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="lg:w-1/2"
           >
-            <EnhancedMap 
+            <ManualIndiaMap 
               interactive={true} 
               showControls={true} 
               showStateInfo={true} 

@@ -2,10 +2,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
+import { useLocation } from 'react-router-dom';
 import { Sun, Moon } from 'lucide-react';
+import BackToHome from './BackToHome';
 
 const Layout = ({ children }) => {
   const { theme, toggleTheme } = useTheme();
+  const location = useLocation();
+
+  // Don't show BackToHome on the home page itself
+  const showBackToHome = location.pathname !== '/';
 
   return (
     <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-page-gradient'}`}>
@@ -28,6 +34,7 @@ const Layout = ({ children }) => {
       >
         {children}
       </motion.main>
+      {showBackToHome && <BackToHome />}
       <footer className={`py-6 border-t ${theme === 'dark' ? 'border-gray-800 bg-gray-900/50' : 'border-border bg-secondary/50'} backdrop-blur-sm`}>
         <div className="container mx-auto px-4 flex items-center justify-between">
           <p className="text-sm text-muted-foreground">

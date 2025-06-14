@@ -39,28 +39,7 @@ const UserLinks: React.FC<UserLinksProps> = ({ isMobile = false, onLinkClick }) 
         Profile
       </Link>
     </>
-  ) : (
-    <>
-      <Link
-        to="/login"
-        className={`${isMobile ? 'block w-full py-2' : 'px-3 py-1 rounded-md'} ${
-          isActive('/login') 
-            ? 'bg-india-orange/10 text-india-orange font-medium' 
-            : 'hover:bg-gray-100 dark:hover:bg-gray-800'
-        } transition-colors`}
-        onClick={onLinkClick}
-      >
-        Login
-      </Link>
-      <Link
-        to="/signup"
-        className={`${isMobile ? 'block w-full py-2' : 'px-4 py-1 rounded-md bg-india-orange text-white hover:bg-india-orange/90'}`}
-        onClick={onLinkClick}
-      >
-        Sign Up
-      </Link>
-    </>
-  );
+  ) : null;
 };
 
 export default UserLinks;

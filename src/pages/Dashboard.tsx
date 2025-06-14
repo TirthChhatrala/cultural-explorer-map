@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   MapPin, Info, Newspaper, Calendar, Users, Shield, User, 
-  LogOut, Utensils, CloudSun, Shirt, Landmark, Book 
+  LogOut, Utensils, CloudSun, Shirt, Landmark, Book, Phone 
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
@@ -127,7 +127,10 @@ const Dashboard = () => {
   };
 
   const handleContactSupport = () => {
-    navigate('/contact');
+    toast({
+      title: "Contact Support",
+      description: "For immediate assistance, call +91-800-123-4567 or email support@indianculturalexplorer.com",
+    });
   };
   
   if (!user) return null; // Don't render anything if not logged in
@@ -172,6 +175,7 @@ const Dashboard = () => {
                   onClick={handleContactSupport}
                   className="flex items-center gap-2 px-6 py-3 rounded-lg bg-india-orange text-white hover:bg-india-orange/90 transition-colors"
                 >
+                  <Phone size={18} />
                   Contact Support
                 </motion.button>
                 
@@ -258,11 +262,23 @@ const Dashboard = () => {
             >
               <h3 className="text-2xl font-display font-semibold mb-3">Need Help?</h3>
               <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
-                If you have any questions or need assistance, our support team is always ready to help.
+                Our comprehensive support team is available 24/7 to assist you with bookings, cultural information, technical issues, and travel planning.
               </p>
-              <button className="px-6 py-3 bg-india-orange text-white rounded-lg font-medium hover:bg-india-orange/90 transition-colors">
-                Contact Support
-              </button>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button 
+                  onClick={handleContactSupport}
+                  className="px-6 py-3 bg-india-orange text-white rounded-lg font-medium hover:bg-india-orange/90 transition-colors flex items-center gap-2 justify-center"
+                >
+                  <Phone size={18} />
+                  Get Support
+                </button>
+                <button 
+                  onClick={() => navigate('/booking')}
+                  className="px-6 py-3 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600 transition-colors"
+                >
+                  Book Services
+                </button>
+              </div>
             </motion.div>
           </div>
         </section>
