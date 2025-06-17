@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
@@ -45,7 +44,7 @@ const Header = () => {
     { path: '/', label: 'Home' },
     { path: '/about', label: 'About' },
     { path: '/trips', label: 'Trip' },
-    { path: '/cuisine-food', label: 'Cuisine' },
+    { path: '/casinos', label: 'Casino' },
     { path: '/political-parties', label: 'Political Parties' },
     { path: '/freedom-fighters', label: 'Freedom Fighters' },
     { path: '/news', label: 'News' },
@@ -96,7 +95,6 @@ const Header = () => {
 
           <div className="hidden md:flex items-center space-x-2">
             <UserLinks />
-            <ThemeToggle />
           </div>
 
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
