@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Navigation, ZoomIn, ZoomOut } from 'lucide-react';
+import { MapPin, Navigation, ZoomIn, ZoomOut, Info, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -12,22 +12,42 @@ interface StateInfo {
   area: string;
   languages: string[];
   majorCities: string[];
+  description: string;
+  climate: string;
+}
+
+interface CountryData {
+  name: {
+    common: string;
+    official: string;
+  };
+  population: number;
+  area: number;
+  capital: string[];
+  languages: { [key: string]: string };
+  region: string;
+  subregion: string;
+  timezones: string[];
 }
 
 const InteractiveIndiaMap = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [selectedState, setSelectedState] = useState<StateInfo | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [countryData, setCountryData] = useState<CountryData | null>(null);
+  const [zoomLevel, setZoomLevel] = useState(1);
 
-  // Sample state data
+  // Enhanced state data with more realistic information
   const stateData: { [key: string]: StateInfo } = {
     'Maharashtra': {
       name: 'Maharashtra',
-      capital: 'Mumbai',
+      capital: 'Mumbai (Commercial), Nagpur (Winter)',
       population: '112.4 million',
       area: '307,713 km²',
       languages: ['Marathi', 'Hindi', 'English'],
-      majorCities: ['Mumbai', 'Pune', 'Nagpur', 'Nashik']
+      majorCities: ['Mumbai', 'Pune', 'Nagpur', 'Nashik', 'Aurangabad'],
+      description: 'The economic powerhouse of India, known for Bollywood and financial capital Mumbai.',
+      climate: 'Tropical monsoon climate with three distinct seasons'
     },
     'Gujarat': {
       name: 'Gujarat',
@@ -35,7 +55,9 @@ const InteractiveIndiaMap = () => {
       population: '60.4 million',
       area: '196,244 km²',
       languages: ['Gujarati', 'Hindi', 'English'],
-      majorCities: ['Ahmedabad', 'Surat', 'Vadodara', 'Rajkot']
+      majorCities: ['Ahmedabad', 'Surat', 'Vadodara', 'Rajkot', 'Bhavnagar'],
+      description: 'Known for its entrepreneurial spirit, vibrant culture, and the birthplace of Mahatma Gandhi.',
+      climate: 'Arid to semi-arid with hot summers and mild winters'
     },
     'Karnataka': {
       name: 'Karnataka',
@@ -43,7 +65,9 @@ const InteractiveIndiaMap = () => {
       population: '61.1 million',
       area: '191,791 km²',
       languages: ['Kannada', 'Hindi', 'English'],
-      majorCities: ['Bengaluru', 'Mysuru', 'Hubli', 'Mangaluru']
+      majorCities: ['Bengaluru', 'Mysuru', 'Hubli', 'Mangaluru', 'Belagavi'],
+      description: 'The Silicon Valley of India, known for IT industry and rich cultural heritage.',
+      climate: 'Tropical savanna climate with pleasant weather year-round'
     },
     'Tamil Nadu': {
       name: 'Tamil Nadu',
@@ -51,15 +75,54 @@ const InteractiveIndiaMap = () => {
       population: '72.1 million',
       area: '130,060 km²',
       languages: ['Tamil', 'English', 'Hindi'],
-      majorCities: ['Chennai', 'Coimbatore', 'Madurai', 'Tiruchirappalli']
+      majorCities: ['Chennai', 'Coimbatore', 'Madurai', 'Tiruchirappalli', 'Salem'],
+      description: 'Known for its ancient temples, classical dance, and automotive industry.',
+      climate: 'Tropical climate with hot summers and moderate monsoons'
+    },
+    'Rajasthan': {
+      name: 'Rajasthan',
+      capital: 'Jaipur',
+      population: '68.5 million',
+      area: '342,239 km²',
+      languages: ['Hindi', 'Rajasthani', 'English'],
+      majorCities: ['Jaipur', 'Jodhpur', 'Udaipur', 'Kota', 'Ajmer'],
+      description: 'The land of kings and deserts, famous for its palaces, forts, and vibrant culture.',
+      climate: 'Desert climate with extreme temperatures and low rainfall'
+    },
+    'West Bengal': {
+      name: 'West Bengal',
+      capital: 'Kolkata',
+      population: '91.3 million',
+      area: '88,752 km²',
+      languages: ['Bengali', 'Hindi', 'English'],
+      majorCities: ['Kolkata', 'Howrah', 'Durgapur', 'Asansol', 'Siliguri'],
+      description: 'Cultural capital of India, known for literature, arts, and intellectual heritage.',
+      climate: 'Tropical wet-dry climate with hot humid summers'
     }
   };
 
+  // Fetch country data from REST Countries API
   useEffect(() => {
-    // Simulate map loading
+    const fetchCountryData = async () => {
+      try {
+        const response = await fetch('https://restcountries.com/v3.1/name/india?fullText=true');
+        const data = await response.json();
+        if (data && data.length > 0) {
+          setCountryData(data[0]);
+        }
+      } catch (error) {
+        console.error('Error fetching country data:', error);
+      }
+    };
+
+    fetchCountryData();
+  }, []);
+
+  useEffect(() => {
+    // Simulate map loading with realistic timing
     const timer = setTimeout(() => {
       setMapLoaded(true);
-    }, 1000);
+    }, 1500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -72,11 +135,11 @@ const InteractiveIndiaMap = () => {
   };
 
   const handleZoomIn = () => {
-    console.log('Zoom in functionality would be implemented here');
+    setZoomLevel(prev => Math.min(prev * 1.2, 3));
   };
 
   const handleZoomOut = () => {
-    console.log('Zoom out functionality would be implemented here');
+    setZoomLevel(prev => Math.max(prev / 1.2, 0.5));
   };
 
   const handleCurrentLocation = () => {
@@ -84,6 +147,7 @@ const InteractiveIndiaMap = () => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           console.log('Current location:', position.coords.latitude, position.coords.longitude);
+          // Could integrate with reverse geocoding API here
         },
         (error) => {
           console.error('Error getting location:', error);
@@ -93,7 +157,7 @@ const InteractiveIndiaMap = () => {
   };
 
   return (
-    <div className="w-full h-screen bg-gray-50 dark:bg-gray-900 relative">
+    <div className="w-full h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -105,193 +169,303 @@ const InteractiveIndiaMap = () => {
           {!mapLoaded ? (
             <div className="flex items-center justify-center h-full">
               <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-india-orange mx-auto mb-4"></div>
-                <p className="text-muted-foreground">Loading Interactive India Map...</p>
+                <div className="relative">
+                  <div className="animate-spin rounded-full h-16 w-16 border-4 border-india-orange border-t-transparent mx-auto mb-4"></div>
+                  <Globe className="absolute top-4 left-4 text-india-orange animate-pulse" size={24} />
+                </div>
+                <p className="text-muted-foreground font-medium">Loading Interactive India Map...</p>
+                <p className="text-sm text-muted-foreground mt-2">Fetching real-time data...</p>
               </div>
             </div>
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-blue-50 to-green-50 dark:from-gray-800 dark:to-gray-900 relative overflow-hidden">
-              {/* Simplified India Map SVG Representation */}
+            <div className="w-full h-full relative overflow-hidden">
+              {/* Enhanced India Map SVG */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <svg
-                  viewBox="0 0 800 600"
-                  className="w-full h-full max-w-4xl max-h-96"
-                  style={{ filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))' }}
+                <motion.svg
+                  viewBox="0 0 1000 800"
+                  className="w-full h-full max-w-5xl"
+                  style={{ 
+                    filter: 'drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15))',
+                    transform: `scale(${zoomLevel})`,
+                    transition: 'transform 0.3s ease-in-out'
+                  }}
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: zoomLevel, opacity: 1 }}
+                  transition={{ duration: 0.8 }}
                 >
-                  {/* Maharashtra */}
-                  <path
-                    d="M200 250 L280 240 L290 280 L250 320 L180 310 Z"
-                    fill="#ff7f50"
+                  {/* Enhanced gradient definitions */}
+                  <defs>
+                    <linearGradient id="stateGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style={{ stopColor: '#ff7849', stopOpacity: 0.8 }} />
+                      <stop offset="100%" style={{ stopColor: '#ff5722', stopOpacity: 0.9 }} />
+                    </linearGradient>
+                    <linearGradient id="hoverGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style={{ stopColor: '#ff9800', stopOpacity: 0.9 }} />
+                      <stop offset="100%" style={{ stopColor: '#ff5722', stopOpacity: 1 }} />
+                    </linearGradient>
+                  </defs>
+
+                  {/* Enhanced Maharashtra */}
+                  <motion.path
+                    d="M300 350 L420 340 L430 420 L370 460 L280 450 Z"
+                    fill="url(#stateGradient)"
                     stroke="#fff"
-                    strokeWidth="2"
-                    className="cursor-pointer hover:fill-india-orange transition-colors"
+                    strokeWidth="3"
+                    className="cursor-pointer hover:fill-url(#hoverGradient) transition-all duration-300"
                     onClick={() => handleStateClick('Maharashtra')}
+                    whileHover={{ scale: 1.02 }}
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 1, delay: 0.1 }}
                   />
-                  <text x="235" y="285" textAnchor="middle" className="text-xs fill-white font-semibold">
+                  <text x="365" y="400" textAnchor="middle" className="text-sm fill-white font-bold pointer-events-none">
                     Maharashtra
                   </text>
 
-                  {/* Gujarat */}
-                  <path
-                    d="M120 200 L200 190 L210 250 L140 260 Z"
-                    fill="#4169e1"
+                  {/* Enhanced Gujarat */}
+                  <motion.path
+                    d="M180 280 L300 270 L310 350 L220 370 L160 350 Z"
+                    fill="url(#stateGradient)"
                     stroke="#fff"
-                    strokeWidth="2"
-                    className="cursor-pointer hover:fill-india-orange transition-colors"
+                    strokeWidth="3"
+                    className="cursor-pointer hover:fill-url(#hoverGradient) transition-all duration-300"
                     onClick={() => handleStateClick('Gujarat')}
+                    whileHover={{ scale: 1.02 }}
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 1, delay: 0.2 }}
                   />
-                  <text x="165" y="225" textAnchor="middle" className="text-xs fill-white font-semibold">
+                  <text x="245" y="320" textAnchor="middle" className="text-sm fill-white font-bold pointer-events-none">
                     Gujarat
                   </text>
 
-                  {/* Karnataka */}
-                  <path
-                    d="M200 350 L280 340 L290 400 L220 410 Z"
-                    fill="#32cd32"
+                  {/* Enhanced Karnataka */}
+                  <motion.path
+                    d="M300 480 L420 470 L430 560 L340 580 L280 560 Z"
+                    fill="url(#stateGradient)"
                     stroke="#fff"
-                    strokeWidth="2"
-                    className="cursor-pointer hover:fill-india-orange transition-colors"
+                    strokeWidth="3"
+                    className="cursor-pointer hover:fill-url(#hoverGradient) transition-all duration-300"
                     onClick={() => handleStateClick('Karnataka')}
+                    whileHover={{ scale: 1.02 }}
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 1, delay: 0.3 }}
                   />
-                  <text x="245" y="380" textAnchor="middle" className="text-xs fill-white font-semibold">
+                  <text x="365" y="525" textAnchor="middle" className="text-sm fill-white font-bold pointer-events-none">
                     Karnataka
                   </text>
 
-                  {/* Tamil Nadu */}
-                  <path
-                    d="M280 400 L350 390 L360 450 L290 460 Z"
-                    fill="#ff1493"
+                  {/* Enhanced Tamil Nadu */}
+                  <motion.path
+                    d="M420 560 L520 550 L530 630 L440 650 L410 630 Z"
+                    fill="url(#stateGradient)"
                     stroke="#fff"
-                    strokeWidth="2"
-                    className="cursor-pointer hover:fill-india-orange transition-colors"
+                    strokeWidth="3"
+                    className="cursor-pointer hover:fill-url(#hoverGradient) transition-all duration-300"
                     onClick={() => handleStateClick('Tamil Nadu')}
+                    whileHover={{ scale: 1.02 }}
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 1, delay: 0.4 }}
                   />
-                  <text x="315" y="425" textAnchor="middle" className="text-xs fill-white font-semibold">
+                  <text x="475" y="595" textAnchor="middle" className="text-sm fill-white font-bold pointer-events-none">
                     Tamil Nadu
                   </text>
 
-                  {/* Additional simplified state representations */}
-                  <path
-                    d="M300 150 L400 140 L410 200 L320 210 Z"
-                    fill="#dda0dd"
+                  {/* Enhanced Rajasthan */}
+                  <motion.path
+                    d="M150 150 L350 140 L360 280 L180 290 L140 220 Z"
+                    fill="url(#stateGradient)"
                     stroke="#fff"
-                    strokeWidth="2"
-                    className="cursor-pointer hover:fill-india-orange transition-colors"
+                    strokeWidth="3"
+                    className="cursor-pointer hover:fill-url(#hoverGradient) transition-all duration-300"
+                    onClick={() => handleStateClick('Rajasthan')}
+                    whileHover={{ scale: 1.02 }}
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 1, delay: 0.5 }}
                   />
-                  <text x="355" y="180" textAnchor="middle" className="text-xs fill-white font-semibold">
-                    Uttar Pradesh
+                  <text x="250" y="215" textAnchor="middle" className="text-sm fill-white font-bold pointer-events-none">
+                    Rajasthan
                   </text>
 
-                  <path
-                    d="M400 200 L500 190 L510 250 L420 260 Z"
-                    fill="#20b2aa"
+                  {/* Enhanced West Bengal */}
+                  <motion.path
+                    d="M600 280 L720 270 L730 360 L620 370 L590 330 Z"
+                    fill="url(#stateGradient)"
                     stroke="#fff"
-                    strokeWidth="2"
-                    className="cursor-pointer hover:fill-india-orange transition-colors"
+                    strokeWidth="3"
+                    className="cursor-pointer hover:fill-url(#hoverGradient) transition-all duration-300"
+                    onClick={() => handleStateClick('West Bengal')}
+                    whileHover={{ scale: 1.02 }}
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 1, delay: 0.6 }}
                   />
-                  <text x="455" y="225" textAnchor="middle" className="text-xs fill-white font-semibold">
+                  <text x="660" y="320" textAnchor="middle" className="text-sm fill-white font-bold pointer-events-none">
                     West Bengal
                   </text>
-                </svg>
+                </motion.svg>
               </div>
 
-              {/* Map Controls */}
-              <div className="absolute top-4 right-4 flex flex-col gap-2">
+              {/* Enhanced Map Controls */}
+              <div className="absolute top-6 right-6 flex flex-col gap-3">
                 <Button
                   variant="outline"
                   size="icon"
                   onClick={handleZoomIn}
-                  className="bg-white/90 backdrop-blur-sm"
+                  className="bg-white/95 backdrop-blur-sm hover:bg-white shadow-lg"
                 >
-                  <ZoomIn size={16} />
+                  <ZoomIn size={18} />
                 </Button>
                 <Button
                   variant="outline"
                   size="icon"
                   onClick={handleZoomOut}
-                  className="bg-white/90 backdrop-blur-sm"
+                  className="bg-white/95 backdrop-blur-sm hover:bg-white shadow-lg"
                 >
-                  <ZoomOut size={16} />
+                  <ZoomOut size={18} />
                 </Button>
                 <Button
                   variant="outline"
                   size="icon"
                   onClick={handleCurrentLocation}
-                  className="bg-white/90 backdrop-blur-sm"
+                  className="bg-white/95 backdrop-blur-sm hover:bg-white shadow-lg"
                 >
-                  <Navigation size={16} />
+                  <Navigation size={18} />
                 </Button>
               </div>
 
-              {/* Legend */}
-              <div className="absolute bottom-4 left-4">
-                <Card className="bg-white/90 backdrop-blur-sm">
-                  <CardContent className="p-3">
-                    <div className="flex items-center gap-2 text-sm">
-                      <MapPin size={16} className="text-india-orange" />
-                      <span>Click on states to explore</span>
+              {/* Enhanced Legend */}
+              <div className="absolute bottom-6 left-6">
+                <Card className="bg-white/95 backdrop-blur-sm shadow-lg">
+                  <CardContent className="p-4">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-3 text-sm font-medium">
+                        <MapPin size={18} className="text-india-orange" />
+                        <span>Click states to explore</span>
+                      </div>
+                      {countryData && (
+                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                          <Info size={14} />
+                          <span>Population: {(countryData.population / 1000000).toFixed(0)}M</span>
+                        </div>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
               </div>
+
+              {/* Country Info Display */}
+              {countryData && (
+                <div className="absolute top-6 left-6">
+                  <Card className="bg-white/95 backdrop-blur-sm shadow-lg">
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Globe className="text-india-orange" size={20} />
+                        <h3 className="font-bold text-lg">{countryData.name.common}</h3>
+                      </div>
+                      <div className="text-sm text-muted-foreground space-y-1">
+                        <p>Capital: {countryData.capital?.[0]}</p>
+                        <p>Region: {countryData.region}</p>
+                        <p>Area: {countryData.area.toLocaleString()} km²</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
             </div>
           )}
         </div>
 
-        {/* State Information Panel */}
+        {/* Enhanced State Information Panel */}
         {selectedState && (
           <motion.div
-            initial={{ opacity: 0, x: 300 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 300 }}
-            className="absolute top-4 left-4 w-80"
+            initial={{ opacity: 0, x: 400, scale: 0.9 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: 400, scale: 0.9 }}
+            className="absolute top-6 right-24 w-96 max-h-[80vh] overflow-y-auto"
           >
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MapPin className="text-india-orange" size={20} />
+            <Card className="bg-white/95 backdrop-blur-sm shadow-xl border-2 border-india-orange/20">
+              <CardHeader className="bg-gradient-to-r from-india-orange to-orange-600 text-white">
+                <CardTitle className="flex items-center gap-3 text-xl">
+                  <MapPin size={24} />
                   {selectedState.name}
                 </CardTitle>
-                <CardDescription>Capital: {selectedState.capital}</CardDescription>
+                <CardDescription className="text-orange-100">
+                  Capital: {selectedState.capital}
+                </CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
+              <CardContent className="p-6">
+                <div className="space-y-4">
                   <div>
-                    <h4 className="font-medium text-sm">Population</h4>
-                    <p className="text-sm text-muted-foreground">{selectedState.population}</p>
+                    <h4 className="font-semibold text-sm text-india-orange mb-1">Description</h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{selectedState.description}</p>
                   </div>
-                  <div>
-                    <h4 className="font-medium text-sm">Area</h4>
-                    <p className="text-sm text-muted-foreground">{selectedState.area}</p>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <h4 className="font-semibold text-sm text-india-orange mb-1">Population</h4>
+                      <p className="text-sm text-muted-foreground">{selectedState.population}</p>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-sm text-india-orange mb-1">Area</h4>
+                      <p className="text-sm text-muted-foreground">{selectedState.area}</p>
+                    </div>
                   </div>
+
                   <div>
-                    <h4 className="font-medium text-sm">Languages</h4>
-                    <div className="flex flex-wrap gap-1">
+                    <h4 className="font-semibold text-sm text-india-orange mb-2">Languages</h4>
+                    <div className="flex flex-wrap gap-2">
                       {selectedState.languages.map((lang, index) => (
                         <span
                           key={index}
-                          className="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-xs rounded-full"
+                          className="px-3 py-1 bg-india-orange/10 text-india-orange text-xs rounded-full font-medium"
                         >
                           {lang}
                         </span>
                       ))}
                     </div>
                   </div>
+
                   <div>
-                    <h4 className="font-medium text-sm">Major Cities</h4>
-                    <p className="text-sm text-muted-foreground">
-                      {selectedState.majorCities.join(', ')}
-                    </p>
+                    <h4 className="font-semibold text-sm text-india-orange mb-1">Climate</h4>
+                    <p className="text-sm text-muted-foreground">{selectedState.climate}</p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-sm text-india-orange mb-2">Major Cities</h4>
+                    <div className="flex flex-wrap gap-1">
+                      {selectedState.majorCities.map((city, index) => (
+                        <span
+                          key={index}
+                          className="text-xs text-muted-foreground bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded"
+                        >
+                          {city}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full mt-4"
-                  onClick={() => setSelectedState(null)}
-                >
-                  Close
-                </Button>
+                
+                <div className="flex gap-2 mt-6">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => setSelectedState(null)}
+                  >
+                    Close
+                  </Button>
+                  <Button
+                    size="sm"
+                    className="flex-1 bg-india-orange hover:bg-india-orange/90"
+                    onClick={() => console.log(`Exploring ${selectedState.name}...`)}
+                  >
+                    Explore More
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </motion.div>
