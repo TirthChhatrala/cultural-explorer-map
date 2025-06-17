@@ -44,6 +44,8 @@ const Header = () => {
   const links = [
     { path: '/', label: 'Home' },
     { path: '/about', label: 'About' },
+    { path: '/trips', label: 'Trip' },
+    { path: '/cuisine-food', label: 'Cuisine' },
     { path: '/political-parties', label: 'Political Parties' },
     { path: '/freedom-fighters', label: 'Freedom Fighters' },
     { path: '/news', label: 'News' },
