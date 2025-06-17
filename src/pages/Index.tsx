@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import Layout from '../components/Layout';
@@ -10,24 +11,28 @@ const Index = () => {
   
   return (
     <Layout>
-      <section className="mb-24 mt-8">
-        <div className="flex flex-col lg:flex-row items-center gap-10">
+      {/* Hero Section with Improved Layout */}
+      <section className="mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
-            className="lg:w-1/2 text-center lg:text-left"
+            className="space-y-8 text-center lg:text-left order-2 lg:order-1"
           >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-tight mb-6">
-              Explore the Rich <span className="text-india-orange">Cultural Heritage</span> of India
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl lg:max-w-none mx-auto lg:mx-0">
-              Dive into the diverse traditions, festivals, landmarks, and history of each state in India through our interactive guide.
-            </p>
+            <div>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-tight mb-6">
+                Explore the Rich <span className="text-india-orange">Cultural Heritage</span> of India
+              </h1>
+              <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl lg:max-w-none mx-auto lg:mx-0">
+                Dive into the diverse traditions, festivals, landmarks, and history of each state in India through our interactive guide.
+              </p>
+            </div>
+            
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Button 
                 size="lg" 
-                className="bg-india-orange hover:bg-india-orange/90 text-white"
+                className="bg-india-orange hover:bg-india-orange/90 text-white px-8 py-3 text-lg"
                 onClick={() => navigate('/state/gujarat')}
               >
                 Start Exploring
@@ -35,10 +40,27 @@ const Index = () => {
               <Button 
                 size="lg" 
                 variant="outline"
+                className="px-8 py-3 text-lg border-2"
                 onClick={() => navigate('/about')}
               >
                 Learn More
               </Button>
+            </div>
+
+            {/* Stats Section */}
+            <div className="grid grid-cols-3 gap-6 pt-8 border-t border-gray-200 dark:border-gray-700">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-india-orange">28+</div>
+                <div className="text-sm text-muted-foreground">States & UTs</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-india-orange">1000+</div>
+                <div className="text-sm text-muted-foreground">Festivals</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-india-orange">100+</div>
+                <div className="text-sm text-muted-foreground">Languages</div>
+              </div>
             </div>
           </motion.div>
           
@@ -46,22 +68,50 @@ const Index = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="lg:w-1/2 h-96"
+            className="order-1 lg:order-2 h-[600px] lg:h-[700px] w-full"
           >
-            <InteractiveIndiaMap />
+            <div className="h-full w-full rounded-2xl overflow-hidden shadow-2xl border-4 border-white/20">
+              <InteractiveIndiaMap />
+            </div>
           </motion.div>
         </div>
       </section>
       
+      {/* Interactive Map Call-to-Action */}
+      <motion.section
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.6 }}
+        className="mb-24 text-center"
+      >
+        <div className="bg-gradient-to-r from-india-orange/10 to-india-blue/10 rounded-3xl p-8 lg:p-12">
+          <h2 className="text-2xl lg:text-3xl font-display font-bold mb-4">
+            Interactive Map Experience
+          </h2>
+          <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+            Click on any state in the map above to discover its unique culture, traditions, and attractions. 
+            Each state has its own story to tell!
+          </p>
+          <div className="flex flex-wrap justify-center gap-2 text-sm">
+            <span className="px-3 py-1 bg-india-orange/20 text-india-orange rounded-full">Real-time Data</span>
+            <span className="px-3 py-1 bg-india-blue/20 text-india-blue rounded-full">Interactive States</span>
+            <span className="px-3 py-1 bg-india-green/20 text-india-green rounded-full">Detailed Information</span>
+          </div>
+        </div>
+      </motion.section>
+      
+      {/* Featured Cultural Highlights */}
       <motion.section
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.4 }}
+        transition={{ duration: 0.7, delay: 0.8 }}
         className="mb-24"
       >
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">Featured Cultural Highlights</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">Discover the most iconic cultural elements from across India's diverse states</p>
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-display font-bold mb-6">Featured Cultural Highlights</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+            Discover the most iconic cultural elements from across India's diverse states
+          </p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -74,21 +124,23 @@ const Index = () => {
               className="group cursor-pointer"
               onClick={() => navigate(highlight.link)}
             >
-              <div className="relative h-64 rounded-xl overflow-hidden mb-4">
+              <div className="relative h-72 rounded-2xl overflow-hidden mb-6 shadow-xl">
                 <img 
                   src={highlight.image} 
                   alt={highlight.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                <div className="absolute bottom-0 left-0 p-4">
-                  <span className="px-2 py-1 bg-india-orange/90 text-white text-xs rounded-full">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 p-6">
+                  <span className="px-3 py-1 bg-india-orange/90 text-white text-sm rounded-full font-medium">
                     {highlight.category}
                   </span>
-                  <h3 className="text-white font-display font-semibold text-xl mt-2">{highlight.title}</h3>
+                  <h3 className="text-white font-display font-semibold text-xl mt-3 leading-tight">
+                    {highlight.title}
+                  </h3>
                 </div>
               </div>
-              <p className="text-muted-foreground line-clamp-2">{highlight.description}</p>
+              <p className="text-muted-foreground line-clamp-2 px-2">{highlight.description}</p>
             </motion.div>
           ))}
         </div>
