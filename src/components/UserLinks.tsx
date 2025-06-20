@@ -22,22 +22,25 @@ const UserLinks: React.FC<UserLinksProps> = ({ isMobile = false, onLinkClick }) 
   
   return (
     <div className={`${isMobile ? 'flex flex-col space-y-2' : 'flex items-center space-x-2'}`}>
-      {/* Always show Login and Signup buttons */}
-      <Link 
-        to="/login" 
-        onClick={onLinkClick}
-      >
-        <Button 
-          variant="ghost" 
-          size={isMobile ? "default" : "sm"}
-          className={`${isMobile ? 'w-full justify-start' : ''} ${
-            isActive('/login') ? 'bg-india-orange/10 text-india-orange' : ''
-          }`}
+      {/* Show Login button only when not authenticated */}
+      {!isAuthenticated && (
+        <Link 
+          to="/login" 
+          onClick={onLinkClick}
         >
-          Login
-        </Button>
-      </Link>
+          <Button 
+            variant="ghost" 
+            size={isMobile ? "default" : "sm"}
+            className={`${isMobile ? 'w-full justify-start' : ''} ${
+              isActive('/login') ? 'bg-india-orange/10 text-india-orange' : ''
+            }`}
+          >
+            Login
+          </Button>
+        </Link>
+      )}
       
+      {/* Always show Sign Up button */}
       <Link 
         to="/signup" 
         onClick={onLinkClick}
