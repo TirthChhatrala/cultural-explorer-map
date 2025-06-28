@@ -21,7 +21,7 @@ const UserLinks: React.FC<UserLinksProps> = ({ isMobile = false, onLinkClick }) 
   };
   
   return (
-    <div className={`${isMobile ? 'flex flex-col space-y-2' : 'flex items-center space-x-2'}`}>
+    <div className={`${isMobile ? 'flex flex-col space-y-2' : 'flex items-center space-x-1'}`}>
       {/* Show Login button only when not authenticated */}
       {!isAuthenticated && (
         <Link 
@@ -31,7 +31,7 @@ const UserLinks: React.FC<UserLinksProps> = ({ isMobile = false, onLinkClick }) 
           <Button 
             variant="ghost" 
             size={isMobile ? "default" : "sm"}
-            className={`${isMobile ? 'w-full justify-start' : ''} ${
+            className={`${isMobile ? 'w-full justify-start' : 'text-sm px-3'} ${
               isActive('/login') ? 'bg-india-orange/10 text-india-orange' : ''
             }`}
           >
@@ -48,7 +48,7 @@ const UserLinks: React.FC<UserLinksProps> = ({ isMobile = false, onLinkClick }) 
         <Button 
           variant="outline" 
           size={isMobile ? "default" : "sm"}
-          className={`${isMobile ? 'w-full justify-start' : ''} ${
+          className={`${isMobile ? 'w-full justify-start' : 'text-sm px-3'} ${
             isActive('/signup') ? 'bg-india-orange/10 text-india-orange' : ''
           }`}
         >
@@ -61,7 +61,7 @@ const UserLinks: React.FC<UserLinksProps> = ({ isMobile = false, onLinkClick }) 
         <>
           <Link 
             to="/my-trips" 
-            className={`${isMobile ? 'block w-full py-2' : 'px-3 py-1 rounded-md'} ${
+            className={`${isMobile ? 'block w-full py-2' : 'px-2 py-1 rounded-md text-sm'} ${
               isActive('/my-trips') 
                 ? 'bg-india-orange/10 text-india-orange font-medium' 
                 : 'hover:bg-gray-100 dark:hover:bg-gray-800'
@@ -72,7 +72,7 @@ const UserLinks: React.FC<UserLinksProps> = ({ isMobile = false, onLinkClick }) 
           </Link>
           <Link 
             to="/dashboard" 
-            className={`${isMobile ? 'block w-full py-2' : 'px-3 py-1 rounded-md'} ${
+            className={`${isMobile ? 'block w-full py-2' : 'px-2 py-1 rounded-md text-sm'} ${
               isActive('/dashboard') 
                 ? 'bg-india-orange/10 text-india-orange font-medium' 
                 : 'hover:bg-gray-100 dark:hover:bg-gray-800'
@@ -85,7 +85,7 @@ const UserLinks: React.FC<UserLinksProps> = ({ isMobile = false, onLinkClick }) 
             variant="ghost" 
             size={isMobile ? "default" : "sm"}
             onClick={handleLogout}
-            className={`${isMobile ? 'w-full justify-start' : ''} text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20`}
+            className={`${isMobile ? 'w-full justify-start' : 'text-sm px-3'} text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20`}
           >
             Logout
           </Button>

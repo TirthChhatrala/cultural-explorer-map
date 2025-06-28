@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
@@ -17,7 +18,7 @@ import UserLinks from './UserLinks';
 const Header = () => {
   const { theme } = useTheme();
   const { pathname } = useLocation();
-  const { isAdmin } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -40,7 +41,7 @@ const Header = () => {
     return null;
   }
 
-  const links = [
+  const publicLinks = [
     { path: '/', label: 'Home' },
     { path: '/about', label: 'About' },
     { path: '/trips', label: 'Trip' },
@@ -51,6 +52,11 @@ const Header = () => {
     { path: '/festivals', label: 'Festivals' },
     { path: '/booking', label: 'Booking' },
   ];
+
+  // Show fewer navigation items when authenticated to make room for user menu
+  const displayLinks = isAuthenticated 
+    ? publicLinks.slice(0, 6) // Show only first 6 items when logged in
+    : publicLinks;
 
   return (
     <header
@@ -77,12 +83,12 @@ const Header = () => {
             </Link>
           </div>
 
-          <nav className="hidden md:flex items-center space-x-1">
-            {links.map((link) => (
+          <nav className="hidden lg:flex items-center space-x-1 flex-1 justify-center">
+            {displayLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`px-3 py-1 rounded-md ${
+                className={`px-2 py-1 rounded-md text-sm ${
                   pathname === link.path
                     ? 'bg-india-orange/10 text-india-orange font-medium'
                     : 'hover:bg-gray-100 dark:hover:bg-gray-800'
@@ -93,7 +99,7 @@ const Header = () => {
             ))}
           </nav>
 
-          <div className="hidden md:flex items-center space-x-2">
+          <div className="hidden lg:flex items-center">
             <UserLinks />
           </div>
 
@@ -101,7 +107,7 @@ const Header = () => {
             <SheetTrigger asChild>
               <Button
                 variant="ghost"
-                className="md:hidden p-2"
+                className="lg:hidden p-2"
                 aria-label="Toggle menu"
               >
                 {mobileMenuOpen ? <X /> : <Menu />}
@@ -112,7 +118,7 @@ const Header = () => {
                 <SheetTitle>Menu</SheetTitle>
               </SheetHeader>
               <div className="flex flex-col space-y-3 py-4">
-                {links.map((link) => (
+                {publicLinks.map((link) => (
                   <Link
                     key={link.path}
                     to={link.path}
@@ -133,7 +139,7 @@ const Header = () => {
             </SheetContent>
           </Sheet>
 
-          <div className="flex md:hidden items-center">
+          <div className="flex lg:hidden items-center">
             <ThemeToggle />
           </div>
         </div>
