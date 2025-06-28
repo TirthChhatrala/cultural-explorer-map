@@ -6,7 +6,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, useLocation } from "react-router-dom";
 import AppRoutes from "./AppRoutes";
 import Header from "./components/Header";
-import AdminHeader from "./components/AdminHeader";
 
 const queryClient = new QueryClient();
 
@@ -14,8 +13,9 @@ const HeaderWrapper = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname === '/admin' || location.pathname.startsWith('/admin/');
   
+  // Only show regular Header if NOT on admin routes
   if (isAdminRoute) {
-    return <AdminHeader />;
+    return null;
   }
   
   return <Header />;
