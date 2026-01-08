@@ -18,6 +18,7 @@ import { format } from 'date-fns';
 import { CalendarIcon, MapPin, Users, Clock } from 'lucide-react';
 import { trips } from '../../data/tripData';
 import { states } from '../../data/states';
+import PaymentModal from '../PaymentModal';
 
 const tripBookingSchema = z.object({
   selectedTrip: z.string().min(1, "Please select a trip"),
@@ -38,6 +39,8 @@ const TripBookingForm = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedTripData, setSelectedTripData] = useState<any>(null);
+  const [showPayment, setShowPayment] = useState(false);
+  const [bookingData, setBookingData] = useState<any>(null);
 
   const form = useForm<z.infer<typeof tripBookingSchema>>({
     resolver: zodResolver(tripBookingSchema),
@@ -54,62 +57,50 @@ const TripBookingForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof tripBookingSchema>) => {
-    setIsSubmitting(true);
+    const trip = trips.find(t => t.id === values.selectedTrip);
+    if (!trip) {
+      toast({ title: "Error", description: "Trip not found", variant: "destructive" });
+      return;
+    }
 
-    try {
-      const trip = trips.find(t => t.id === values.selectedTrip);
-      if (!trip) throw new Error('Trip not found');
+    const basePrice = trip.discountedPrice || trip.price;
+    const accommodationMultiplier = values.accommodationType === 'luxury' ? 1.5 : 
+                                  values.accommodationType === 'premium' ? 1.3 : 1;
+    const transportMultiplier = values.transportMode === 'flight' ? 1.4 : 
+                              values.transportMode === 'ac-train' ? 1.2 : 1;
+    
+    const totalPrice = Math.round(basePrice * parseInt(values.travelers) * accommodationMultiplier * transportMultiplier);
 
-      const basePrice = trip.discountedPrice || trip.price;
-      const accommodationMultiplier = values.accommodationType === 'luxury' ? 1.5 : 
-                                    values.accommodationType === 'premium' ? 1.3 : 1;
-      const transportMultiplier = values.transportMode === 'flight' ? 1.4 : 
-                                values.transportMode === 'ac-train' ? 1.2 : 1;
-      
-      const totalPrice = Math.round(basePrice * parseInt(values.travelers) * accommodationMultiplier * transportMultiplier);
+    setBookingData({
+      type: 'Trip Booking',
+      title: trip.title,
+      amount: totalPrice,
+      guestName: values.guestName,
+      guestEmail: values.guestEmail,
+      guestPhone: values.guestPhone,
+      startDate: values.startDate.toISOString(),
+      endDate: values.endDate.toISOString(),
+      travelers: parseInt(values.travelers),
+      accommodationType: values.accommodationType,
+      transportMode: values.transportMode,
+      tripId: trip.id,
+    });
+    setShowPayment(true);
+  };
 
+  const handlePaymentSuccess = () => {
+    if (bookingData) {
       const booking = {
         id: `trip-booking-${Date.now()}`,
-        type: 'trip',
-        tripId: trip.id,
-        tripTitle: trip.title,
-        userId: user?.email,
-        guestName: values.guestName,
-        guestEmail: values.guestEmail,
-        guestPhone: values.guestPhone,
-        travelers: parseInt(values.travelers),
-        startDate: values.startDate.toISOString(),
-        endDate: values.endDate.toISOString(),
-        accommodationType: values.accommodationType,
-        transportMode: values.transportMode,
-        specialRequests: values.specialRequests,
-        totalPrice,
-        basePrice: trip.discountedPrice || trip.price,
-        duration: trip.duration,
-        category: trip.category,
+        ...bookingData,
         bookingDate: new Date().toISOString(),
         status: 'confirmed',
       };
-
       const existingBookings = JSON.parse(localStorage.getItem('tripBookings') || '[]');
       existingBookings.push(booking);
       localStorage.setItem('tripBookings', JSON.stringify(existingBookings));
-
-      toast({
-        title: "Trip Booked Successfully!",
-        description: `Your booking for ${trip.title} has been confirmed.`,
-      });
-
-      navigate('/my-trips');
-    } catch (error) {
-      toast({
-        title: "Booking Failed",
-        description: "There was an error processing your booking. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
     }
+    navigate('/admin');
   };
 
   const handleTripSelection = (tripId: string) => {

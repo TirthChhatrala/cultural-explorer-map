@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Layout from '../components/Layout';
-import InteractiveIndiaMap from '../components/InteractiveIndiaMap'; 
+import IndiaMapSVG from '../components/IndiaMapSVG'; 
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 
@@ -71,7 +71,7 @@ const Index = () => {
             className="order-1 lg:order-2 h-[600px] lg:h-[700px] w-full"
           >
             <div className="h-full w-full rounded-2xl overflow-hidden shadow-2xl border-4 border-white/20">
-              <InteractiveIndiaMap />
+              <IndiaMapSVG />
             </div>
           </motion.div>
         </div>
