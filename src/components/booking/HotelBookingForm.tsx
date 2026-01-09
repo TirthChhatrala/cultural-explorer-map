@@ -15,7 +15,8 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
-import { CalendarIcon, MapPin, Star, Wifi } from 'lucide-react';
+import { CalendarIcon, Star, Wifi } from 'lucide-react';
+import PaymentModal from '../PaymentModal';
 
 const hotelBookingSchema = z.object({
   guestName: z.string().min(2, "Name must be at least 2 characters"),
@@ -35,6 +36,8 @@ const HotelBookingForm = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
+  const [bookingData, setBookingData] = useState<any>(null);
 
   const form = useForm<z.infer<typeof hotelBookingSchema>>({
     resolver: zodResolver(hotelBookingSchema),
@@ -63,54 +66,42 @@ const HotelBookingForm = () => {
   ];
 
   const onSubmit = async (values: z.infer<typeof hotelBookingSchema>) => {
-    setIsSubmitting(true);
+    const roomTypeData = roomTypes.find(rt => rt.value === values.roomType);
+    const basePrice = roomTypeData?.price || 3000;
+    const nights = Math.ceil((values.checkOutDate.getTime() - values.checkInDate.getTime()) / (1000 * 60 * 60 * 24));
+    const totalPrice = basePrice * parseInt(values.rooms) * nights;
 
-    try {
-      const roomTypeData = roomTypes.find(rt => rt.value === values.roomType);
-      const basePrice = roomTypeData?.price || 3000;
-      const nights = Math.ceil((values.checkOutDate.getTime() - values.checkInDate.getTime()) / (1000 * 60 * 60 * 24));
-      const totalPrice = basePrice * parseInt(values.rooms) * nights;
+    setBookingData({
+      type: 'Hotel Booking',
+      title: `${values.roomType.charAt(0).toUpperCase() + values.roomType.slice(1)} Room - ${values.location}`,
+      amount: totalPrice,
+      guestName: values.guestName,
+      guestEmail: values.guestEmail,
+      guestPhone: values.guestPhone,
+      startDate: values.checkInDate.toISOString(),
+      endDate: values.checkOutDate.toISOString(),
+      travelers: parseInt(values.guests),
+      accommodationType: values.roomType,
+      rooms: parseInt(values.rooms),
+      nights,
+      location: values.location,
+    });
+    setShowPayment(true);
+  };
 
+  const handlePaymentSuccess = () => {
+    if (bookingData) {
       const booking = {
         id: `hotel-booking-${Date.now()}`,
-        type: 'hotel',
-        userId: user?.email,
-        guestName: values.guestName,
-        guestEmail: values.guestEmail,
-        guestPhone: values.guestPhone,
-        checkInDate: values.checkInDate.toISOString(),
-        checkOutDate: values.checkOutDate.toISOString(),
-        guests: parseInt(values.guests),
-        rooms: parseInt(values.rooms),
-        roomType: values.roomType,
-        location: values.location,
-        specialRequests: values.specialRequests,
-        totalPrice,
-        basePrice,
-        nights,
+        ...bookingData,
         bookingDate: new Date().toISOString(),
         status: 'confirmed',
       };
-
       const existingBookings = JSON.parse(localStorage.getItem('hotelBookings') || '[]');
       existingBookings.push(booking);
       localStorage.setItem('hotelBookings', JSON.stringify(existingBookings));
-
-      toast({
-        title: "Hotel Booked Successfully!",
-        description: `Your hotel booking in ${values.location} has been confirmed.`,
-      });
-
-      navigate('/my-trips');
-    } catch (error) {
-      toast({
-        title: "Booking Failed",
-        description: "There was an error processing your booking. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
     }
+    navigate('/my-trips');
   };
 
   return (
@@ -378,10 +369,20 @@ const HotelBookingForm = () => {
           />
 
           <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? 'Processing Booking...' : 'Book Hotel Now'}
+            {isSubmitting ? 'Proceed to Payment' : 'Book Hotel Now'}
           </Button>
         </form>
       </Form>
+
+      {/* Payment Modal */}
+      {bookingData && (
+        <PaymentModal
+          isOpen={showPayment}
+          onClose={() => setShowPayment(false)}
+          bookingDetails={bookingData}
+          onPaymentSuccess={handlePaymentSuccess}
+        />
+      )}
     </div>
   );
 };
