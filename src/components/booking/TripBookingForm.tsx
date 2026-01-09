@@ -388,10 +388,20 @@ const TripBookingForm = () => {
           />
 
           <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? 'Processing Booking...' : 'Book Trip Now'}
+            {isSubmitting ? 'Proceed to Payment' : 'Book Trip Now'}
           </Button>
         </form>
       </Form>
+
+      {/* Payment Modal */}
+      {bookingData && (
+        <PaymentModal
+          isOpen={showPayment}
+          onClose={() => setShowPayment(false)}
+          bookingDetails={bookingData}
+          onPaymentSuccess={handlePaymentSuccess}
+        />
+      )}
     </div>
   );
 };

@@ -16,6 +16,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { CalendarIcon, Dice1, Star, Shield } from 'lucide-react';
+import PaymentModal from '../PaymentModal';
 
 const casinoBookingSchema = z.object({
   guestName: z.string().min(2, "Name must be at least 2 characters"),
@@ -34,6 +35,8 @@ const CasinoBookingForm = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
+  const [bookingData, setBookingData] = useState<any>(null);
 
   const form = useForm<z.infer<typeof casinoBookingSchema>>({
     resolver: zodResolver(casinoBookingSchema),
@@ -73,51 +76,43 @@ const CasinoBookingForm = () => {
   ];
 
   const onSubmit = async (values: z.infer<typeof casinoBookingSchema>) => {
-    setIsSubmitting(true);
+    const packageData = packages.find(pkg => pkg.value === values.packageType);
+    const basePrice = packageData?.price || 2000;
+    const totalPrice = basePrice * parseInt(values.guests);
 
-    try {
-      const packageData = packages.find(pkg => pkg.value === values.packageType);
-      const basePrice = packageData?.price || 2000;
-      const totalPrice = basePrice * parseInt(values.guests);
+    // Use visitDate for both start and end since it's a single day visit
+    const visitDateStr = values.visitDate.toISOString();
 
+    setBookingData({
+      type: 'Casino Booking',
+      title: `${packageData?.label.split(' - ')[0]} at ${values.location}`,
+      amount: totalPrice,
+      guestName: values.guestName,
+      guestEmail: values.guestEmail,
+      guestPhone: values.guestPhone,
+      startDate: visitDateStr,
+      endDate: visitDateStr,
+      travelers: parseInt(values.guests),
+      packageType: values.packageType,
+      location: values.location,
+      timeSlot: values.timeSlot,
+    });
+    setShowPayment(true);
+  };
+
+  const handlePaymentSuccess = () => {
+    if (bookingData) {
       const booking = {
         id: `casino-booking-${Date.now()}`,
-        type: 'casino',
-        userId: user?.email,
-        guestName: values.guestName,
-        guestEmail: values.guestEmail,
-        guestPhone: values.guestPhone,
-        visitDate: values.visitDate.toISOString(),
-        guests: parseInt(values.guests),
-        packageType: values.packageType,
-        location: values.location,
-        timeSlot: values.timeSlot,
-        specialRequests: values.specialRequests,
-        totalPrice,
-        basePrice,
+        ...bookingData,
         bookingDate: new Date().toISOString(),
         status: 'confirmed',
       };
-
       const existingBookings = JSON.parse(localStorage.getItem('casinoBookings') || '[]');
       existingBookings.push(booking);
       localStorage.setItem('casinoBookings', JSON.stringify(existingBookings));
-
-      toast({
-        title: "Casino Booking Confirmed!",
-        description: `Your casino experience at ${values.location} has been booked.`,
-      });
-
-      navigate('/my-trips');
-    } catch (error) {
-      toast({
-        title: "Booking Failed",
-        description: "There was an error processing your booking. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
     }
+    navigate('/my-trips');
   };
 
   return (
@@ -347,10 +342,20 @@ const CasinoBookingForm = () => {
           />
 
           <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? 'Processing Booking...' : 'Book Casino Experience'}
+            {isSubmitting ? 'Proceed to Payment' : 'Book Casino Experience'}
           </Button>
         </form>
       </Form>
+
+      {/* Payment Modal */}
+      {bookingData && (
+        <PaymentModal
+          isOpen={showPayment}
+          onClose={() => setShowPayment(false)}
+          bookingDetails={bookingData}
+          onPaymentSuccess={handlePaymentSuccess}
+        />
+      )}
     </div>
   );
 };
