@@ -8,15 +8,10 @@ import { states } from '../data/states';
 import { Check } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 import { Button } from '@/components/ui/button';
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-
-interface State {
-  id: string;
-  name: string;
-}
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import PaymentModal from '../components/PaymentModal';
 
 const CustomTrip = () => {
   const { theme } = useTheme();
@@ -31,8 +26,8 @@ const CustomTrip = () => {
   const [budget, setBudget] = useState(50000);
   const [selectedStates, setSelectedStates] = useState<string[]>([]);
   const [selectedPreferences, setSelectedPreferences] = useState<string[]>([]);
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [requestId, setRequestId] = useState<string>('');
+  const [paymentOpen, setPaymentOpen] = useState(false);
+  const [bookingData, setBookingData] = useState<any>(null);
 
   const preferences = [
     'Historical Sites',
@@ -78,16 +73,6 @@ const CustomTrip = () => {
     });
   };
 
-  const resetForm = () => {
-    setStartDate('');
-    setEndDate('');
-    setTravelers(1);
-    setTransport('');
-    setBudget(50000);
-    setSelectedStates([]);
-    setSelectedPreferences([]);
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -100,74 +85,79 @@ const CustomTrip = () => {
       navigate('/login');
       return;
     }
-    
-    const newRequestId = `REQ-${Math.random().toString(36).substring(2, 10).toUpperCase()}`;
-    setRequestId(newRequestId);
-    
+
+    if (selectedStates.length === 0) {
+      toast({
+        title: "Select Destinations",
+        description: "Please select at least one destination",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!transport) {
+      toast({
+        title: "Select Transport",
+        description: "Please select a transport mode",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const stateNames = selectedStates.map(id => states.find(s => s.id === id)?.name || id).join(', ');
+
+    setBookingData({
+      type: 'Custom Trip',
+      title: `Custom Trip to ${stateNames}`,
+      amount: budget,
+      guestName: user?.name || 'Guest',
+      guestEmail: user?.email || '',
+      guestPhone: '',
+      startDate: startDate || new Date().toISOString(),
+      endDate: endDate || new Date().toISOString(),
+      travelers: travelers,
+      transportMode: transport,
+    });
+    setPaymentOpen(true);
+  };
+
+  const handlePaymentSuccess = () => {
     const tripRequest = {
-      id: newRequestId,
+      id: `custom-trip-${Date.now()}`,
       userId: user?.email || 'anonymous',
       startDate,
       endDate,
       travelers,
-      transportMode: transport as 'bus' | 'car' | 'train' | 'flight',
+      transportMode: transport,
       states: selectedStates,
       budget,
       preferences: selectedPreferences,
-      status: 'pending' as const,
-      createdAt: new Date().toISOString()
+      status: 'confirmed',
+      createdAt: new Date().toISOString(),
+      paidAt: new Date().toISOString(),
     };
     
-    const existingRequests = JSON.parse(localStorage.getItem('customTripRequests') || '[]');
-    
-    existingRequests.push(tripRequest);
-    
-    localStorage.setItem('customTripRequests', JSON.stringify(existingRequests));
-    
-    setShowConfirmation(true);
-    
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const existingBookings = JSON.parse(localStorage.getItem('tripBookings') || '[]');
+    existingBookings.push({
+      id: tripRequest.id,
+      tripId: tripRequest.id,
+      tripTitle: `Custom Trip to ${selectedStates.map(id => states.find(s => s.id === id)?.name || id).join(', ')}`,
+      userId: user?.email,
+      price: budget,
+      bookingDate: new Date().toISOString(),
+      status: 'confirmed',
+      travelers: travelers,
+      type: 'custom',
+    });
+    localStorage.setItem('tripBookings', JSON.stringify(existingBookings));
+
+    toast({
+      title: "Custom Trip Booked!",
+      description: "Your custom trip has been confirmed and paid.",
+    });
+
+    navigate('/my-trips');
   };
-  
-  const ConfirmationMessage = () => (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className={`rounded-xl border p-6 mb-8 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}
-    >
-      <div className="flex items-center gap-4 mb-4">
-        <div className="bg-green-100 dark:bg-green-900/30 p-3 rounded-full">
-          <Check className="h-6 w-6 text-green-600 dark:text-green-400" />
-        </div>
-        <div>
-          <h2 className="text-xl font-semibold">Request Submitted Successfully</h2>
-          <p className="text-muted-foreground">Request ID: {requestId}</p>
-        </div>
-      </div>
-      
-      <p className="mb-6">
-        Thank you for submitting your custom trip request! Our team will review your preferences and create a personalized itinerary for you.
-      </p>
-      
-      <div className="flex flex-col sm:flex-row gap-4">
-        <Button
-          variant="default"
-          onClick={() => navigate('/my-trips')}
-        >
-          Track My Request
-        </Button>
-        <Button
-          variant="outline"
-          onClick={() => {
-            setShowConfirmation(false);
-            resetForm();
-          }}
-        >
-          Create Another Request
-        </Button>
-      </div>
-    </motion.div>
-  );
   
   if (!isAuthenticated) return null;
 
@@ -187,131 +177,148 @@ const CustomTrip = () => {
               Create Your <span className="text-india-orange">Custom Trip</span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Tell us your preferences, and we'll design the perfect Indian adventure for you.
+              Tell us your preferences, pay now, and your custom trip is confirmed!
             </p>
           </section>
         </motion.div>
 
-        {showConfirmation ? (
-          <ConfirmationMessage />
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className={`rounded-xl border p-6 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
-              <h2 className="text-xl font-semibold mb-4">Trip Details</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="start-date">Start Date</Label>
-                  <Input
-                    type="date"
-                    id="start-date"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="end-date">End Date</Label>
-                  <Input
-                    type="date"
-                    id="end-date"
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="travelers">Number of Travelers</Label>
-                  <Input
-                    type="number"
-                    id="travelers"
-                    min="1"
-                    value={travelers}
-                    onChange={(e) => setTravelers(parseInt(e.target.value))}
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="budget">Budget (₹)</Label>
-                  <Input
-                    type="number"
-                    id="budget"
-                    min="10000"
-                    step="1000"
-                    value={budget}
-                    onChange={(e) => setBudget(parseInt(e.target.value))}
-                    required
-                  />
-                </div>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className={`rounded-xl border p-6 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+            <h2 className="text-xl font-semibold mb-4">Trip Details</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="start-date">Start Date</Label>
+                <Input
+                  type="date"
+                  id="start-date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="end-date">End Date</Label>
+                <Input
+                  type="date"
+                  id="end-date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="travelers">Number of Travelers</Label>
+                <Input
+                  type="number"
+                  id="travelers"
+                  min="1"
+                  value={travelers}
+                  onChange={(e) => setTravelers(parseInt(e.target.value))}
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="budget">Budget (₹)</Label>
+                <Input
+                  type="number"
+                  id="budget"
+                  min="10000"
+                  step="1000"
+                  value={budget}
+                  onChange={(e) => setBudget(parseInt(e.target.value))}
+                  required
+                />
               </div>
             </div>
+          </div>
 
-            <div className={`rounded-xl border p-6 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
-              <h2 className="text-xl font-semibold mb-4">Destinations</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {states.map((state) => (
-                  <label
-                    key={state.id}
-                    className={`flex items-center rounded-md p-3 cursor-pointer border ${
-                      selectedStates.includes(state.id) ? 'bg-india-orange/10 border-india-orange' : theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
-                    }`}
-                  >
-                    <Input
-                      type="checkbox"
-                      className="mr-2"
-                      value={state.id}
-                      checked={selectedStates.includes(state.id)}
-                      onChange={() => handleStateSelection(state.id)}
-                    />
-                    {state.name}
-                  </label>
-                ))}
+          <div className={`rounded-xl border p-6 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+            <h2 className="text-xl font-semibold mb-4">Destinations</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {states.map((state) => (
+                <label
+                  key={state.id}
+                  className={`flex items-center rounded-md p-3 cursor-pointer border ${
+                    selectedStates.includes(state.id) ? 'bg-india-orange/10 border-india-orange' : theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
+                  }`}
+                >
+                  <Input
+                    type="checkbox"
+                    className="mr-2"
+                    value={state.id}
+                    checked={selectedStates.includes(state.id)}
+                    onChange={() => handleStateSelection(state.id)}
+                  />
+                  {state.name}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className={`rounded-xl border p-6 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+            <h2 className="text-xl font-semibold mb-4">Preferences</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {preferences.map((preference) => (
+                <label
+                  key={preference}
+                  className={`flex items-center rounded-md p-3 cursor-pointer border ${
+                    selectedPreferences.includes(preference) ? 'bg-india-orange/10 border-india-orange' : theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
+                  }`}
+                >
+                  <Input
+                    type="checkbox"
+                    className="mr-2"
+                    value={preference}
+                    checked={selectedPreferences.includes(preference)}
+                    onChange={() => handlePreferenceSelection(preference)}
+                  />
+                  {preference}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className={`rounded-xl border p-6 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+            <h2 className="text-xl font-semibold mb-4">Transportation</h2>
+            <Select onValueChange={setTransport} value={transport}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a transport mode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="bus">Bus</SelectItem>
+                <SelectItem value="car">Car</SelectItem>
+                <SelectItem value="train">Train</SelectItem>
+                <SelectItem value="flight">Flight</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className={`rounded-xl border p-6 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+            <div className="flex justify-between items-center">
+              <div>
+                <h3 className="text-lg font-semibold">Total Budget</h3>
+                <p className="text-muted-foreground">Pay now to confirm your custom trip</p>
               </div>
+              <div className="text-2xl font-bold text-india-orange">₹{budget.toLocaleString()}</div>
             </div>
+          </div>
 
-            <div className={`rounded-xl border p-6 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
-              <h2 className="text-xl font-semibold mb-4">Preferences</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {preferences.map((preference) => (
-                  <label
-                    key={preference}
-                    className={`flex items-center rounded-md p-3 cursor-pointer border ${
-                      selectedPreferences.includes(preference) ? 'bg-india-orange/10 border-india-orange' : theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
-                    }`}
-                  >
-                    <Input
-                      type="checkbox"
-                      className="mr-2"
-                      value={preference}
-                      checked={selectedPreferences.includes(preference)}
-                      onChange={() => handlePreferenceSelection(preference)}
-                    />
-                    {preference}
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            <div className={`rounded-xl border p-6 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
-              <h2 className="text-xl font-semibold mb-4">Transportation</h2>
-              <Select onValueChange={setTransport}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a transport mode" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="bus">Bus</SelectItem>
-                  <SelectItem value="car">Car</SelectItem>
-                  <SelectItem value="train">Train</SelectItem>
-                  <SelectItem value="flight">Flight</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="flex justify-center mt-8">
-              <Button type="submit">Submit Request</Button>
-            </div>
-          </form>
-        )}
+          <div className="flex justify-center mt-8 pb-8">
+            <Button type="submit" className="bg-india-orange hover:bg-orange-600 px-8 py-3">
+              Proceed to Payment
+            </Button>
+          </div>
+        </form>
       </div>
+
+      {bookingData && (
+        <PaymentModal
+          isOpen={paymentOpen}
+          onClose={() => setPaymentOpen(false)}
+          bookingDetails={bookingData}
+          onPaymentSuccess={handlePaymentSuccess}
+        />
+      )}
     </Layout>
   );
 };

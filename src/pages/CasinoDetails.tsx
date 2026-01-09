@@ -1,26 +1,26 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Layout from '../components/Layout';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
-import { MapPin, Star, ChevronLeft, Calendar as CalendarIcon, Users, Dice1 } from 'lucide-react';
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Calendar } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Badge } from "@/components/ui/badge"
-import { cn } from "@/lib/utils"
-import { format } from "date-fns"
-import { useToast } from "@/hooks/use-toast"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { MapPin, Star, ChevronLeft, Calendar as CalendarIcon, Dice1 } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { useToast } from "@/hooks/use-toast";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import PaymentModal from '../components/PaymentModal';
 
 const bookingSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -33,7 +33,7 @@ const bookingSchema = z.object({
   visitDate: z.date({ required_error: "A visit date is required." }),
   package: z.string().min(1, "Please select a package."),
   message: z.string().optional(),
-})
+});
 
 const CasinoDetails = () => {
   const { casinoId } = useParams<{ casinoId: string }>();
@@ -43,6 +43,8 @@ const CasinoDetails = () => {
   const { toast } = useToast();
 
   const [casino, setCasino] = useState<any>(null);
+  const [paymentOpen, setPaymentOpen] = useState(false);
+  const [bookingData, setBookingData] = useState<any>(null);
 
   const form = useForm<z.infer<typeof bookingSchema>>({
     resolver: zodResolver(bookingSchema),
@@ -68,6 +70,27 @@ const CasinoDetails = () => {
       return;
     }
 
+    const selectedPackage = casino?.packages?.find((pkg: any) => pkg.name === values.package);
+    const packagePrice = selectedPackage?.price || casino?.price || 4000;
+    const totalAmount = packagePrice * parseInt(values.guests);
+
+    setBookingData({
+      type: 'Casino Experience',
+      title: `${casino?.name} - ${values.package}`,
+      amount: totalAmount,
+      guestName: values.name,
+      guestEmail: values.email,
+      guestPhone: values.phone,
+      startDate: values.visitDate.toISOString(),
+      endDate: values.visitDate.toISOString(),
+      travelers: parseInt(values.guests),
+    });
+    setPaymentOpen(true);
+  }
+
+  const handlePaymentSuccess = () => {
+    const values = form.getValues();
+    
     const booking = {
       id: `casino-booking-${Date.now()}`,
       casinoId: casino?.id,
@@ -79,7 +102,7 @@ const CasinoDetails = () => {
       guests: values.guests,
       visitDate: values.visitDate.toISOString(),
       package: values.package,
-      price: casino?.price || 0,
+      price: bookingData.amount,
       message: values.message,
       bookingDate: new Date().toISOString(),
       status: 'confirmed'
@@ -95,10 +118,9 @@ const CasinoDetails = () => {
     });
 
     navigate('/my-trips');
-  }
+  };
 
   useEffect(() => {
-    // Mock casino data - in real app this would come from API
     const mockCasino = {
       id: casinoId,
       name: "Deltin Royale",
@@ -190,7 +212,7 @@ const CasinoDetails = () => {
               <CardHeader>
                 <CardTitle>Book Your Gaming Experience</CardTitle>
                 <CardDescription>
-                  Reserve your spot at {casino.name} - Instant confirmation!
+                  Reserve your spot at {casino.name} - Pay & Confirm Instantly!
                 </CardDescription>
               </CardHeader>
               
@@ -347,8 +369,8 @@ const CasinoDetails = () => {
                       )}
                     />
                     
-                    <Button type="submit" className="w-full">
-                      Confirm Booking
+                    <Button type="submit" className="w-full bg-india-orange hover:bg-orange-600">
+                      Proceed to Payment
                     </Button>
                   </form>
                 </Form>
@@ -357,6 +379,15 @@ const CasinoDetails = () => {
           </div>
         </div>
       </motion.div>
+
+      {bookingData && (
+        <PaymentModal
+          isOpen={paymentOpen}
+          onClose={() => setPaymentOpen(false)}
+          bookingDetails={bookingData}
+          onPaymentSuccess={handlePaymentSuccess}
+        />
+      )}
     </Layout>
   );
 };

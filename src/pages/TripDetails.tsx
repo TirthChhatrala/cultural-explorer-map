@@ -8,7 +8,7 @@ import { trips } from '../data/tripData';
 import { states } from '../data/states';
 import { TripPreferenceForm } from '../components/trips/TripPreferenceForm';
 import { TripPreferences } from '../components/trips/TripPreferences';
-import PrivateTripBooking from '../components/trips/PrivateTripBooking';
+import PaymentModal from '../components/PaymentModal';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -21,14 +21,11 @@ import {
   ArrowLeft, 
   Heart,
   Share2,
-  Camera,
+  Wifi,
   Mountain,
   Utensils,
-  Wifi,
-  Car,
-  Bed,
-  Bath,
   Coffee,
+  Car,
   Shield,
   Crown
 } from 'lucide-react';
@@ -54,8 +51,9 @@ const TripDetails = () => {
   const [trip, setTrip] = useState<any>(null);
   const [relatedTrips, setRelatedTrips] = useState<any[]>([]);
   const [preferencesOpen, setPreferencesOpen] = useState(false);
-  const [privatBookingOpen, setPrivateBookingOpen] = useState(false);
-  const [userPreferences, setUserPreferences] = useState<TripPreferences>({});
+  const [paymentOpen, setPaymentOpen] = useState(false);
+  const [bookingData, setBookingData] = useState<any>(null);
+  const [isPrivateBooking, setIsPrivateBooking] = useState(false);
 
   useEffect(() => {
     if (!tripId) return;
@@ -64,7 +62,6 @@ const TripDetails = () => {
     if (foundTrip) {
       setTrip(foundTrip);
       
-      // Find related trips (same category, excluding current trip)
       const related = trips.filter(t => t.category === foundTrip.category && t.id !== tripId);
       setRelatedTrips(related.slice(0, 3));
     } else {
@@ -72,7 +69,7 @@ const TripDetails = () => {
     }
   }, [tripId, navigate]);
 
-  const handleBookNow = () => {
+  const handleBookNow = (isPrivate: boolean = false) => {
     if (!isAuthenticated) {
       toast({
         title: "Login Required",
@@ -83,20 +80,40 @@ const TripDetails = () => {
       return;
     }
 
-    // Create booking record with proper status
+    setIsPrivateBooking(isPrivate);
+    const basePrice = trip.discountedPrice || trip.price;
+    const finalPrice = isPrivate ? Math.round(basePrice * 1.5) : basePrice;
+
+    setBookingData({
+      type: isPrivate ? 'Private Trip' : 'Standard Trip',
+      title: trip.title,
+      amount: finalPrice,
+      guestName: user?.name || 'Guest',
+      guestEmail: user?.email || '',
+      guestPhone: '',
+      startDate: new Date().toISOString(),
+      endDate: new Date(Date.now() + trip.duration * 24 * 60 * 60 * 1000).toISOString(),
+      travelers: 1,
+      accommodationType: isPrivate ? 'Premium' : 'Standard',
+      transportMode: 'Standard',
+    });
+    setPaymentOpen(true);
+  };
+
+  const handlePaymentSuccess = () => {
     const booking = {
       id: `booking-${Date.now()}`,
       tripId: trip.id,
       userId: user?.email,
       tripTitle: trip.title,
-      price: trip.discountedPrice || trip.price,
+      price: bookingData.amount,
       bookingDate: new Date().toISOString(),
       status: 'confirmed',
       travelers: 1,
-      type: 'static'
+      type: isPrivateBooking ? 'private' : 'standard',
+      isPrivate: isPrivateBooking,
     };
 
-    // Save to localStorage
     const existingBookings = JSON.parse(localStorage.getItem('tripBookings') || '[]');
     existingBookings.push(booking);
     localStorage.setItem('tripBookings', JSON.stringify(existingBookings));
@@ -108,25 +125,9 @@ const TripDetails = () => {
 
     navigate('/my-trips');
   };
-
-  const handlePrivateBooking = () => {
-    if (!isAuthenticated) {
-      toast({
-        title: "Login Required",
-        description: "Please log in to book a private trip.",
-        variant: "destructive",
-      });
-      navigate('/login');
-      return;
-    }
-
-    setPrivateBookingOpen(true);
-  };
   
-  const handlePreferencesSubmit = (preferences: TripPreferences) => {
-    setUserPreferences(preferences);
+  const handlePreferencesSubmit = (preferences: string[], specialRequests: string) => {
     setPreferencesOpen(false);
-    
     toast({
       title: "Preferences Saved",
       description: "Your trip preferences have been saved.",
@@ -283,12 +284,12 @@ const TripDetails = () => {
                   <span className="text-2xl font-bold text-india-orange">₹{price.toLocaleString()}</span>
                 )}
                 <div className="mt-4 flex gap-3">
-                  <Button className="flex-1" onClick={handleBookNow}>
-                    Book Standard Trip
+                  <Button className="flex-1 bg-india-orange hover:bg-orange-600" onClick={() => handleBookNow(false)}>
+                    Book & Pay Now
                   </Button>
-                  <Button variant="outline" className="flex-1" onClick={handlePrivateBooking}>
+                  <Button variant="outline" className="flex-1" onClick={() => handleBookNow(true)}>
                     <Crown className="h-4 w-4 mr-2" />
-                    Book Private
+                    Book Private (₹{Math.round((discountedPrice || price) * 1.5).toLocaleString()})
                   </Button>
                 </div>
                 <Button variant="ghost" className="w-full mt-2" onClick={() => setPreferencesOpen(true)}>
@@ -354,23 +355,20 @@ const TripDetails = () => {
             <DialogTitle>Customize Your Trip Experience</DialogTitle>
           </DialogHeader>
           <TripPreferenceForm
-            onSubmit={(preferences: string[], specialRequests: string) => {
-              const formPreferences: TripPreferences = {
-                activities: preferences,
-                specialRequests: specialRequests
-              };
-              handlePreferencesSubmit(formPreferences);
-            }}
+            onSubmit={handlePreferencesSubmit}
             onClose={() => setPreferencesOpen(false)}
           />
         </DialogContent>
       </Dialog>
 
-      <PrivateTripBooking
-        trip={trip}
-        isOpen={privatBookingOpen}
-        onClose={() => setPrivateBookingOpen(false)}
-      />
+      {bookingData && (
+        <PaymentModal
+          isOpen={paymentOpen}
+          onClose={() => setPaymentOpen(false)}
+          bookingDetails={bookingData}
+          onPaymentSuccess={handlePaymentSuccess}
+        />
+      )}
     </Layout>
   );
 };
