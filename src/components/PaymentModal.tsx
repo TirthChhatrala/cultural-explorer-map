@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
@@ -5,9 +6,30 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { CheckCircle, CreditCard, Smartphone, Building2, Download, Loader2 } from 'lucide-react';
+import { CheckCircle, CreditCard, Smartphone, Building2, Download, Loader2, XCircle, AlertTriangle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import jsPDF from 'jspdf';
+
+export interface PaymentRecord {
+  id: string;
+  transactionId: string;
+  date: string;
+  userId: string;
+  userName: string;
+  userEmail: string;
+  userPhone: string;
+  amount: number;
+  baseAmount: number;
+  tax: number;
+  convenienceFee: number;
+  description: string;
+  type: string;
+  title: string;
+  paymentMethod: string;
+  status: 'success' | 'failed' | 'cancelled';
+  bookingDetails: any;
+  failureReason?: string;
+}
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -37,198 +59,311 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
   const { toast } = useToast();
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [isProcessing, setIsProcessing] = useState(false);
-  const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState<'idle' | 'success' | 'failed' | 'cancelled'>('idle');
   const [transactionId, setTransactionId] = useState('');
+  const [failureReason, setFailureReason] = useState('');
   
-  // Card details
   const [cardNumber, setCardNumber] = useState('');
   const [cardExpiry, setCardExpiry] = useState('');
   const [cardCvv, setCardCvv] = useState('');
   const [cardName, setCardName] = useState('');
-  
-  // UPI details
   const [upiId, setUpiId] = useState('');
 
+  const taxAmount = Math.round(bookingDetails.amount * 0.05);
+  const convenienceFee = 99;
+  const totalAmount = bookingDetails.amount + taxAmount + convenienceFee;
+
+  const savePaymentRecord = (status: 'success' | 'failed' | 'cancelled', txnId: string, reason?: string) => {
+    const record: PaymentRecord = {
+      id: `PAY-${Date.now()}`,
+      transactionId: txnId,
+      date: new Date().toISOString(),
+      userId: bookingDetails.guestEmail,
+      userName: bookingDetails.guestName,
+      userEmail: bookingDetails.guestEmail,
+      userPhone: bookingDetails.guestPhone,
+      amount: totalAmount,
+      baseAmount: bookingDetails.amount,
+      tax: taxAmount,
+      convenienceFee,
+      description: `${bookingDetails.type} - ${bookingDetails.title}`,
+      type: bookingDetails.type,
+      title: bookingDetails.title,
+      paymentMethod,
+      status,
+      bookingDetails,
+      failureReason: reason,
+    };
+    const records = JSON.parse(localStorage.getItem('paymentRecords') || '[]');
+    records.push(record);
+    localStorage.setItem('paymentRecords', JSON.stringify(records));
+  };
+
   const handlePayment = async () => {
-    // Validate payment details
     if (paymentMethod === 'card') {
       if (!cardNumber || !cardExpiry || !cardCvv || !cardName) {
-        toast({
-          title: 'Missing Details',
-          description: 'Please fill in all card details',
-          variant: 'destructive'
-        });
+        toast({ title: 'Missing Details', description: 'Please fill in all card details', variant: 'destructive' });
         return;
       }
       if (cardNumber.replace(/\s/g, '').length < 16) {
-        toast({
-          title: 'Invalid Card',
-          description: 'Please enter a valid 16-digit card number',
-          variant: 'destructive'
-        });
+        toast({ title: 'Invalid Card', description: 'Please enter a valid 16-digit card number', variant: 'destructive' });
         return;
       }
     } else if (paymentMethod === 'upi') {
       if (!upiId || !upiId.includes('@')) {
-        toast({
-          title: 'Invalid UPI ID',
-          description: 'Please enter a valid UPI ID (e.g., name@upi)',
-          variant: 'destructive'
-        });
+        toast({ title: 'Invalid UPI ID', description: 'Please enter a valid UPI ID', variant: 'destructive' });
         return;
       }
     }
 
     setIsProcessing(true);
-
-    // Simulate payment processing
     await new Promise(resolve => setTimeout(resolve, 2500));
 
-    // Generate transaction ID
     const txnId = `TXN${Date.now()}${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
     setTransactionId(txnId);
-    
-    // Save receipt to localStorage
-    const receipt = {
-      id: txnId,
-      date: new Date().toISOString(),
-      userId: bookingDetails.guestEmail,
-      amount: bookingDetails.amount,
-      description: `${bookingDetails.type} - ${bookingDetails.title}`,
-      paymentMethod,
-      bookingDetails,
-      downloadedAt: new Date().toISOString()
-    };
-    
-    const existingReceipts = JSON.parse(localStorage.getItem('tripReceipts') || '[]');
-    existingReceipts.push(receipt);
-    localStorage.setItem('tripReceipts', JSON.stringify(existingReceipts));
+
+    // Simulate: 85% success, 10% failed, 5% cancelled
+    const rand = Math.random();
+    if (rand < 0.85) {
+      savePaymentRecord('success', txnId);
+      setPaymentStatus('success');
+      toast({ title: 'Payment Successful!', description: `Transaction ID: ${txnId}` });
+    } else if (rand < 0.95) {
+      const reason = 'Payment declined by bank. Please try again or use a different payment method.';
+      setFailureReason(reason);
+      savePaymentRecord('failed', txnId, reason);
+      setPaymentStatus('failed');
+      toast({ title: 'Payment Failed', description: reason, variant: 'destructive' });
+    } else {
+      const reason = 'Transaction was cancelled due to timeout.';
+      setFailureReason(reason);
+      savePaymentRecord('cancelled', txnId, reason);
+      setPaymentStatus('cancelled');
+      toast({ title: 'Payment Cancelled', description: reason, variant: 'destructive' });
+    }
 
     setIsProcessing(false);
-    setPaymentSuccess(true);
-
-    toast({
-      title: 'Payment Successful!',
-      description: `Transaction ID: ${txnId}`,
-    });
   };
 
-  const downloadReceipt = () => {
+  const generateProfessionalPDF = () => {
     const pdf = new jsPDF();
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    
-    // Header
-    pdf.setFillColor(255, 152, 0);
-    pdf.rect(0, 0, pageWidth, 40, 'F');
-    
+    const pw = pdf.internal.pageSize.getWidth();
+    const ph = pdf.internal.pageSize.getHeight();
+
+    // Top accent bar
+    pdf.setFillColor(255, 136, 0);
+    pdf.rect(0, 0, pw, 8, 'F');
+
+    // Header section
+    pdf.setFillColor(33, 37, 41);
+    pdf.rect(0, 8, pw, 45, 'F');
+
     pdf.setTextColor(255, 255, 255);
-    pdf.setFontSize(24);
+    pdf.setFontSize(22);
     pdf.setFont('helvetica', 'bold');
-    pdf.text('Indian Cultural Explorer', pageWidth / 2, 20, { align: 'center' });
-    pdf.setFontSize(12);
-    pdf.text('Payment Receipt', pageWidth / 2, 32, { align: 'center' });
-    
-    // Reset text color
-    pdf.setTextColor(0, 0, 0);
-    
-    // Transaction details
-    pdf.setFontSize(14);
-    pdf.setFont('helvetica', 'bold');
-    pdf.text('Transaction Details', 20, 55);
-    
+    pdf.text('INDIAN CULTURAL EXPLORER', pw / 2, 28, { align: 'center' });
     pdf.setFontSize(11);
     pdf.setFont('helvetica', 'normal');
-    const transactionDetails = [
-      `Transaction ID: ${transactionId}`,
-      `Date: ${new Date().toLocaleDateString('en-IN', { dateStyle: 'full' })}`,
-      `Time: ${new Date().toLocaleTimeString('en-IN')}`,
-      `Payment Method: ${paymentMethod === 'card' ? 'Credit/Debit Card' : paymentMethod === 'upi' ? 'UPI' : 'Net Banking'}`,
-      `Status: SUCCESSFUL`
-    ];
-    
-    let yPos = 65;
-    transactionDetails.forEach(detail => {
-      pdf.text(detail, 20, yPos);
-      yPos += 8;
-    });
-    
-    // Booking details
+    pdf.text('Official Payment Receipt', pw / 2, 38, { align: 'center' });
+    pdf.setFontSize(9);
+    pdf.text('www.indianculturalexplorer.com | support@indianculturalexplorer.com | +91-800-123-4567', pw / 2, 47, { align: 'center' });
+
+    // Status badge
+    const statusY = 62;
+    const isSuccess = paymentStatus === 'success';
+    if (isSuccess) {
+      pdf.setFillColor(34, 197, 94);
+    } else if (paymentStatus === 'failed') {
+      pdf.setFillColor(239, 68, 68);
+    } else {
+      pdf.setFillColor(234, 179, 8);
+    }
+    const statusText = paymentStatus.toUpperCase();
+    const statusW = pdf.getTextWidth(statusText) + 20;
+    pdf.roundedRect((pw - statusW - 10) / 2, statusY - 5, statusW + 10, 12, 3, 3, 'F');
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFontSize(10);
     pdf.setFont('helvetica', 'bold');
-    pdf.text('Booking Details', 20, yPos + 10);
-    yPos += 20;
-    
-    pdf.setFont('helvetica', 'normal');
-    const bookingInfo = [
-      `Booking Type: ${bookingDetails.type}`,
-      `Package/Service: ${bookingDetails.title}`,
-      `Guest Name: ${bookingDetails.guestName}`,
-      `Email: ${bookingDetails.guestEmail}`,
-      `Phone: ${bookingDetails.guestPhone}`,
-      `Travel Date: ${new Date(bookingDetails.startDate).toLocaleDateString('en-IN')} to ${new Date(bookingDetails.endDate).toLocaleDateString('en-IN')}`,
-      bookingDetails.travelers ? `Number of Travelers: ${bookingDetails.travelers}` : '',
-      bookingDetails.accommodationType ? `Accommodation: ${bookingDetails.accommodationType}` : '',
-      bookingDetails.transportMode ? `Transport: ${bookingDetails.transportMode}` : ''
-    ].filter(Boolean);
-    
-    bookingInfo.forEach(info => {
-      pdf.text(info, 20, yPos);
-      yPos += 8;
-    });
-    
-    // Payment summary
+    pdf.text(statusText, pw / 2, statusY + 3, { align: 'center' });
+
+    let y = statusY + 18;
+    pdf.setTextColor(33, 37, 41);
+
+    // Receipt Info Box
+    pdf.setFillColor(248, 249, 250);
+    pdf.roundedRect(15, y, pw - 30, 30, 3, 3, 'F');
+    pdf.setDrawColor(222, 226, 230);
+    pdf.roundedRect(15, y, pw - 30, 30, 3, 3, 'S');
+
+    pdf.setFontSize(9);
     pdf.setFont('helvetica', 'bold');
-    pdf.text('Payment Summary', 20, yPos + 10);
-    yPos += 20;
-    
-    const taxAmount = Math.round(bookingDetails.amount * 0.05);
-    const convenienceFee = 99;
-    const totalAmount = bookingDetails.amount + taxAmount + convenienceFee;
-    
-    pdf.setFont('helvetica', 'normal');
-    pdf.text(`Base Amount: Rs. ${bookingDetails.amount.toLocaleString('en-IN')}`, 20, yPos);
-    yPos += 8;
-    pdf.text(`GST (5%): Rs. ${taxAmount.toLocaleString('en-IN')}`, 20, yPos);
-    yPos += 8;
-    pdf.text(`Convenience Fee: Rs. ${convenienceFee}`, 20, yPos);
-    yPos += 12;
-    
-    pdf.setDrawColor(200);
-    pdf.line(20, yPos - 5, pageWidth - 20, yPos - 5);
-    
-    pdf.setFont('helvetica', 'bold');
-    pdf.setFontSize(14);
-    pdf.text(`Total Paid: Rs. ${totalAmount.toLocaleString('en-IN')}`, 20, yPos + 5);
-    
-    // Footer
-    yPos = 250;
+    pdf.setTextColor(108, 117, 125);
+    pdf.text('RECEIPT NO.', 25, y + 10);
+    pdf.text('DATE', 80, y + 10);
+    pdf.text('PAYMENT METHOD', 135, y + 10);
+
+    pdf.setTextColor(33, 37, 41);
     pdf.setFontSize(10);
     pdf.setFont('helvetica', 'normal');
-    pdf.setTextColor(100);
-    pdf.text('Thank you for choosing Indian Cultural Explorer!', pageWidth / 2, yPos, { align: 'center' });
-    pdf.text('For any queries, contact: support@indianculturalexplorer.com', pageWidth / 2, yPos + 8, { align: 'center' });
-    pdf.text('This is a computer-generated receipt and does not require a signature.', pageWidth / 2, yPos + 16, { align: 'center' });
-    
-    pdf.save(`receipt-${transactionId}.pdf`);
-    
-    toast({
-      title: 'Receipt Downloaded',
-      description: 'Your payment receipt has been downloaded as PDF',
+    pdf.text(transactionId, 25, y + 20);
+    pdf.text(new Date().toLocaleDateString('en-IN', { dateStyle: 'medium' }), 80, y + 20);
+    const methodLabel = paymentMethod === 'card' ? 'Credit/Debit Card' : paymentMethod === 'upi' ? 'UPI' : 'Net Banking';
+    pdf.text(methodLabel, 135, y + 20);
+
+    y += 40;
+
+    // Customer Details Section
+    pdf.setFontSize(12);
+    pdf.setFont('helvetica', 'bold');
+    pdf.setTextColor(255, 136, 0);
+    pdf.text('CUSTOMER DETAILS', 15, y);
+    pdf.setDrawColor(255, 136, 0);
+    pdf.setLineWidth(0.5);
+    pdf.line(15, y + 2, pw - 15, y + 2);
+
+    y += 12;
+    pdf.setFontSize(10);
+    pdf.setTextColor(33, 37, 41);
+    const customerInfo = [
+      ['Name', bookingDetails.guestName],
+      ['Email', bookingDetails.guestEmail],
+      ['Phone', bookingDetails.guestPhone],
+    ];
+    customerInfo.forEach(([label, value]) => {
+      pdf.setFont('helvetica', 'bold');
+      pdf.text(`${label}:`, 20, y);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text(value || 'N/A', 65, y);
+      y += 8;
     });
+
+    y += 5;
+
+    // Booking Details Section
+    pdf.setFontSize(12);
+    pdf.setFont('helvetica', 'bold');
+    pdf.setTextColor(255, 136, 0);
+    pdf.text('BOOKING DETAILS', 15, y);
+    pdf.setDrawColor(255, 136, 0);
+    pdf.line(15, y + 2, pw - 15, y + 2);
+
+    y += 12;
+    pdf.setFontSize(10);
+    pdf.setTextColor(33, 37, 41);
+    const bookingInfo = [
+      ['Type', bookingDetails.type],
+      ['Service', bookingDetails.title],
+      ['Travel Period', `${new Date(bookingDetails.startDate).toLocaleDateString('en-IN')} to ${new Date(bookingDetails.endDate).toLocaleDateString('en-IN')}`],
+      ...(bookingDetails.travelers ? [['Travelers', String(bookingDetails.travelers)]] : []),
+      ...(bookingDetails.accommodationType ? [['Accommodation', bookingDetails.accommodationType]] : []),
+      ...(bookingDetails.transportMode ? [['Transport', bookingDetails.transportMode]] : []),
+    ];
+    bookingInfo.forEach(([label, value]) => {
+      pdf.setFont('helvetica', 'bold');
+      pdf.text(`${label}:`, 20, y);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text(value || 'N/A', 75, y);
+      y += 8;
+    });
+
+    y += 5;
+
+    // Payment Summary Table
+    pdf.setFontSize(12);
+    pdf.setFont('helvetica', 'bold');
+    pdf.setTextColor(255, 136, 0);
+    pdf.text('PAYMENT SUMMARY', 15, y);
+    pdf.setDrawColor(255, 136, 0);
+    pdf.line(15, y + 2, pw - 15, y + 2);
+
+    y += 10;
+
+    // Table header
+    pdf.setFillColor(248, 249, 250);
+    pdf.rect(15, y, pw - 30, 10, 'F');
+    pdf.setFontSize(9);
+    pdf.setFont('helvetica', 'bold');
+    pdf.setTextColor(108, 117, 125);
+    pdf.text('DESCRIPTION', 20, y + 7);
+    pdf.text('AMOUNT (₹)', pw - 20, y + 7, { align: 'right' });
+
+    y += 14;
+    pdf.setTextColor(33, 37, 41);
+    pdf.setFont('helvetica', 'normal');
+    pdf.setFontSize(10);
+
+    const items = [
+      ['Base Amount', `₹${bookingDetails.amount.toLocaleString('en-IN')}`],
+      ['GST (5%)', `₹${taxAmount.toLocaleString('en-IN')}`],
+      ['Convenience Fee', `₹${convenienceFee}`],
+    ];
+
+    items.forEach(([desc, amt]) => {
+      pdf.text(desc, 20, y);
+      pdf.text(amt, pw - 20, y, { align: 'right' });
+      y += 8;
+    });
+
+    // Total line
+    pdf.setDrawColor(33, 37, 41);
+    pdf.setLineWidth(0.8);
+    pdf.line(15, y, pw - 15, y);
+    y += 8;
+
+    pdf.setFillColor(255, 136, 0);
+    pdf.roundedRect(pw / 2 - 10, y - 5, pw / 2 - 5, 14, 3, 3, 'F');
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFontSize(12);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text(`TOTAL PAID: ₹${totalAmount.toLocaleString('en-IN')}`, pw - 20, y + 5, { align: 'right' });
+
+    // Failure reason if applicable
+    if (paymentStatus !== 'success' && failureReason) {
+      y += 22;
+      pdf.setFillColor(254, 242, 242);
+      pdf.roundedRect(15, y - 5, pw - 30, 16, 3, 3, 'F');
+      pdf.setTextColor(220, 38, 38);
+      pdf.setFontSize(9);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text(`Reason: ${failureReason}`, 20, y + 5);
+    }
+
+    // Footer
+    const footerY = ph - 30;
+    pdf.setDrawColor(222, 226, 230);
+    pdf.setLineWidth(0.3);
+    pdf.line(15, footerY, pw - 15, footerY);
+
+    pdf.setTextColor(108, 117, 125);
+    pdf.setFontSize(8);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text('This is a computer-generated receipt and does not require a signature.', pw / 2, footerY + 8, { align: 'center' });
+    pdf.text('For queries: support@indianculturalexplorer.com | +91-800-123-4567', pw / 2, footerY + 14, { align: 'center' });
+    pdf.text(`Generated on ${new Date().toLocaleString('en-IN')}`, pw / 2, footerY + 20, { align: 'center' });
+
+    pdf.save(`receipt-${transactionId}.pdf`);
+    toast({ title: 'Receipt Downloaded', description: 'Professional PDF receipt has been saved' });
   };
 
   const handleClose = () => {
-    if (paymentSuccess) {
+    if (paymentStatus === 'success') {
       onPaymentSuccess();
     }
     onClose();
-    // Reset state
-    setPaymentSuccess(false);
+    setPaymentStatus('idle');
     setIsProcessing(false);
     setCardNumber('');
     setCardExpiry('');
     setCardCvv('');
     setCardName('');
     setUpiId('');
+    setFailureReason('');
+  };
+
+  const handleRetry = () => {
+    setPaymentStatus('idle');
+    setFailureReason('');
+    setTransactionId('');
   };
 
   const formatCardNumber = (value: string) => {
@@ -244,229 +379,117 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
         <AnimatePresence mode="wait">
-          {paymentSuccess ? (
-            <motion.div
-              key="success"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              className="text-center py-6"
-            >
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-                className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"
-              >
+          {paymentStatus === 'success' ? (
+            <motion.div key="success" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} className="text-center py-6">
+              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+                className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <CheckCircle className="w-12 h-12 text-green-600" />
               </motion.div>
-              
               <h2 className="text-2xl font-bold text-green-600 mb-2">Payment Successful!</h2>
               <p className="text-muted-foreground mb-4">Your booking has been confirmed</p>
-              
-              <div className="bg-gray-50 rounded-lg p-4 mb-6 text-left">
-                <div className="flex justify-between mb-2">
-                  <span className="text-muted-foreground">Transaction ID</span>
-                  <span className="font-mono font-medium">{transactionId}</span>
-                </div>
-                <div className="flex justify-between mb-2">
-                  <span className="text-muted-foreground">Amount Paid</span>
-                  <span className="font-bold">₹{(bookingDetails.amount + Math.round(bookingDetails.amount * 0.05) + 99).toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Booking</span>
-                  <span className="font-medium">{bookingDetails.title}</span>
+              <div className="bg-muted rounded-lg p-4 mb-6 text-left space-y-2">
+                <div className="flex justify-between"><span className="text-muted-foreground text-sm">Transaction ID</span><span className="font-mono font-medium text-sm">{transactionId}</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground text-sm">Amount Paid</span><span className="font-bold">₹{totalAmount.toLocaleString()}</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground text-sm">Booking</span><span className="font-medium text-sm">{bookingDetails.title}</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground text-sm">Date</span><span className="text-sm">{new Date().toLocaleDateString('en-IN')}</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground text-sm">Method</span><span className="text-sm capitalize">{paymentMethod === 'card' ? 'Card' : paymentMethod === 'upi' ? 'UPI' : 'Net Banking'}</span></div>
+              </div>
+              <div className="flex gap-3">
+                <Button variant="outline" className="flex-1" onClick={generateProfessionalPDF}>
+                  <Download className="w-4 h-4 mr-2" /> Download Receipt
+                </Button>
+                <Button className="flex-1 bg-green-600 hover:bg-green-700 text-white" onClick={handleClose}>Continue</Button>
+              </div>
+            </motion.div>
+          ) : paymentStatus === 'failed' || paymentStatus === 'cancelled' ? (
+            <motion.div key="failed" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} className="text-center py-6">
+              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+                className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 ${paymentStatus === 'failed' ? 'bg-red-100' : 'bg-yellow-100'}`}>
+                {paymentStatus === 'failed' ? <XCircle className="w-12 h-12 text-red-600" /> : <AlertTriangle className="w-12 h-12 text-yellow-600" />}
+              </motion.div>
+              <h2 className={`text-2xl font-bold mb-2 ${paymentStatus === 'failed' ? 'text-red-600' : 'text-yellow-600'}`}>
+                Payment {paymentStatus === 'failed' ? 'Failed' : 'Cancelled'}!
+              </h2>
+              <p className="text-muted-foreground mb-4">{failureReason}</p>
+              <div className="bg-muted rounded-lg p-4 mb-6 text-left space-y-2">
+                <div className="flex justify-between"><span className="text-muted-foreground text-sm">Transaction ID</span><span className="font-mono font-medium text-sm">{transactionId}</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground text-sm">Attempted Amount</span><span className="font-bold">₹{totalAmount.toLocaleString()}</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground text-sm">Status</span>
+                  <span className={`text-sm font-medium ${paymentStatus === 'failed' ? 'text-red-600' : 'text-yellow-600'}`}>{paymentStatus.toUpperCase()}</span>
                 </div>
               </div>
-              
               <div className="flex gap-3">
-                <Button
-                  variant="outline"
-                  className="flex-1"
-                  onClick={downloadReceipt}
-                >
-                  <Download className="w-4 h-4 mr-2" />
-                  Download Receipt
+                <Button variant="outline" className="flex-1" onClick={generateProfessionalPDF}>
+                  <Download className="w-4 h-4 mr-2" /> Download Details
                 </Button>
-                <Button
-                  className="flex-1 bg-india-orange hover:bg-orange-600"
-                  onClick={handleClose}
-                >
-                  Continue
-                </Button>
+                <Button className="flex-1" onClick={handleRetry}>Try Again</Button>
               </div>
             </motion.div>
           ) : (
-            <motion.div
-              key="payment"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
+            <motion.div key="payment" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <DialogHeader>
                 <DialogTitle>Complete Payment</DialogTitle>
-                <DialogDescription>
-                  Pay ₹{(bookingDetails.amount + Math.round(bookingDetails.amount * 0.05) + 99).toLocaleString()} for {bookingDetails.title}
-                </DialogDescription>
+                <DialogDescription>Pay ₹{totalAmount.toLocaleString()} for {bookingDetails.title}</DialogDescription>
               </DialogHeader>
 
               <div className="space-y-6 mt-4">
-                {/* Payment method selection */}
                 <div>
                   <Label className="text-sm font-medium mb-3 block">Select Payment Method</Label>
                   <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod} className="grid grid-cols-3 gap-3">
-                    <div>
-                      <RadioGroupItem value="card" id="card" className="peer sr-only" />
-                      <Label
-                        htmlFor="card"
-                        className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-india-orange cursor-pointer"
-                      >
-                        <CreditCard className="mb-1 h-5 w-5" />
-                        <span className="text-xs">Card</span>
-                      </Label>
-                    </div>
-                    <div>
-                      <RadioGroupItem value="upi" id="upi" className="peer sr-only" />
-                      <Label
-                        htmlFor="upi"
-                        className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-india-orange cursor-pointer"
-                      >
-                        <Smartphone className="mb-1 h-5 w-5" />
-                        <span className="text-xs">UPI</span>
-                      </Label>
-                    </div>
-                    <div>
-                      <RadioGroupItem value="netbanking" id="netbanking" className="peer sr-only" />
-                      <Label
-                        htmlFor="netbanking"
-                        className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-india-orange cursor-pointer"
-                      >
-                        <Building2 className="mb-1 h-5 w-5" />
-                        <span className="text-xs">Bank</span>
-                      </Label>
-                    </div>
+                    {[
+                      { value: 'card', icon: CreditCard, label: 'Card' },
+                      { value: 'upi', icon: Smartphone, label: 'UPI' },
+                      { value: 'netbanking', icon: Building2, label: 'Bank' },
+                    ].map(m => (
+                      <div key={m.value}>
+                        <RadioGroupItem value={m.value} id={m.value} className="peer sr-only" />
+                        <Label htmlFor={m.value}
+                          className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-orange-500 cursor-pointer">
+                          <m.icon className="mb-1 h-5 w-5" />
+                          <span className="text-xs">{m.label}</span>
+                        </Label>
+                      </div>
+                    ))}
                   </RadioGroup>
                 </div>
 
-                {/* Card payment form */}
                 {paymentMethod === 'card' && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="space-y-4"
-                  >
-                    <div>
-                      <Label htmlFor="cardName">Cardholder Name</Label>
-                      <Input
-                        id="cardName"
-                        placeholder="Name on card"
-                        value={cardName}
-                        onChange={(e) => setCardName(e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="cardNumber">Card Number</Label>
-                      <Input
-                        id="cardNumber"
-                        placeholder="1234 5678 9012 3456"
-                        value={cardNumber}
-                        onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
-                        maxLength={19}
-                      />
-                    </div>
+                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
+                    <div><Label>Cardholder Name</Label><Input placeholder="Name on card" value={cardName} onChange={(e) => setCardName(e.target.value)} /></div>
+                    <div><Label>Card Number</Label><Input placeholder="1234 5678 9012 3456" value={cardNumber} onChange={(e) => setCardNumber(formatCardNumber(e.target.value))} maxLength={19} /></div>
                     <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="expiry">Expiry Date</Label>
-                        <Input
-                          id="expiry"
-                          placeholder="MM/YY"
-                          value={cardExpiry}
-                          onChange={(e) => setCardExpiry(e.target.value)}
-                          maxLength={5}
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="cvv">CVV</Label>
-                        <Input
-                          id="cvv"
-                          placeholder="123"
-                          type="password"
-                          value={cardCvv}
-                          onChange={(e) => setCardCvv(e.target.value)}
-                          maxLength={4}
-                        />
-                      </div>
+                      <div><Label>Expiry</Label><Input placeholder="MM/YY" value={cardExpiry} onChange={(e) => setCardExpiry(e.target.value)} maxLength={5} /></div>
+                      <div><Label>CVV</Label><Input placeholder="123" type="password" value={cardCvv} onChange={(e) => setCardCvv(e.target.value)} maxLength={4} /></div>
                     </div>
                   </motion.div>
                 )}
 
-                {/* UPI payment form */}
                 {paymentMethod === 'upi' && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                  >
-                    <Label htmlFor="upiId">UPI ID</Label>
-                    <Input
-                      id="upiId"
-                      placeholder="yourname@upi"
-                      value={upiId}
-                      onChange={(e) => setUpiId(e.target.value)}
-                    />
+                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+                    <Label>UPI ID</Label><Input placeholder="yourname@upi" value={upiId} onChange={(e) => setUpiId(e.target.value)} />
                   </motion.div>
                 )}
 
-                {/* Net Banking */}
                 {paymentMethod === 'netbanking' && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-center py-4"
-                  >
-                    <p className="text-muted-foreground">
-                      You will be redirected to your bank's website to complete the payment.
-                    </p>
+                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-center py-4">
+                    <p className="text-muted-foreground">You will be redirected to your bank's website to complete the payment.</p>
                   </motion.div>
                 )}
 
-                {/* Order summary */}
-                <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                <div className="bg-muted rounded-lg p-4">
                   <h4 className="font-medium mb-2">Order Summary</h4>
                   <div className="space-y-1 text-sm">
-                    <div className="flex justify-between">
-                      <span>Base Amount</span>
-                      <span>₹{bookingDetails.amount.toLocaleString()}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>GST (5%)</span>
-                      <span>₹{Math.round(bookingDetails.amount * 0.05).toLocaleString()}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Convenience Fee</span>
-                      <span>₹99</span>
-                    </div>
-                    <div className="flex justify-between font-bold pt-2 border-t">
-                      <span>Total</span>
-                      <span>₹{(bookingDetails.amount + Math.round(bookingDetails.amount * 0.05) + 99).toLocaleString()}</span>
-                    </div>
+                    <div className="flex justify-between"><span>Base Amount</span><span>₹{bookingDetails.amount.toLocaleString()}</span></div>
+                    <div className="flex justify-between"><span>GST (5%)</span><span>₹{taxAmount.toLocaleString()}</span></div>
+                    <div className="flex justify-between"><span>Convenience Fee</span><span>₹{convenienceFee}</span></div>
+                    <div className="flex justify-between font-bold pt-2 border-t"><span>Total</span><span>₹{totalAmount.toLocaleString()}</span></div>
                   </div>
                 </div>
 
-                <Button
-                  className="w-full bg-india-orange hover:bg-orange-600"
-                  onClick={handlePayment}
-                  disabled={isProcessing}
-                >
-                  {isProcessing ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Processing Payment...
-                    </>
-                  ) : (
-                    `Pay ₹${(bookingDetails.amount + Math.round(bookingDetails.amount * 0.05) + 99).toLocaleString()}`
-                  )}
+                <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white" onClick={handlePayment} disabled={isProcessing}>
+                  {isProcessing ? (<><Loader2 className="w-4 h-4 mr-2 animate-spin" />Processing Payment...</>) : (`Pay ₹${totalAmount.toLocaleString()}`)}
                 </Button>
               </div>
             </motion.div>
