@@ -47,6 +47,10 @@ import ManageNews from './pages/admin/ManageNews';
 import ManageFestivals from './pages/admin/ManageFestivals';
 import ManageTrips from './pages/admin/ManageTrips';
 import ManageImages from './pages/admin/ManageImages';
+import ManagePayments from './pages/admin/ManagePayments';
+
+// User Pages
+import PaymentHistory from './pages/PaymentHistory';
 
 // 404 Page
 import NotFound from './pages/NotFound';
@@ -102,6 +106,10 @@ const AppRoutes = () => {
       <Route path="/admin/festivals" element={<ManageFestivals />} />
       <Route path="/admin/trips" element={<ManageTrips />} />
       <Route path="/admin/images" element={<ManageImages />} />
+      <Route path="/admin/payments" element={<ManagePayments />} />
+      
+      {/* User Routes */}
+      <Route path="/payment-history" element={<PaymentHistory />} />
       
       {/* 404 Route */}
       <Route path="*" element={<NotFound />} />

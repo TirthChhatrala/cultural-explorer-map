@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { 
   MapPin, Info, Newspaper, Calendar, Users, User, 
   Shield, LogOut, Plus, Edit, Trash, Image, Upload,
-  Percent, Utensils, CloudSun, Shirt, Landmark, Book
+  Percent, Utensils, CloudSun, Shirt, Landmark, Book, CreditCard
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
@@ -79,6 +79,13 @@ const AdminDashboard = () => {
       icon: <Percent size={24} />,
       link: "/admin/trips",
       action: "Manage Trips"
+    },
+    {
+      title: "Payment Records",
+      description: "View all payment transactions and revenue",
+      icon: <CreditCard size={24} />,
+      link: "/admin/payments",
+      action: "View Payments"
     },
     {
       title: "Cultural Information",

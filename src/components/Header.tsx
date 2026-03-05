@@ -51,6 +51,7 @@ const Header = () => {
     { path: '/news', label: 'News' },
     { path: '/festivals', label: 'Festivals' },
     { path: '/booking', label: 'Booking' },
+    { path: '/payment-history', label: 'Payments' },
   ];
 
   // Show fewer navigation items when authenticated to make room for user menu
