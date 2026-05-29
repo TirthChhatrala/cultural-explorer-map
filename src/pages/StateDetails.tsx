@@ -5,6 +5,7 @@ import Layout from '../components/Layout';
 import StateCard from '../components/StateCard';
 import { getStateById } from '../data/states';
 import { motion } from 'framer-motion';
+import StateInsightsPanel from '../components/StateInsightsPanel';
 
 const StateDetails = () => {
   const { stateId } = useParams();
