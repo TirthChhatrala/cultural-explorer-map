@@ -6,6 +6,7 @@ import StateCard from '../components/StateCard';
 import { getStateById } from '../data/states';
 import { motion } from 'framer-motion';
 import StateInsightsPanel from '../components/StateInsightsPanel';
+import HistoricalTimeline from '../components/HistoricalTimeline';
 
 const StateDetails = () => {
   const { stateId } = useParams();
@@ -126,6 +127,8 @@ const StateDetails = () => {
             capital={state.capital}
             famousFor={state.famousFor}
           />
+
+          <HistoricalTimeline stateName={state.name} />
 
           <section className="mt-16">
             <div className="text-center mb-8">

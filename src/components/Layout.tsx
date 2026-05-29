@@ -5,6 +5,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useLocation, Link } from 'react-router-dom';
 import { Sun, Moon, MapPin, Plane, Building, Utensils, Newspaper, Calendar, Shield, Users, Phone, Mail, Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
 import BackToHome from './BackToHome';
+import AITravelAssistant from './AITravelAssistant';
 
 const Layout = ({ children }) => {
   const { theme, toggleTheme } = useTheme();
@@ -60,6 +61,7 @@ const Layout = ({ children }) => {
         {children}
       </motion.main>
       {showBackToHome && <BackToHome />}
+      <AITravelAssistant />
       
       {/* Enhanced Footer */}
       <footer className={`border-t ${theme === 'dark' ? 'border-gray-800 bg-gray-900' : 'border-border bg-gray-50'}`}>

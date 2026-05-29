@@ -5,6 +5,7 @@ import Layout from '../components/Layout';
 import IndiaMapSVG from '../components/IndiaMapSVG'; 
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
+import { FestivalCountdownSection, TrendingDestinationsSection, IndiaFactCardsSection } from '../components/HomeExtras';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -99,7 +100,11 @@ const Index = () => {
           </div>
         </div>
       </motion.section>
-      
+
+      <IndiaFactCardsSection />
+      <FestivalCountdownSection />
+      <TrendingDestinationsSection />
+
       {/* Featured Cultural Highlights */}
       <motion.section
         initial={{ opacity: 0, y: 50 }}
