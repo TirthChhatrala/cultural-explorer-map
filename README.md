@@ -740,7 +740,6 @@ Log in every day to claim rewards, seasonal bonuses, festival offers, and surpri
 </div>
 
 ```
-```text
 ╔════════════════════════════════════════════════════════════════════════════════════════════╗
 ║                    CULTURAL EXPLORER MAP — ROADMAP v3.0                     ║   STATUS     ║
 ╠═════════════════════════════════════════════════════════════════════════════╬══════════════╣
@@ -755,7 +754,7 @@ Log in every day to claim rewards, seasonal bonuses, festival offers, and surpri
 ║ ✅ Festival Countdowns                              ████████████████████    ║    100%      ║
 ║ ✅ Travel Gallery                                   ████████████████████    ║    100%      ║
 ║ ✅ Admin Dashboard                                  ████████████████████    ║    100%      ║
-╠════════════════════════════════════════════════════════════════════ ═════════╬══════════════╣
+╠══════════════════════════════════════════════════════════════════════════════╬══════════════╣
 ║ 🔄 Hidden Voucher Hunt                              ████████████░░░░░░░░    ║     60%      ║
 ║ 🔄 Reward Quiz Discounts                            ██████████░░░░░░░░░░    ║     50%      ║
 ║ ⬜ Achievement System                               ████░░░░░░░░░░░░░░░░    ║     20%      ║
