@@ -50,6 +50,8 @@ const Header = () => {
     { path: '/freedom-fighters', label: 'Freedom Fighters' },
     { path: '/news', label: 'News' },
     { path: '/festivals', label: 'Festivals' },
+    { path: '/cultural-quiz', label: 'Quiz' },
+    { path: '/compare-cultures', label: 'Compare' },
     { path: '/booking', label: 'Booking' },
     { path: '/payment-history', label: 'Payments' },
   ];
