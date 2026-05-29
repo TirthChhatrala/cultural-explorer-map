@@ -112,14 +112,6 @@ and create personalized travel experiences — all in one intelligent ecosystem.
   <img src="https://img.shields.io/github/last-commit/TirthChhatrala/cultural-explorer-map?style=for-the-badge&logo=github&color=F59E0B&labelColor=0f0f23"/>
 </p>
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!--              PROJECT STATS CARD                            -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-
-<p>
-  <img src="https://github-readme-stats.vercel.app/api/pin/?username=TirthChhatrala&repo=cultural-explorer-map&theme=midnight-purple&hide_border=true&bg_color=0f0f23&title_color=A78BFA&icon_color=6366F1&text_color=e2e8f0"/>
-</p>
-
 </div>
 
 <br/>
@@ -808,12 +800,12 @@ Log in every day to claim rewards, seasonal bonuses, festival offers, and surpri
   <br/><sub>Build Tool</sub>
 </td>
 <td align="center" width="20%" style="padding:20px">
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/tailwindcss/tailwindcss-plain.svg" width="52"/><br/><br/>
+  <img src="https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg" width="52" alt="Tailwind CSS"/><br/><br/>
   <img src="https://img.shields.io/badge/Tailwind-3.4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white&labelColor=0f0f23"/>
   <br/><sub>Styling</sub>
 </td>
 <td align="center" width="20%" style="padding:20px">
-  <img src="https://img.shields.io/badge/shadcn%2Fui-Latest-000?style=flat-square&logo=shadcnui&logoColor=white&labelColor=0f0f23"/><br/><br/>
+  <img src="https://img.shields.io/badge/shadcn%2Fui-Latest-000?style=flat-square&logo=shadcnui&logoColor=white&labelColor=0f0f23"  width="1000"/><br/><br/>
   <img src="https://img.shields.io/badge/OpenAI-API-412991?style=flat-square&logo=openai&logoColor=white&labelColor=0f0f23"/>
   <br/><sub>UI + AI</sub>
 </td>
@@ -942,7 +934,7 @@ Create personalized trips, discover destinations, optimize routes, book accommod
 
 ## <img src="https://readme-typing-svg.demolab.com?font=Outfit&weight=800&size=28&duration=4000&pause=99999&color=EC4899&center=true&vCenter=true&width=800&lines=%F0%9F%A4%9D+Contributing" alt=""/>
 
-We welcome contributions from the community! Please check our [Contributing Guidelines](CODE_OF_CONDUCT.md) for details on how to get started, submit pull requests, and help improve the platform.
+We welcome contributions from the community! Please check our [Contributing Guidelines](CONTRIBUTING.md) for details on how to get started, submit pull requests, and help improve the platform.
 
 <br/>
 
