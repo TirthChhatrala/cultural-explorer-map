@@ -119,7 +119,14 @@ const StateDetails = () => {
               </ul>
             </StateCard>
           </div>
-          
+
+          <StateInsightsPanel
+            stateId={state.id}
+            stateName={state.name}
+            capital={state.capital}
+            famousFor={state.famousFor}
+          />
+
           <section className="mt-16">
             <div className="text-center mb-8">
               <motion.div
