@@ -953,7 +953,7 @@ Log in every day to claim rewards, seasonal bonuses, festival offers, and surpri
 <td align="center" width="20%" style="padding:20px">
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg" width="52"/><br/><br/>
   <img src="https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=white&labelColor=0f0f23"/>
-  <br/><sub>Frontend Framework</sub>
+  <br/><sub>Frontend</sub>
 </td>
 <td align="center" width="20%" style="padding:20px">
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg" width="52"/><br/><br/>
@@ -971,10 +971,11 @@ Log in every day to claim rewards, seasonal bonuses, festival offers, and surpri
   <br/><sub>Styling</sub>
 </td>
 <td align="center" width="20%" style="padding:20px">
-  <img src="https://img.shields.io/badge/shadcn%2Fui-Latest-000?style=flat-square&logo=shadcnui&logoColor=white&labelColor=0f0f23" width="100"/><br/><br/>
-  <img src="https://img.shields.io/badge/OpenAI-API-412991?style=flat-square&logo=openai&logoColor=white&labelColor=0f0f23"/>
-  <br/><sub>UI + AI</sub>
+  <img src="https://ui.shadcn.com/apple-touch-icon.png" width="52" alt="shadcn/ui"/><br/><br/>
+  <img src="https://img.shields.io/badge/shadcn%2Fui-Latest-000000?style=flat-square&logo=shadcnui&logoColor=white&labelColor=0f0f23"/>
+  <br/><sub>UI Components</sub>
 </td>
+
 </tr>
 </table>
 
