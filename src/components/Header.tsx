@@ -14,11 +14,13 @@ import {
 } from '@/components/ui/sheet';
 import ThemeToggle from './ThemeToggle';
 import UserLinks from './UserLinks';
+import { hasPaidAccess } from '@/lib/rewards';
 
 const Header = () => {
   const { theme } = useTheme();
   const { pathname } = useLocation();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
+  const paid = isAuthenticated && hasPaidAccess(user?.email);
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -50,15 +52,24 @@ const Header = () => {
     { path: '/freedom-fighters', label: 'Freedom Fighters' },
     { path: '/news', label: 'News' },
     { path: '/festivals', label: 'Festivals' },
-    { path: '/cultural-quiz', label: 'Quiz' },
     { path: '/compare-cultures', label: 'Compare' },
     { path: '/booking', label: 'Booking' },
     { path: '/payment-history', label: 'Payments' },
   ];
 
+  // Reward Quiz + Dashboard unlock after a successful payment
+  const rewardLinks = paid
+    ? [
+        { path: '/cultural-quiz', label: '🎯 Quiz' },
+        { path: '/rewards', label: '🏆 Rewards' },
+      ]
+    : [];
+
+  const allLinks = [...publicLinks, ...rewardLinks];
+
   // Show fewer navigation items when authenticated to make room for user menu
-  const displayLinks = isAuthenticated 
-    ? publicLinks.slice(0, 6) // Show only first 6 items when logged in
+  const displayLinks = isAuthenticated
+    ? [...publicLinks.slice(0, 5), ...rewardLinks]
     : publicLinks;
 
   return (
@@ -121,7 +132,7 @@ const Header = () => {
                 <SheetTitle>Menu</SheetTitle>
               </SheetHeader>
               <div className="flex flex-col space-y-3 py-4">
-                {publicLinks.map((link) => (
+                {allLinks.map((link) => (
                   <Link
                     key={link.path}
                     to={link.path}

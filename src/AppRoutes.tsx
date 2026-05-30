@@ -53,6 +53,7 @@ import ManagePayments from './pages/admin/ManagePayments';
 import PaymentHistory from './pages/PaymentHistory';
 import CulturalQuiz from './pages/CulturalQuiz';
 import CompareCultures from './pages/CompareCultures';
+import RewardDashboard from './pages/RewardDashboard';
 
 // 404 Page
 import NotFound from './pages/NotFound';
@@ -114,6 +115,7 @@ const AppRoutes = () => {
       <Route path="/payment-history" element={<PaymentHistory />} />
       <Route path="/cultural-quiz" element={<CulturalQuiz />} />
       <Route path="/compare-cultures" element={<CompareCultures />} />
+      <Route path="/rewards" element={<RewardDashboard />} />
       
       {/* 404 Route */}
       <Route path="*" element={<NotFound />} />
