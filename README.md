@@ -1125,7 +1125,7 @@ Every reward, quiz attempt, and booking flows through verified, anti-cheat prote
 
 ## <img src="https://readme-typing-svg.demolab.com?font=Outfit&weight=800&size=28&duration=4000&pause=99999&color=EC4899&center=true&vCenter=true&width=800&lines=%F0%9F%A4%9D+Contributing" alt=""/>
 
-We welcome contributions from the community! Please check our [Contributing Guidelines](CONTRIBUTING.md) for details on how to get started, submit pull requests, and help improve the platform.
+We welcome contributions from the community! Please check our [Contributing Guidelines](CODE_OF_CONDUCT.md) for details on how to get started, submit pull requests, and help improve the platform.
 
 <br/>
 
