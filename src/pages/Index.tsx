@@ -6,9 +6,11 @@ import IndiaMapSVG from '../components/IndiaMapSVG';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { FestivalCountdownSection, TrendingDestinationsSection, IndiaFactCardsSection } from '../components/HomeExtras';
+import { useT } from '@/context/LanguageContext';
 
 const Index = () => {
   const navigate = useNavigate();
+  const t = useT();
   
   return (
     <Layout>
@@ -23,10 +25,12 @@ const Index = () => {
           >
             <div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-tight mb-6">
-                Explore the Rich <span className="text-india-orange">Cultural Heritage</span> of India
+                {t('home.heroTitlePre')}{' '}
+                <span className="text-india-orange">{t('home.heroTitleHighlight')}</span>{' '}
+                {t('home.heroTitlePost')}
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl lg:max-w-none mx-auto lg:mx-0">
-                Dive into the diverse traditions, festivals, landmarks, and history of each state in India through our interactive guide.
+                {t('home.heroSubtitle')}
               </p>
             </div>
             
@@ -36,7 +40,7 @@ const Index = () => {
                 className="bg-india-orange hover:bg-india-orange/90 text-white px-8 py-3 text-lg"
                 onClick={() => navigate('/state/gujarat')}
               >
-                Start Exploring
+                {t('home.cta.start')}
               </Button>
               <Button 
                 size="lg" 
@@ -44,7 +48,7 @@ const Index = () => {
                 className="px-8 py-3 text-lg border-2"
                 onClick={() => navigate('/about')}
               >
-                Learn More
+                {t('home.cta.learn')}
               </Button>
             </div>
 
@@ -52,15 +56,15 @@ const Index = () => {
             <div className="grid grid-cols-3 gap-6 pt-8 border-t border-gray-200 dark:border-gray-700">
               <div className="text-center">
                 <div className="text-2xl font-bold text-india-orange">28+</div>
-                <div className="text-sm text-muted-foreground">States & UTs</div>
+                <div className="text-sm text-muted-foreground">{t('home.stats.states')}</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-india-orange">1000+</div>
-                <div className="text-sm text-muted-foreground">Festivals</div>
+                <div className="text-sm text-muted-foreground">{t('home.stats.festivals')}</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-india-orange">100+</div>
-                <div className="text-sm text-muted-foreground">Languages</div>
+                <div className="text-sm text-muted-foreground">{t('home.stats.languages')}</div>
               </div>
             </div>
           </motion.div>

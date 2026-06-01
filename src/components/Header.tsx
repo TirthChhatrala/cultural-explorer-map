@@ -15,11 +15,14 @@ import {
 import ThemeToggle from './ThemeToggle';
 import UserLinks from './UserLinks';
 import { hasPaidAccess } from '@/lib/rewards';
+import LanguageSelector from './LanguageSelector';
+import { useT } from '@/context/LanguageContext';
 
 const Header = () => {
   const { theme } = useTheme();
   const { pathname } = useLocation();
   const { isAuthenticated, user } = useAuth();
+  const t = useT();
   const paid = isAuthenticated && hasPaidAccess(user?.email);
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -44,24 +47,23 @@ const Header = () => {
   }
 
   const publicLinks = [
-    { path: '/', label: 'Home' },
-    { path: '/about', label: 'About' },
-    { path: '/trips', label: 'Trip' },
-    { path: '/casinos', label: 'Casino' },
-    { path: '/political-parties', label: 'Political Parties' },
-    { path: '/freedom-fighters', label: 'Freedom Fighters' },
-    { path: '/news', label: 'News' },
-    { path: '/festivals', label: 'Festivals' },
-    { path: '/compare-cultures', label: 'Compare' },
-    { path: '/booking', label: 'Booking' },
-    { path: '/payment-history', label: 'Payments' },
+    { path: '/', label: t('nav.home') },
+    { path: '/about', label: t('nav.about') },
+    { path: '/trips', label: t('nav.trip') },
+    { path: '/casinos', label: t('nav.casino') },
+    { path: '/political-parties', label: t('nav.politicalParties') },
+    { path: '/freedom-fighters', label: t('nav.freedomFighters') },
+    { path: '/news', label: t('nav.news') },
+    { path: '/festivals', label: t('nav.festivals') },
+    { path: '/compare-cultures', label: t('nav.compare') },
+    { path: '/booking', label: t('nav.booking') },
+    { path: '/payment-history', label: t('nav.payments') },
   ];
 
-  // Reward Quiz + Dashboard unlock after a successful payment
   const rewardLinks = paid
     ? [
-        { path: '/cultural-quiz', label: '🎯 Quiz' },
-        { path: '/rewards', label: '🏆 Rewards' },
+        { path: '/cultural-quiz', label: t('nav.quiz') },
+        { path: '/rewards', label: t('nav.rewards') },
       ]
     : [];
 
@@ -114,6 +116,7 @@ const Header = () => {
           </nav>
 
           <div className="hidden lg:flex items-center">
+            <LanguageSelector />
             <UserLinks />
           </div>
 
@@ -129,9 +132,12 @@ const Header = () => {
             </SheetTrigger>
             <SheetContent side="right" className="w-64 sm:w-80">
               <SheetHeader className="mb-4">
-                <SheetTitle>Menu</SheetTitle>
+                <SheetTitle>{t('nav.menu')}</SheetTitle>
               </SheetHeader>
               <div className="flex flex-col space-y-3 py-4">
+                <div className="pb-2 border-b border-gray-200 dark:border-gray-700">
+                  <LanguageSelector />
+                </div>
                 {allLinks.map((link) => (
                   <Link
                     key={link.path}
@@ -154,6 +160,7 @@ const Header = () => {
           </Sheet>
 
           <div className="flex lg:hidden items-center">
+            <LanguageSelector compact />
             <ThemeToggle />
           </div>
         </div>
