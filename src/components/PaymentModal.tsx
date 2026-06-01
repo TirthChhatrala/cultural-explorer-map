@@ -9,6 +9,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { CheckCircle, CreditCard, Smartphone, Building2, Download, Loader2, XCircle, AlertTriangle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import jsPDF from 'jspdf';
+import DiscountQuiz from './DiscountQuiz';
 
 export interface PaymentRecord {
   id: string;
@@ -69,9 +70,15 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
   const [cardName, setCardName] = useState('');
   const [upiId, setUpiId] = useState('');
 
-  const taxAmount = Math.round(bookingDetails.amount * 0.05);
+  // Pre-payment optional quiz for discount
+  const [showQuiz, setShowQuiz] = useState(true);
+  const [discountPct, setDiscountPct] = useState(0);
+
+  const discountAmount = Math.round(bookingDetails.amount * (discountPct / 100));
+  const discountedBase = bookingDetails.amount - discountAmount;
+  const taxAmount = Math.round(discountedBase * 0.05);
   const convenienceFee = 99;
-  const totalAmount = bookingDetails.amount + taxAmount + convenienceFee;
+  const totalAmount = discountedBase + taxAmount + convenienceFee;
 
   const savePaymentRecord = (status: 'success' | 'failed' | 'cancelled', txnId: string, reason?: string) => {
     const record: PaymentRecord = {
@@ -358,6 +365,8 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
     setCardName('');
     setUpiId('');
     setFailureReason('');
+    setShowQuiz(true);
+    setDiscountPct(0);
   };
 
   const handleRetry = () => {
