@@ -9,6 +9,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { CheckCircle, CreditCard, Smartphone, Building2, Download, Loader2, XCircle, AlertTriangle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import jsPDF from 'jspdf';
+import DiscountQuiz from './DiscountQuiz';
 
 export interface PaymentRecord {
   id: string;
@@ -69,9 +70,15 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
   const [cardName, setCardName] = useState('');
   const [upiId, setUpiId] = useState('');
 
-  const taxAmount = Math.round(bookingDetails.amount * 0.05);
+  // Pre-payment optional quiz for discount
+  const [showQuiz, setShowQuiz] = useState(true);
+  const [discountPct, setDiscountPct] = useState(0);
+
+  const discountAmount = Math.round(bookingDetails.amount * (discountPct / 100));
+  const discountedBase = bookingDetails.amount - discountAmount;
+  const taxAmount = Math.round(discountedBase * 0.05);
   const convenienceFee = 99;
-  const totalAmount = bookingDetails.amount + taxAmount + convenienceFee;
+  const totalAmount = discountedBase + taxAmount + convenienceFee;
 
   const savePaymentRecord = (status: 'success' | 'failed' | 'cancelled', txnId: string, reason?: string) => {
     const record: PaymentRecord = {
@@ -358,6 +365,8 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
     setCardName('');
     setUpiId('');
     setFailureReason('');
+    setShowQuiz(true);
+    setDiscountPct(0);
   };
 
   const handleRetry = () => {
@@ -430,10 +439,25 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
           ) : (
             <motion.div key="payment" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <DialogHeader>
-                <DialogTitle>Complete Payment</DialogTitle>
-                <DialogDescription>Pay ₹{totalAmount.toLocaleString()} for {bookingDetails.title}</DialogDescription>
+                <DialogTitle>{showQuiz ? 'Before You Pay' : 'Complete Payment'}</DialogTitle>
+                <DialogDescription>
+                  {showQuiz
+                    ? 'Optional: play a quick cultural quiz for a checkout discount.'
+                    : `Pay ₹${totalAmount.toLocaleString()} for ${bookingDetails.title}`}
+                </DialogDescription>
               </DialogHeader>
 
+              {showQuiz ? (
+                <DiscountQuiz
+                  destination={bookingDetails.title}
+                  onSkip={() => { setDiscountPct(0); setShowQuiz(false); }}
+                  onComplete={(d) => {
+                    setDiscountPct(d);
+                    setShowQuiz(false);
+                    if (d > 0) toast({ title: `🎁 ${d}% discount applied!`, description: 'Your reward is locked in for this checkout.' });
+                  }}
+                />
+              ) : (
               <div className="space-y-6 mt-4">
                 <div>
                   <Label className="text-sm font-medium mb-3 block">Select Payment Method</Label>
@@ -482,6 +506,12 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                   <h4 className="font-medium mb-2">Order Summary</h4>
                   <div className="space-y-1 text-sm">
                     <div className="flex justify-between"><span>Base Amount</span><span>₹{bookingDetails.amount.toLocaleString()}</span></div>
+                    {discountPct > 0 && (
+                      <div className="flex justify-between text-green-600 font-medium">
+                        <span>Quiz Discount ({discountPct}%)</span>
+                        <span>− ₹{discountAmount.toLocaleString()}</span>
+                      </div>
+                    )}
                     <div className="flex justify-between"><span>GST (5%)</span><span>₹{taxAmount.toLocaleString()}</span></div>
                     <div className="flex justify-between"><span>Convenience Fee</span><span>₹{convenienceFee}</span></div>
                     <div className="flex justify-between font-bold pt-2 border-t"><span>Total</span><span>₹{totalAmount.toLocaleString()}</span></div>
@@ -492,6 +522,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                   {isProcessing ? (<><Loader2 className="w-4 h-4 mr-2 animate-spin" />Processing Payment...</>) : (`Pay ₹${totalAmount.toLocaleString()}`)}
                 </Button>
               </div>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
