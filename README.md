@@ -19,9 +19,9 @@
 <!-- STATUS BADGES ROW 1 -->
 <p>
   <img src="https://img.shields.io/badge/%E2%9C%A6_Status-Active_&_Live-6366F1?style=for-the-badge&logo=vercel&logoColor=white&labelColor=0f0f23"/>
-  <img src="https://img.shields.io/badge/%F0%9F%9A%80_Version-3.1.0-A78BFA?style=for-the-badge&logo=rocket&logoColor=white&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/%F0%9F%9A%80_Version-3.2.0-A78BFA?style=for-the-badge&logo=rocket&logoColor=white&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/%F0%9F%A4%96_AI-Bharat_Buddy-10B981?style=for-the-badge&logo=openai&logoColor=white&labelColor=0f0f23"/>
-  <img src="https://img.shields.io/badge/%F0%9F%8E%81_Rewards-System_v2-F59E0B?style=for-the-badge&logo=gift&logoColor=white&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/%F0%9F%8E%81_Rewards-System_v3-F59E0B?style=for-the-badge&logo=gift&logoColor=white&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/%F0%9F%93%98_License-Apache_2.0-EC4899?style=for-the-badge&logo=apache&logoColor=white&labelColor=0f0f23"/>
 </p>
 
@@ -53,6 +53,10 @@
   <img src="https://img.shields.io/badge/-%F0%9F%8C%8D%20Cultural%20Discovery-A78BFA?style=flat-square&logoColor=white"/>
   &nbsp;
   <img src="https://img.shields.io/badge/-%E2%9A%A1%20Real--Time%20Weather-06B6D4?style=flat-square&logoColor=white"/>
+  &nbsp;
+  <img src="https://img.shields.io/badge/-%F0%9F%92%B8%20Quiz%20Discounts-F59E0B?style=flat-square&logoColor=white"/>
+  &nbsp;
+  <img src="https://img.shields.io/badge/-%F0%9F%8C%90%20Multi--Language-10B981?style=flat-square&logoColor=white"/>
 </p>
 
 <br/>
@@ -84,6 +88,7 @@ earn rewards, climb leaderboards — and create truly personalized travel experi
   <img src="https://img.shields.io/badge/Hotels-1000%2B-F59E0B?style=for-the-badge&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/AI_Features-15%2B-EC4899?style=for-the-badge&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/Reward_Types-12%2B-06B6D4?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/Languages-10%2B-A78BFA?style=for-the-badge&labelColor=0f0f23"/>
 </p>
 
 <!-- REPO STATS -->
@@ -114,7 +119,7 @@ earn rewards, climb leaderboards — and create truly personalized travel experi
 
 **Cultural Explorer Map** is more than a travel planner. It is a **complete cultural discovery ecosystem** designed to help travelers, students, explorers, and culture enthusiasts experience the richness of India through technology, intelligent recommendations, immersive exploration tools, and a gamified reward system that makes every visit exciting.
 
-Whether you're planning a weekend getaway, a luxury vacation, a spiritual journey, or simply exploring India's cultural diversity — the platform provides everything needed in one place — including quizzes, leaderboards, achievements, and exclusive discount rewards.
+Whether you're planning a weekend getaway, a luxury vacation, a spiritual journey, or simply exploring India's cultural diversity — the platform provides everything needed in one place — including quizzes, leaderboards, achievements, exclusive discount rewards, and full multi-language support.
 
 <br/>
 
@@ -151,6 +156,8 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
 | 🏆 &nbsp; **Global Leaderboard** | Compete with users worldwide and earn top ranks |
 | 🎁 &nbsp; **Reward Quiz System** | Answer questions, unlock discounts, claim prizes |
 | 🎡 &nbsp; **Spin-The-Wheel** | Spin daily for surprise bonus rewards |
+| 💸 &nbsp; **Quiz Discount System** | Earn real hotel & trip discounts by scoring high on cultural quizzes |
+| 🌐 &nbsp; **Multi-Language Support** | Explore the platform in 10+ Indian regional languages |
 
 </div>
 
@@ -161,7 +168,7 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
 <br/>
 
 <!---------------------------------------------------------------------------->
-<!--  🎁  ADVANCED REWARD QUIZ SYSTEM  ← NEW SECTION                        -->
+<!--  🎁  ADVANCED REWARD QUIZ SYSTEM                                        -->
 <!---------------------------------------------------------------------------->
 
 <div align="center">
@@ -347,6 +354,391 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
 <br/>
 
 > **💡 The Reward System** transforms cultural learning into an addictive, engaging experience by combining destination knowledge, gamified achievements, escalating discounts, milestone unlocks, and exclusive daily prizes — all within a secure, visually immersive environment.
+
+<br/>
+
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%"/>
+
+<br/>
+
+<!---------------------------------------------------------------------------->
+<!--  💸  QUIZ DISCOUNT SYSTEM  ← NEW SECTION                               -->
+<!---------------------------------------------------------------------------->
+
+<div align="center">
+
+## <img src="https://readme-typing-svg.demolab.com?font=Outfit&weight=800&size=28&duration=4000&pause=99999&color=F59E0B&center=true&vCenter=true&width=900&lines=%F0%9F%92%B8+Quiz+Discount+System" alt=""/>
+
+### Score High — Save Big
+
+*Turn your India cultural knowledge into real rupee savings on hotels, packages, and travel bookings*
+
+<br/>
+
+<p>
+  <img src="https://img.shields.io/badge/💰_Save-Up_to_15%25_on_Bookings-6366F1?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/🎯_Score--Based-Automatic_Discounts-F59E0B?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/🏨_Valid_on-Hotels_&_Packages-10B981?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/⏳_Coupons-Timed_Expiry-EC4899?style=for-the-badge&labelColor=0f0f23"/>
+</p>
+
+<br/>
+
+</div>
+
+---
+
+### 🏷️ &nbsp; How the Quiz Discount System Works
+
+<div align="center">
+
+<table>
+<tr>
+<td align="center" width="25%" style="padding:20px">
+  <h2>1️⃣</h2>
+  <b>Take a Cultural Quiz</b><br/>
+  <sub>Answer questions about India's heritage, festivals, cuisine, history, and landmarks</sub><br/><br/>
+  <img src="https://img.shields.io/badge/10--20-Questions_Per_Round-6366F1?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" width="25%" style="padding:20px">
+  <h2>2️⃣</h2>
+  <b>Score Points</b><br/>
+  <sub>Earn points based on accuracy, speed, and difficulty level of your answers</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Speed-Bonus_Multipliers-F59E0B?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" width="25%" style="padding:20px">
+  <h2>3️⃣</h2>
+  <b>Unlock Your Coupon</b><br/>
+  <sub>Automatically receive a discount coupon matching your performance tier</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Instant-Coupon_Generation-10B981?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" width="25%" style="padding:20px">
+  <h2>4️⃣</h2>
+  <b>Redeem at Checkout</b><br/>
+  <sub>Apply your coupon code during hotel or package booking to claim savings</sub><br/><br/>
+  <img src="https://img.shields.io/badge/One--Click-Redemption-EC4899?style=flat-square&labelColor=0f0f23"/>
+</td>
+</tr>
+</table>
+
+</div>
+
+---
+
+### 📊 &nbsp; Score-to-Discount Mapping
+
+<div align="center">
+
+```
+╔═══════════════════════════════════════════════════════════════════════════════════╗
+║                🏷️  QUIZ DISCOUNT TIER CHART                                     ║
+╠═══════════════════════════════════════════════════════════════════════════════════╣
+║  Score Range   │  Accuracy   │  Discount Unlocked  │  Coupon Validity           ║
+╠═══════════════════════════════════════════════════════════════════════════════════╣
+║  0  –  29%     │  Very Low   │  No Discount         │  —                        ║
+║  30% – 49%     │  Low        │  2% Off              │  Valid 48 Hours           ║
+║  50% – 64%     │  Average    │  5% Off              │  Valid 72 Hours           ║
+║  65% – 79%     │  Good       │  8% Off              │  Valid 5 Days             ║
+║  80% – 89%     │  Excellent  │  12% Off             │  Valid 7 Days             ║
+║  90% – 100%    │  Perfect!   │  15% Off             │  Valid 10 Days            ║
+╚═══════════════════════════════════════════════════════════════════════════════════╝
+```
+
+</div>
+
+---
+
+### 🎯 &nbsp; Discount System Features
+
+<div align="center">
+
+<table>
+<tr>
+<td align="center" width="33%" style="padding:20px">
+  <h2>💸</h2>
+  <b>Score-Based Discounts</b><br/>
+  <sub>Higher your score, bigger the discount — automatically calculated and applied</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Auto-Calculated-6366F1?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" width="33%" style="padding:20px">
+  <h2>🎟️</h2>
+  <b>Unique Coupon Codes</b><br/>
+  <sub>Every quiz completion generates a unique, one-time use discount coupon code</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Unique-Per_Attempt-F59E0B?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" width="33%" style="padding:20px">
+  <h2>🏨</h2>
+  <b>Applicable On</b><br/>
+  <sub>Valid on hotel bookings, travel packages, resort stays, and custom trips</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Hotels_&-Packages-10B981?style=flat-square&labelColor=0f0f23"/>
+</td>
+</tr>
+<tr>
+<td align="center" style="padding:20px">
+  <h2>🔥</h2>
+  <b>Streak Boost</b><br/>
+  <sub>Maintain daily quiz streaks to get bonus discount multipliers on top of base rewards</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Streak-Multiplier_Bonus-EC4899?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" style="padding:20px">
+  <h2>⏳</h2>
+  <b>Timed Expiry</b><br/>
+  <sub>Coupons come with a validity window — redeem fast to maximise savings</sub><br/><br/>
+  <img src="https://img.shields.io/badge/48hr_to-10_Day_Validity-06B6D4?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" style="padding:20px">
+  <h2>📋</h2>
+  <b>Coupon Wallet</b><br/>
+  <sub>All earned coupons saved in your personal dashboard — view, copy, and track expiry</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Personal-Coupon_Wallet-A78BFA?style=flat-square&labelColor=0f0f23"/>
+</td>
+</tr>
+<tr>
+<td align="center" style="padding:20px">
+  <h2>🎊</h2>
+  <b>Festival Special Discounts</b><br/>
+  <sub>Extra discount coupons during Diwali, Holi, Navratri, and seasonal quiz events</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Festival-Exclusive_Codes-6366F1?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" style="padding:20px">
+  <h2>📱</h2>
+  <b>One-Click Redemption</b><br/>
+  <sub>Apply coupons at checkout in a single click — no manual entry needed</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Seamless-Checkout_Apply-F59E0B?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" style="padding:20px">
+  <h2>🛡️</h2>
+  <b>Anti-Abuse Protection</b><br/>
+  <sub>Each coupon is tied to the user account — fully secured against misuse</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Account-Locked_Coupons-EC4899?style=flat-square&labelColor=0f0f23"/>
+</td>
+</tr>
+</table>
+
+</div>
+
+---
+
+### 🛍️ &nbsp; Where Discounts Apply
+
+<div align="center">
+
+| &nbsp; Booking Type &nbsp; | &nbsp; Discount Applicable &nbsp; | &nbsp; Max Saving &nbsp; |
+|:---|:---|:---|
+| 🏨 &nbsp; **Hotel Bookings** | All listed hotels across 28 states | Up to 15% off |
+| 📦 &nbsp; **Travel Packages** | Royal, Luxury, Budget, Adventure & more | Up to 15% off |
+| 🏕️ &nbsp; **Resort Stays** | Premium resort and retreat bookings | Up to 12% off |
+| ✈️ &nbsp; **Custom Trips** | Personalized trip planning & booking | Up to 10% off |
+| 🙏 &nbsp; **Spiritual Journeys** | Religious and pilgrimage packages | Up to 10% off |
+| 🏖️ &nbsp; **Beach Vacations** | Coastal escapes and island packages | Up to 12% off |
+
+</div>
+
+<br/>
+
+> **💡 Pro Tip:** Combine your daily streak bonus with a festival quiz event to stack discounts for maximum savings on your next booking!
+
+<br/>
+
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%"/>
+
+<br/>
+
+<!---------------------------------------------------------------------------->
+<!--  🌐  MULTI-LANGUAGE SUPPORT  ← NEW SECTION                             -->
+<!---------------------------------------------------------------------------->
+
+<div align="center">
+
+## <img src="https://readme-typing-svg.demolab.com?font=Outfit&weight=800&size=28&duration=4000&pause=99999&color=10B981&center=true&vCenter=true&width=900&lines=%F0%9F%8C%90+Multi-Language+Support" alt=""/>
+
+### Explore India in Your Own Language
+
+*Full platform localization across India's major regional languages — experience cultural discovery without language barriers*
+
+<br/>
+
+<p>
+  <img src="https://img.shields.io/badge/🌐_Languages-10%2B_Supported-6366F1?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/⚡_Switching-Instant_&_Seamless-10B981?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/🤖_AI-Translated_Content-A78BFA?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/💾_Preference-Auto--Saved-F59E0B?style=for-the-badge&labelColor=0f0f23"/>
+</p>
+
+<br/>
+
+</div>
+
+---
+
+### 🗣️ &nbsp; Supported Languages
+
+<div align="center">
+
+<table>
+<tr>
+<td align="center" width="20%" style="padding:18px">
+  <h2>🇮🇳</h2>
+  <b>Hindi</b><br/>
+  <sub>हिन्दी</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Status-Live-10B981?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" width="20%" style="padding:18px">
+  <h2>🌴</h2>
+  <b>Tamil</b><br/>
+  <sub>தமிழ்</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Status-Live-10B981?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" width="20%" style="padding:18px">
+  <h2>🌸</h2>
+  <b>Telugu</b><br/>
+  <sub>తెలుగు</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Status-Live-10B981?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" width="20%" style="padding:18px">
+  <h2>🐟</h2>
+  <b>Bengali</b><br/>
+  <sub>বাংলা</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Status-Live-10B981?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" width="20%" style="padding:18px">
+  <h2>🌺</h2>
+  <b>Marathi</b><br/>
+  <sub>मराठी</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Status-Live-10B981?style=flat-square&labelColor=0f0f23"/>
+</td>
+</tr>
+<tr>
+<td align="center" style="padding:18px">
+  <h2>🌻</h2>
+  <b>Gujarati</b><br/>
+  <sub>ગુજરાતી</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Status-Live-10B981?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" style="padding:18px">
+  <h2>🦚</h2>
+  <b>Kannada</b><br/>
+  <sub>ಕನ್ನಡ</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Status-Live-10B981?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" style="padding:18px">
+  <h2>🌿</h2>
+  <b>Malayalam</b><br/>
+  <sub>മലയാളം</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Status-Beta-F59E0B?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" style="padding:18px">
+  <h2>⭐</h2>
+  <b>Punjabi</b><br/>
+  <sub>ਪੰਜਾਬੀ</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Status-Beta-F59E0B?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" style="padding:18px">
+  <h2>🔤</h2>
+  <b>English</b><br/>
+  <sub>English</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Status-Default-6366F1?style=flat-square&labelColor=0f0f23"/>
+</td>
+</tr>
+</table>
+
+</div>
+
+---
+
+### ⚙️ &nbsp; Multi-Language System Features
+
+<div align="center">
+
+<table>
+<tr>
+<td align="center" width="33%" style="padding:20px">
+  <h2>⚡</h2>
+  <b>Instant Language Switching</b><br/>
+  <sub>Switch languages from any page with one click — no page reload needed</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Zero-Reload_Switch-6366F1?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" width="33%" style="padding:20px">
+  <h2>💾</h2>
+  <b>Preference Persistence</b><br/>
+  <sub>Your chosen language is saved and auto-applied on every future visit</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Auto-Remembered-10B981?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" width="33%" style="padding:20px">
+  <h2>🤖</h2>
+  <b>AI-Assisted Translation</b><br/>
+  <sub>Cultural nuances and local idioms preserved with AI-powered localization</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Nuance-Aware_AI-A78BFA?style=flat-square&labelColor=0f0f23"/>
+</td>
+</tr>
+<tr>
+<td align="center" style="padding:20px">
+  <h2>🗺️</h2>
+  <b>Localized State Content</b><br/>
+  <sub>State cultural content, festivals, and cuisine descriptions in regional language</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Region-Specific_Content-F59E0B?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" style="padding:20px">
+  <h2>🧠</h2>
+  <b>Quiz in Your Language</b><br/>
+  <sub>Cultural quizzes available in regional languages for deeper engagement</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Quiz-Localized-EC4899?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" style="padding:20px">
+  <h2>🤖</h2>
+  <b>Bharat Buddy in Regional Lang</b><br/>
+  <sub>AI travel assistant responds in your selected language naturally</sub><br/><br/>
+  <img src="https://img.shields.io/badge/AI-Multilingual-06B6D4?style=flat-square&labelColor=0f0f23"/>
+</td>
+</tr>
+<tr>
+<td align="center" style="padding:20px">
+  <h2>📱</h2>
+  <b>RTL & Script Support</b><br/>
+  <sub>Proper rendering for all Indian scripts including Devanagari, Tamil, and more</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Script-Aware_Rendering-6366F1?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" style="padding:20px">
+  <h2>🎉</h2>
+  <b>Localized Festival Names</b><br/>
+  <sub>Festival names and descriptions in the language of their cultural origin</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Origin-Language_Names-F59E0B?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" style="padding:20px">
+  <h2>🌍</h2>
+  <b>Auto-Detect Language</b><br/>
+  <sub>Browser language auto-detected on first visit for a personalized welcome</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Auto-Detection-10B981?style=flat-square&labelColor=0f0f23"/>
+</td>
+</tr>
+</table>
+
+</div>
+
+---
+
+### 🌍 &nbsp; What Gets Translated
+
+<div align="center">
+
+| &nbsp; Platform Area &nbsp; | &nbsp; Localization Coverage &nbsp; |
+|:---|:---|
+| 🏠 &nbsp; **Homepage & Navigation** | All menus, buttons, labels, and headings |
+| 🗺️ &nbsp; **Interactive India Map** | State names, region labels, and cultural tooltips |
+| 🧠 &nbsp; **Cultural Quiz** | All questions, answer options, and result messages |
+| 🤖 &nbsp; **Bharat Buddy AI** | Full conversational AI in selected language |
+| 🏨 &nbsp; **Hotel & Booking Pages** | Property descriptions, amenities, and booking flow |
+| 🎉 &nbsp; **Festival Explorer** | Festival names, descriptions, and countdowns |
+| 📊 &nbsp; **Historical Timeline** | Historical event titles and descriptions |
+| 🏆 &nbsp; **Leaderboard & Badges** | Rank names, badge titles, and achievement messages |
+| 💸 &nbsp; **Quiz Discount System** | Coupon messages, tier names, and redemption flow |
+| 📦 &nbsp; **Travel Packages** | Package names, descriptions, and itinerary details |
+
+</div>
+
+<br/>
+
+> **💡 Language Tip:** Switching to your state's regional language unlocks deeper cultural content and region-specific quiz questions curated for native speakers!
 
 <br/>
 
@@ -648,6 +1040,7 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
 | ⚡ &nbsp; **Real-Time Assistance** | Instant answers to travel queries, available anytime |
 | 🍽️ &nbsp; **Food Recommendations** | Regional cuisine suggestions and best local eateries |
 | 🛍️ &nbsp; **Shopping Guide** | Local markets, handicrafts, and authentic souvenirs |
+| 🌐 &nbsp; **Responds in Your Language** | Full conversation in Hindi, Tamil, Telugu, Bengali, and more |
 
 </div>
 
@@ -733,9 +1126,11 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
 | 📦 &nbsp; **Package Management** | Create and update travel package offerings |
 | 🖼️ &nbsp; **Gallery Management** | Organize platform imagery and media content |
 | 📝 &nbsp; **Content Management** | Update cultural, historical, and destination information |
-| 🎁 &nbsp; **Discount Control** | Manage offers, promotional codes, and vouchers |
+| 🎁 &nbsp; **Discount Control** | Manage offers, promotional codes, and quiz coupons |
 | 🏆 &nbsp; **Leaderboard Admin** | Moderate rankings, badges, and reward distributions |
 | 🎡 &nbsp; **Reward System Admin** | Configure quiz rewards, wheel prizes, and event bonuses |
+| 💸 &nbsp; **Coupon Admin** | Create, revoke, and monitor quiz-generated discount coupons |
+| 🌐 &nbsp; **Language Management** | Manage translation strings and add new language packs |
 
 </div>
 
@@ -793,6 +1188,7 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
   <img src="https://img.shields.io/badge/🔄_Interactive-Visuals-06B6D4?style=for-the-badge&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/♿_Accessible-Interface-6366F1?style=for-the-badge&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/🌈_Dark_Mode-Ready-A78BFA?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/🌐_Multi--Language-UI-10B981?style=for-the-badge&labelColor=0f0f23"/>
 </p>
 
 </div>
@@ -831,22 +1227,6 @@ Find secret vouchers hidden throughout the platform. Voucher positions change dy
 </td>
 <td align="center" width="50%" style="padding: 28px 24px;">
 
-### 🌐 Multi-Language Support
-
-Full platform localization across India's major regional languages — Hindi, Tamil, Telugu, Bengali, and more.
-
-<br/>
-
-<img src="https://img.shields.io/badge/Hindi-हिन्दी-6366F1?style=flat-square&labelColor=0f0f23"/>
-<img src="https://img.shields.io/badge/Tamil-தமிழ்-A78BFA?style=flat-square&labelColor=0f0f23"/>
-<img src="https://img.shields.io/badge/Telugu-తెలుగు-10B981?style=flat-square&labelColor=0f0f23"/>
-<img src="https://img.shields.io/badge/Bengali-বাংলা-F59E0B?style=flat-square&labelColor=0f0f23"/>
-
-</td>
-</tr>
-<tr>
-<td align="center" style="padding: 28px 24px;">
-
 ### 🏆 Achievement System
 
 Earn badges, unlock achievements, track personal milestones, and become a certified Cultural Explorer Master.
@@ -859,6 +1239,8 @@ Earn badges, unlock achievements, track personal milestones, and become a certif
 <img src="https://img.shields.io/badge/Progress-Tracking-A78BFA?style=flat-square&labelColor=0f0f23"/>
 
 </td>
+</tr>
+<tr>
 <td align="center" style="padding: 28px 24px;">
 
 ### 🎁 Daily Rewards
@@ -873,6 +1255,20 @@ Log in every day to claim rewards, seasonal bonuses, festival offers, and surpri
 <img src="https://img.shields.io/badge/Surprise-Coupons-A78BFA?style=flat-square&labelColor=0f0f23"/>
 
 </td>
+<td align="center" style="padding: 28px 24px;">
+
+### 📲 Social Sharing
+
+Share your quiz results, badge achievements, travel photos, and cultural discoveries with friends across social platforms.
+
+<br/>
+
+<img src="https://img.shields.io/badge/Share-Quiz_Results-EC4899?style=flat-square&labelColor=0f0f23"/>
+<img src="https://img.shields.io/badge/Post-Achievements-06B6D4?style=flat-square&labelColor=0f0f23"/>
+<img src="https://img.shields.io/badge/Travel-Stories-6366F1?style=flat-square&labelColor=0f0f23"/>
+<img src="https://img.shields.io/badge/Community-Feed-A78BFA?style=flat-square&labelColor=0f0f23"/>
+
+</td>
 </tr>
 </table>
 
@@ -880,9 +1276,9 @@ Log in every day to claim rewards, seasonal bonuses, festival offers, and surpri
 
 <p>
   <img src="https://img.shields.io/badge/🎡_Gamification-Engine-6366F1?style=for-the-badge&labelColor=0f0f23"/>
-  <img src="https://img.shields.io/badge/🌐_Multi--language-Support-A78BFA?style=for-the-badge&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/📲_Social-Sharing-10B981?style=for-the-badge&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/🤝_Community-Features-F59E0B?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/🗣️_Voice-Assistant-A78BFA?style=for-the-badge&labelColor=0f0f23"/>
 </p>
 
 </div>
@@ -905,7 +1301,7 @@ Log in every day to claim rewards, seasonal bonuses, festival offers, and surpri
 
 ```
 ╔═══════════════════════════════════════════════════════════════════════════════════════╗
-║              CULTURAL EXPLORER MAP — ROADMAP v3.1                        STATUS      ║
+║              CULTURAL EXPLORER MAP — ROADMAP v3.2                        STATUS      ║
 ╠═══════════════════════════════════════════════════════════════════════════════════════╣
 ║  ✅  Interactive India Map                   ████████████████████████    100%        ║
 ║  ✅  Hotel Booking System                    ████████████████████████    100%        ║
@@ -918,16 +1314,16 @@ Log in every day to claim rewards, seasonal bonuses, festival offers, and surpri
 ║  ✅  Festival Countdowns                     ████████████████████████    100%        ║
 ║  ✅  Travel Gallery                          ████████████████████████    100%        ║
 ║  ✅  Admin Dashboard                         ████████████████████████    100%        ║
+║  ✅  Quiz Discount System                    ████████████████████████    100%        ║
+║  ✅  Multi-Language Support (10 Languages)   ████████████████████████    100%        ║
 ╠═══════════════════════════════════════════════════════════════════════════════════════╣
 ║  🔄  Advanced Reward Quiz System             ████████████████████░░░░     85%        ║
 ║  🔄  Global Leaderboard Rankings             ██████████████████░░░░░░     75%        ║
 ║  🔄  Achievement Badge System                ██████████████░░░░░░░░░░     60%        ║
 ║  🔄  Hidden Voucher Hunt                     █████████████░░░░░░░░░░░     55%        ║
 ║  🔄  Spin-The-Wheel Bonus                    ████████████░░░░░░░░░░░░     50%        ║
-║  🔄  Reward Quiz Discounts                   ██████████░░░░░░░░░░░░░░     50%        ║
 ║  ⬜  Daily Rewards & Streaks                 ████░░░░░░░░░░░░░░░░░░░░     20%        ║
 ║  ⬜  Gamification Engine                     ██░░░░░░░░░░░░░░░░░░░░░░     10%        ║
-║  ⬜  Multi-language Support                  ██████░░░░░░░░░░░░░░░░░░     30%        ║
 ║  ⬜  Social Sharing                          ░░░░░░░░░░░░░░░░░░░░░░░░      0%        ║
 ╚═══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -975,7 +1371,6 @@ Log in every day to claim rewards, seasonal bonuses, festival offers, and surpri
   <img src="https://img.shields.io/badge/shadcn%2Fui-Latest-000000?style=flat-square&logo=shadcnui&logoColor=white&labelColor=0f0f23"/>
   <br/><sub>UI Components</sub>
 </td>
-
 </tr>
 </table>
 
@@ -988,6 +1383,7 @@ Log in every day to claim rewards, seasonal bonuses, festival offers, and surpri
   <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white"/>
   <img src="https://img.shields.io/badge/shadcn/ui-000000?style=for-the-badge&logo=shadcnui&logoColor=white"/>
   <img src="https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white"/>
+  <img src="https://img.shields.io/badge/i18next-26A69A?style=for-the-badge&logo=i18next&logoColor=white"/>
   <img src="https://img.shields.io/badge/Lovable.dev-FF6B6B?style=for-the-badge&logoColor=white"/>
 </p>
 
@@ -1051,9 +1447,9 @@ Log in every day to claim rewards, seasonal bonuses, festival offers, and surpri
 
 </div>
 
-Unlike traditional travel platforms, **Cultural Explorer Map** combines tourism, culture, education, AI assistance, personalized planning, gamified rewards, and interactive exploration into a **single intelligent platform**.
+Unlike traditional travel platforms, **Cultural Explorer Map** combines tourism, culture, education, AI assistance, personalized planning, gamified rewards, quiz-based discounts, and multi-language exploration into a **single intelligent platform**.
 
-It is designed to help users not just travel across India — but truly **understand, experience, earn, and connect** with its rich and diverse heritage.
+It is designed to help users not just travel across India — but truly **understand, experience, earn, and connect** with its rich and diverse heritage — in the language they feel most at home in.
 
 <div align="center">
 
@@ -1076,11 +1472,11 @@ Explore India's rich heritage, traditions, festivals, cuisines, attire, monument
 
 ### 🎁 &nbsp; Earn While You Learn
 
-Complete cultural quizzes, hit daily streaks, spin the wheel, collect badges, climb leaderboards — and turn your India knowledge into real discounts and exclusive rewards.
+Complete cultural quizzes, unlock score-based discount coupons, hit daily streaks, spin the wheel, collect badges, and climb leaderboards — turning India knowledge into real savings.
 
 <br/>
 
-<img src="https://img.shields.io/badge/Rewards-Up_to_15%25_Off-F59E0B?style=for-the-badge&labelColor=0f0f23"/>
+<img src="https://img.shields.io/badge/Discounts-Up_to_15%25_Off-F59E0B?style=for-the-badge&labelColor=0f0f23"/>
 
 </td>
 </tr>
@@ -1089,7 +1485,7 @@ Complete cultural quizzes, hit daily streaks, spin the wheel, collect badges, cl
 
 ### ✈️ &nbsp; Smart Travel Planning
 
-Create personalized trips, discover destinations, optimize routes, book accommodations, and generate complete itineraries — effortlessly and intelligently.
+Create personalized trips, discover destinations, optimize routes, book accommodations, apply quiz discount coupons at checkout, and generate complete itineraries — effortlessly.
 
 <br/>
 
@@ -1098,13 +1494,13 @@ Create personalized trips, discover destinations, optimize routes, book accommod
 </td>
 <td align="center" style="padding: 28px 30px;">
 
-### 🔒 &nbsp; Trusted & Secure
+### 🌐 &nbsp; Your Language, Your Way
 
-Every reward, quiz attempt, and booking flows through verified, anti-cheat protected, and fair systems — ensuring every user gets a genuine and safe experience.
+Explore every feature — quizzes, maps, AI assistant, festival guides, and booking flow — in 10+ Indian regional languages with instant, seamless language switching.
 
 <br/>
 
-<img src="https://img.shields.io/badge/Anti--Cheat-Protected_System-EC4899?style=for-the-badge&labelColor=0f0f23"/>
+<img src="https://img.shields.io/badge/10%2B_Languages-Fully_Supported-A78BFA?style=for-the-badge&labelColor=0f0f23"/>
 
 </td>
 </tr>
@@ -1171,12 +1567,12 @@ OR CONDITIONS OF ANY KIND, either express or implied.
 
 <br/>
 
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&section=footer&height=240&color=gradient&customColorList=6,11,20&animation=fadeIn&text=🇮🇳%20Explore%20India's%20Culture&fontSize=38&fontColor=ffffff&fontAlignY=52&desc=Discover%20Heritage%20%E2%80%A2%20Earn%20Rewards%20%E2%80%A2%20Create%20Memories%20%E2%80%A2%20Experience%20India&descAlignY=76&descSize=17"/>
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&section=footer&height=240&color=gradient&customColorList=6,11,20&animation=fadeIn&text=🇮🇳%20Explore%20India's%20Culture&fontSize=38&fontColor=ffffff&fontAlignY=52&desc=Discover%20Heritage%20%E2%80%A2%20Earn%20Discounts%20%E2%80%A2%20Explore%20in%20Your%20Language%20%E2%80%A2%20Experience%20India&descAlignY=76&descSize=17"/>
 
 <br/>
 
 <a href="https://readme-typing-svg.demolab.com">
-  <img src="https://readme-typing-svg.demolab.com?font=Outfit&weight=700&size=20&duration=3000&pause=800&color=A78BFA&center=true&vCenter=true&width=800&lines=Plan+Smarter+%E2%80%A2+Travel+Better+%E2%80%A2+Earn+Rewards+%E2%80%A2+Experience+More" alt="Footer Typing"/>
+  <img src="https://readme-typing-svg.demolab.com?font=Outfit&weight=700&size=20&duration=3000&pause=800&color=A78BFA&center=true&vCenter=true&width=900&lines=Plan+Smarter+%E2%80%A2+Travel+Better+%E2%80%A2+Earn+Discounts+%E2%80%A2+Explore+in+Your+Language" alt="Footer Typing"/>
 </a>
 
 <br/><br/>
