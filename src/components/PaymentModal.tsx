@@ -439,10 +439,25 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
           ) : (
             <motion.div key="payment" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <DialogHeader>
-                <DialogTitle>Complete Payment</DialogTitle>
-                <DialogDescription>Pay ₹{totalAmount.toLocaleString()} for {bookingDetails.title}</DialogDescription>
+                <DialogTitle>{showQuiz ? 'Before You Pay' : 'Complete Payment'}</DialogTitle>
+                <DialogDescription>
+                  {showQuiz
+                    ? 'Optional: play a quick cultural quiz for a checkout discount.'
+                    : `Pay ₹${totalAmount.toLocaleString()} for ${bookingDetails.title}`}
+                </DialogDescription>
               </DialogHeader>
 
+              {showQuiz ? (
+                <DiscountQuiz
+                  destination={bookingDetails.title}
+                  onSkip={() => { setDiscountPct(0); setShowQuiz(false); }}
+                  onComplete={(d) => {
+                    setDiscountPct(d);
+                    setShowQuiz(false);
+                    if (d > 0) toast({ title: `🎁 ${d}% discount applied!`, description: 'Your reward is locked in for this checkout.' });
+                  }}
+                />
+              ) : (
               <div className="space-y-6 mt-4">
                 <div>
                   <Label className="text-sm font-medium mb-3 block">Select Payment Method</Label>
@@ -491,6 +506,12 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                   <h4 className="font-medium mb-2">Order Summary</h4>
                   <div className="space-y-1 text-sm">
                     <div className="flex justify-between"><span>Base Amount</span><span>₹{bookingDetails.amount.toLocaleString()}</span></div>
+                    {discountPct > 0 && (
+                      <div className="flex justify-between text-green-600 font-medium">
+                        <span>Quiz Discount ({discountPct}%)</span>
+                        <span>− ₹{discountAmount.toLocaleString()}</span>
+                      </div>
+                    )}
                     <div className="flex justify-between"><span>GST (5%)</span><span>₹{taxAmount.toLocaleString()}</span></div>
                     <div className="flex justify-between"><span>Convenience Fee</span><span>₹{convenienceFee}</span></div>
                     <div className="flex justify-between font-bold pt-2 border-t"><span>Total</span><span>₹{totalAmount.toLocaleString()}</span></div>
@@ -501,6 +522,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                   {isProcessing ? (<><Loader2 className="w-4 h-4 mr-2 animate-spin" />Processing Payment...</>) : (`Pay ₹${totalAmount.toLocaleString()}`)}
                 </Button>
               </div>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
