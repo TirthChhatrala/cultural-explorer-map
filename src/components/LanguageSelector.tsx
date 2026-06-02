@@ -31,7 +31,7 @@ const LanguageSelector: React.FC<{ compact?: boolean }> = ({ compact }) => {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="sm" className="gap-1 px-2" aria-label={t('nav.language')}>
+        <Button variant="ghost" size="sm" className="gap-1 px-2" aria-label={t('nav.language')} data-no-translate translate="no">
           {translating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Globe className="w-4 h-4" />}
           <span className="text-sm font-medium">{current.code.toUpperCase()}</span>
           {!compact && <span className="text-xs text-muted-foreground hidden xl:inline">{current.native}</span>}
