@@ -57,7 +57,6 @@ const Header = () => {
     { path: '/festivals', label: t('nav.festivals') },
     { path: '/compare-cultures', label: t('nav.compare') },
     { path: '/booking', label: t('nav.booking') },
-    { path: '/payment-history', label: t('nav.payments') },
   ];
 
   const rewardLinks = paid

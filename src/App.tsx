@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, useLocation } from "react-router-dom";
 import AppRoutes from "./AppRoutes";
 import Header from "./components/Header";
+import PageTranslator from "./components/PageTranslator";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
     <TooltipProvider>
       <Router>
         <HeaderWrapper />
+        <PageTranslator />
         <Toaster />
         <Sonner />
         <AppRoutes />
