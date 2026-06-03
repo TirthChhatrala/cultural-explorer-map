@@ -4,11 +4,14 @@ import { useNavigate, Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { Trophy, RotateCcw, CheckCircle2, XCircle, Brain, Lock, Timer, Flame, Sparkles, Gift, Calendar, PartyPopper, ShieldAlert } from 'lucide-react';
+import { Trophy, RotateCcw, CheckCircle2, XCircle, Brain, Lock, Timer, Flame, Sparkles, Gift, Calendar, PartyPopper, ShieldAlert, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import ShareModal from '@/components/ShareModal';
+import { shareQuizResult } from '@/lib/share';
+import type { ShareData } from '@/components/ShareModal';
 import {
   Difficulty, getRewardState, submitAttempt, hasPaidAccess, isDailyDone,
   getActiveFestival, BADGE_CATALOG,
@@ -44,6 +47,8 @@ const CulturalQuiz: React.FC = () => {
   const [done, setDone] = useState(false);
   const [result, setResult] = useState<ReturnType<typeof submitAttempt> | null>(null);
   const [cheatCount, setCheatCount] = useState(0);
+  const [shareOpen, setShareOpen] = useState(false);
+  const [shareData, setShareData] = useState<ShareData>({ title: '', description: '', url: '' });
   const startTimeRef = useRef<number>(0);
 
   const festival = useMemo(() => getActiveFestival(), []);
@@ -380,11 +385,30 @@ const CulturalQuiz: React.FC = () => {
             <Button onClick={() => { setDone(false); setResult(null); }} variant="secondary" className="flex-1">
               <RotateCcw className="w-4 h-4 mr-2" /> Play Again
             </Button>
+            <Button
+              variant="outline"
+              className="flex-1 bg-white/20 text-white border-white/40 hover:bg-white/30 hover:text-white"
+              onClick={() => {
+                if (result) {
+                  setShareData(shareQuizResult(
+                    result.attempt.score,
+                    result.attempt.total,
+                    result.attempt.pointsEarned,
+                    result.newBadges.map(b => BADGE_CATALOG[b]?.label || b)
+                  ));
+                  setShareOpen(true);
+                }
+              }}
+            >
+              <Share2 className="w-4 h-4 mr-2" /> Share Result
+            </Button>
             <Button asChild className="flex-1 bg-white text-india-orange hover:bg-white/90">
               <Link to="/rewards"><Trophy className="w-4 h-4 mr-2" /> Rewards Dashboard</Link>
             </Button>
           </div>
         </motion.div>
+
+        <ShareModal open={shareOpen} onClose={() => setShareOpen(false)} data={shareData} />
       </div>
     </Layout>
   );

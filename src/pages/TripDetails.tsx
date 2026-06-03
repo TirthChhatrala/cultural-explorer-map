@@ -9,6 +9,9 @@ import { states } from '../data/states';
 import { TripPreferenceForm } from '../components/trips/TripPreferenceForm';
 import { TripPreferences } from '../components/trips/TripPreferences';
 import PaymentModal from '../components/PaymentModal';
+import ShareModal from '../components/ShareModal';
+import { shareTrip } from '@/lib/share';
+import type { ShareData } from '@/components/ShareModal';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -54,6 +57,8 @@ const TripDetails = () => {
   const [paymentOpen, setPaymentOpen] = useState(false);
   const [bookingData, setBookingData] = useState<any>(null);
   const [isPrivateBooking, setIsPrivateBooking] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
+  const [shareData, setShareData] = useState<ShareData>({ title: '', description: '', url: '' });
 
   useEffect(() => {
     if (!tripId) return;
@@ -252,7 +257,21 @@ const TripDetails = () => {
                   <button className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700">
                     <Heart className="h-5 w-5 text-gray-600 dark:text-gray-400" />
                   </button>
-                  <button className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700">
+                  <button
+                    className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
+                    onClick={() => {
+                      setShareData(shareTrip({
+                        title: trip.title,
+                        description: trip.description,
+                        image: trip.image,
+                        id: trip.id,
+                        price: trip.discountedPrice || trip.price,
+                        duration: trip.duration,
+                        rating: trip.rating,
+                      }));
+                      setShareOpen(true);
+                    }}
+                  >
                     <Share2 className="h-5 w-5 text-gray-600 dark:text-gray-400" />
                   </button>
                 </div>
@@ -369,6 +388,8 @@ const TripDetails = () => {
           onPaymentSuccess={handlePaymentSuccess}
         />
       )}
+
+      <ShareModal open={shareOpen} onClose={() => setShareOpen(false)} data={shareData} />
     </Layout>
   );
 };
