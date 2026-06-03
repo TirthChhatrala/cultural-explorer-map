@@ -203,6 +203,8 @@ const StateDetails = () => {
             </motion.button>
           </div>
         </div>
+
+        <ShareModal open={shareOpen} onClose={() => setShareOpen(false)} data={shareData} />
       </div>
     </Layout>
   );
