@@ -1,3 +1,4 @@
+import React from 'react';
 // Social sharing utilities
 import type { ShareData } from '@/components/ShareModal';
 
