@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import StateCard from '../components/StateCard';
@@ -7,11 +7,17 @@ import { getStateById } from '../data/states';
 import { motion } from 'framer-motion';
 import StateInsightsPanel from '../components/StateInsightsPanel';
 import HistoricalTimeline from '../components/HistoricalTimeline';
+import ShareModal from '@/components/ShareModal';
+import { shareState } from '@/lib/share';
+import type { ShareData } from '@/components/ShareModal';
+import { Share2 } from 'lucide-react';
 
 const StateDetails = () => {
   const { stateId } = useParams();
   const navigate = useNavigate();
   const state = getStateById(stateId);
+  const [shareOpen, setShareOpen] = useState(false);
+  const [shareData, setShareData] = useState<ShareData>({ title: '', description: '', url: '' });
 
   useEffect(() => {
     if (!state) {
@@ -49,6 +55,22 @@ const StateDetails = () => {
               <p className="text-white/90 text-lg max-w-2xl">
                 {state.description}
               </p>
+              <button
+                onClick={() => {
+                  setShareData(shareState({
+                    name: state.name,
+                    description: state.description,
+                    image: state.image,
+                    id: state.id,
+                    capital: state.capital,
+                    famousFor: state.famousFor,
+                  }));
+                  setShareOpen(true);
+                }}
+                className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white rounded-full text-sm font-medium transition-colors"
+              >
+                <Share2 className="w-4 h-4" /> Share this destination
+              </button>
             </div>
           </motion.div>
           

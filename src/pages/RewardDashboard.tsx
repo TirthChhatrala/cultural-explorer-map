@@ -4,12 +4,15 @@ import { useNavigate, Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { Trophy, Flame, Gift, Medal, Sparkles, Crown, Calendar, History, Lock, Copy, PartyPopper } from 'lucide-react';
+import { Trophy, Flame, Gift, Medal, Sparkles, Crown, Calendar, History, Lock, Copy, PartyPopper, Share2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import ShareModal from '@/components/ShareModal';
+import { shareAchievement } from '@/lib/share';
+import type { ShareData } from '@/components/ShareModal';
 import {
   getRewardState, getAttempts, getLeaderboard, BADGE_CATALOG, MILESTONES,
   hasPaidAccess, getActiveFestival, canSpinToday, spinWheel,
@@ -24,6 +27,9 @@ const RewardDashboard: React.FC = () => {
 
   const [, force] = useState(0);
   const refresh = () => force(n => n + 1);
+
+  const [shareOpen, setShareOpen] = useState(false);
+  const [shareData, setShareData] = useState<ShareData>({ title: '', description: '', url: '' });
 
   const state = useMemo(() => userId ? getRewardState(userId) : null, [userId]);
   const attempts = useMemo(() => userId ? getAttempts(userId) : [], [userId]);
@@ -125,11 +131,26 @@ const RewardDashboard: React.FC = () => {
                 </Badge>
               )}
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-              <Stat label="Points" value={state.totalPoints} />
-              <Stat label="Streak" value={`${state.currentStreak}🔥`} />
-              <Stat label="Badges" value={state.badges.length} />
-              <Stat label="Rank" value={rank > 0 ? `#${rank}` : '—'} />
+            <div className="flex flex-col items-end gap-3">
+              <button
+                onClick={() => {
+                  setShareData(shareAchievement(
+                    isCulturalExpert ? 'Cultural Expert' : 'Reward Dashboard',
+                    state?.totalPoints || 0,
+                    state?.currentStreak || 0
+                  ));
+                  setShareOpen(true);
+                }}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white rounded-full text-sm font-medium transition-colors"
+              >
+                <Share2 className="w-4 h-4" /> Share
+              </button>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <Stat label="Points" value={state.totalPoints} />
+                <Stat label="Streak" value={`${state.currentStreak}🔥`} />
+                <Stat label="Badges" value={state.badges.length} />
+                <Stat label="Rank" value={rank > 0 ? `#${rank}` : '—'} />
+              </div>
             </div>
           </div>
         </motion.div>
@@ -310,6 +331,8 @@ const RewardDashboard: React.FC = () => {
             )}
           </TabsContent>
         </Tabs>
+
+        <ShareModal open={shareOpen} onClose={() => setShareOpen(false)} data={shareData} />
       </div>
     </Layout>
   );
