@@ -4,11 +4,14 @@ import { useNavigate, Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { Trophy, RotateCcw, CheckCircle2, XCircle, Brain, Lock, Timer, Flame, Sparkles, Gift, Calendar, PartyPopper, ShieldAlert } from 'lucide-react';
+import { Trophy, RotateCcw, CheckCircle2, XCircle, Brain, Lock, Timer, Flame, Sparkles, Gift, Calendar, PartyPopper, ShieldAlert, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import ShareModal from '@/components/ShareModal';
+import { shareQuizResult } from '@/lib/share';
+import type { ShareData } from '@/components/ShareModal';
 import {
   Difficulty, getRewardState, submitAttempt, hasPaidAccess, isDailyDone,
   getActiveFestival, BADGE_CATALOG,
@@ -44,6 +47,8 @@ const CulturalQuiz: React.FC = () => {
   const [done, setDone] = useState(false);
   const [result, setResult] = useState<ReturnType<typeof submitAttempt> | null>(null);
   const [cheatCount, setCheatCount] = useState(0);
+  const [shareOpen, setShareOpen] = useState(false);
+  const [shareData, setShareData] = useState<ShareData>({ title: '', description: '', url: '' });
   const startTimeRef = useRef<number>(0);
 
   const festival = useMemo(() => getActiveFestival(), []);
