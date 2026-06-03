@@ -385,11 +385,30 @@ const CulturalQuiz: React.FC = () => {
             <Button onClick={() => { setDone(false); setResult(null); }} variant="secondary" className="flex-1">
               <RotateCcw className="w-4 h-4 mr-2" /> Play Again
             </Button>
+            <Button
+              variant="outline"
+              className="flex-1 bg-white/20 text-white border-white/40 hover:bg-white/30 hover:text-white"
+              onClick={() => {
+                if (result) {
+                  setShareData(shareQuizResult(
+                    result.attempt.score,
+                    result.attempt.total,
+                    result.attempt.pointsEarned,
+                    result.newBadges.map(b => BADGE_CATALOG[b]?.label || b)
+                  ));
+                  setShareOpen(true);
+                }
+              }}
+            >
+              <Share2 className="w-4 h-4 mr-2" /> Share Result
+            </Button>
             <Button asChild className="flex-1 bg-white text-india-orange hover:bg-white/90">
               <Link to="/rewards"><Trophy className="w-4 h-4 mr-2" /> Rewards Dashboard</Link>
             </Button>
           </div>
         </motion.div>
+
+        <ShareModal open={shareOpen} onClose={() => setShareOpen(false)} data={shareData} />
       </div>
     </Layout>
   );
