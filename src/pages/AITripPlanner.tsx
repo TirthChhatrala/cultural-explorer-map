@@ -72,7 +72,7 @@ const AITripPlanner: React.FC = () => {
   const { theme } = useTheme();
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { language } = useLanguage();
+  const { lang } = useLanguage();
 
   const [destinations, setDestinations] = useState<string[]>(['']);
   const [duration, setDuration] = useState(5);
@@ -143,7 +143,7 @@ const AITripPlanner: React.FC = () => {
           preferences,
           transport,
           pace,
-          language,
+          language: lang,
           notes,
         },
       });
