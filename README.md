@@ -11,7 +11,7 @@
 <!-- ═══════════════════════════════════════════════════════════════════════════ -->
 
 <a href="https://git.io/typing-svg">
-  <img src="https://readme-typing-svg.demolab.com?font=Outfit&weight=700&size=24&duration=2800&pause=800&color=A78BFA&center=true&vCenter=true&multiline=false&width=1000&lines=%F0%9F%97%BA%EF%B8%8F+Interactive+India+Map+%E2%80%94+Explore+Every+State+%26+Territory;%F0%9F%A4%96+AI+Bharat+Buddy+%E2%80%94+Your+24%2F7+Intelligent+Travel+Companion;%F0%9F%8F%A8+Smart+Hotel+Discovery+%26+Seamless+Booking+Experience;%F0%9F%8E%AF+Quizzes+%E2%80%A2+Vouchers+%E2%80%A2+Achievements+%E2%80%A2+Exclusive+Rewards;%F0%9F%8E%89+500%2B+Festivals+%26+Living+Cultural+Traditions;%F0%9F%8F%86+Global+Leaderboard+%E2%80%A2+Badges+%E2%80%A2+Spin-The-Wheel+Bonuses;%E2%9A%A1+Real-Time+Weather+%26+Travel+Intelligence" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.demolab.com?font=Outfit&weight=700&size=24&duration=2800&pause=800&color=A78BFA&center=true&vCenter=true&multiline=false&width=1000&lines=%F0%9F%97%BA%EF%B8%8F+Interactive+India+Map+%E2%80%94+Explore+Every+State+%26+Territory;%F0%9F%A4%96+AI+Bharat+Buddy+%E2%80%94+Your+24%2F7+Intelligent+Travel+Companion;%F0%9F%8F%A8+Smart+Hotel+Discovery+%26+Seamless+Booking+Experience;%F0%9F%8E%AF+Quizzes+%E2%80%A2+Vouchers+%E2%80%A2+Achievements+%E2%80%A2+Exclusive+Rewards;%F0%9F%8E%89+500%2B+Festivals+%26+Living+Cultural+Traditions;%F0%9F%8F%86+Global+Leaderboard+%E2%80%A2+Badges+%E2%80%A2+Spin-The-Wheel+Bonuses;%E2%9A%A1+Real-Time+Weather+%26+Travel+Intelligence;%F0%9F%A7%A0+AI+Trip+Suggestions+%E2%80%94+Smart+Personalized+Planning" alt="Typing SVG" />
 </a>
 
 <br/><br/>
@@ -19,7 +19,7 @@
 <!-- STATUS BADGES ROW 1 -->
 <p>
   <img src="https://img.shields.io/badge/%E2%9C%A6_Status-Active_&_Live-6366F1?style=for-the-badge&logo=vercel&logoColor=white&labelColor=0f0f23"/>
-  <img src="https://img.shields.io/badge/%F0%9F%9A%80_Version-3.2.0-A78BFA?style=for-the-badge&logo=rocket&logoColor=white&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/%F0%9F%9A%80_Version-3.3.0-A78BFA?style=for-the-badge&logo=rocket&logoColor=white&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/%F0%9F%A4%96_AI-Bharat_Buddy-10B981?style=for-the-badge&logo=openai&logoColor=white&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/%F0%9F%8E%81_Rewards-System_v3-F59E0B?style=for-the-badge&logo=gift&logoColor=white&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/%F0%9F%93%98_License-Apache_2.0-EC4899?style=for-the-badge&logo=apache&logoColor=white&labelColor=0f0f23"/>
@@ -57,6 +57,8 @@
   <img src="https://img.shields.io/badge/-%F0%9F%92%B8%20Quiz%20Discounts-F59E0B?style=flat-square&logoColor=white"/>
   &nbsp;
   <img src="https://img.shields.io/badge/-%F0%9F%8C%90%20Multi--Language-10B981?style=flat-square&logoColor=white"/>
+  &nbsp;
+  <img src="https://img.shields.io/badge/-%F0%9F%A7%A0%20AI%20Trip%20Suggestions-6366F1?style=flat-square&logoColor=white"/>
 </p>
 
 <br/>
@@ -82,11 +84,11 @@ earn rewards, climb leaderboards — and create truly personalized travel experi
 
 <!-- PLATFORM STATS -->
 <p>
-  <img src="https://img.shields.io/badge/Components-50%2B-6366F1?style=for-the-badge&labelColor=0f0f23"/>
-  <img src="https://img.shields.io/badge/Pages-25%2B-A78BFA?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/Components-55%2B-6366F1?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/Pages-28%2B-A78BFA?style=for-the-badge&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/States_Covered-28-10B981?style=for-the-badge&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/Hotels-1000%2B-F59E0B?style=for-the-badge&labelColor=0f0f23"/>
-  <img src="https://img.shields.io/badge/AI_Features-15%2B-EC4899?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/AI_Features-18%2B-EC4899?style=for-the-badge&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/Reward_Types-12%2B-06B6D4?style=for-the-badge&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/Languages-10%2B-A78BFA?style=for-the-badge&labelColor=0f0f23"/>
 </p>
@@ -119,7 +121,7 @@ earn rewards, climb leaderboards — and create truly personalized travel experi
 
 **Cultural Explorer Map** is more than a travel planner. It is a **complete cultural discovery ecosystem** designed to help travelers, students, explorers, and culture enthusiasts experience the richness of India through technology, intelligent recommendations, immersive exploration tools, and a gamified reward system that makes every visit exciting.
 
-Whether you're planning a weekend getaway, a luxury vacation, a spiritual journey, or simply exploring India's cultural diversity — the platform provides everything needed in one place — including quizzes, leaderboards, achievements, exclusive discount rewards, and full multi-language support.
+Whether you're planning a weekend getaway, a luxury vacation, a spiritual journey, or simply exploring India's cultural diversity — the platform provides everything needed in one place — including AI-powered trip suggestions, quizzes, leaderboards, achievements, exclusive discount rewards, and full multi-language support.
 
 <br/>
 
@@ -143,11 +145,12 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
 |:---|:---|
 | 🗺️ &nbsp; **Interactive India Map** | Explore every state with rich cultural insights |
 | 🤖 &nbsp; **AI Travel Assistant** | Get intelligent travel recommendations instantly |
+| 🧠 &nbsp; **AI Trip Suggestions** | Smart, personalized trip plans generated by AI based on your preferences |
 | 🏨 &nbsp; **Hotel Discovery** | Find accommodations based on budget and preferences |
 | 📍 &nbsp; **Smart Trip Planning** | Build customized itineraries in minutes |
 | 🌦️ &nbsp; **Live Weather Updates** | Real-time weather information for any destination |
 | 🕒 &nbsp; **Local Time Display** | Current local time for every destination |
-| 🧠 &nbsp; **Cultural Quiz** | Learn through interactive knowledge challenges |
+| 🧩 &nbsp; **Cultural Quiz** | Learn through interactive knowledge challenges |
 | 📊 &nbsp; **Historical Timeline** | Explore historical events and milestones |
 | 🆚 &nbsp; **Compare Cultures** | Compare traditions, food, tourism, and heritage |
 | 🎉 &nbsp; **Festival Explorer** | Discover festivals, celebrations, and countdowns |
@@ -160,6 +163,168 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
 | 🌐 &nbsp; **Multi-Language Support** | Explore the platform in 10+ Indian regional languages |
 
 </div>
+
+<br/>
+
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%"/>
+
+<br/>
+
+<!---------------------------------------------------------------------------->
+<!--  🧠  AI SUGGEST TRIP PLANNING  ← NEW SECTION                          -->
+<!---------------------------------------------------------------------------->
+
+<div align="center">
+
+## <img src="https://readme-typing-svg.demolab.com?font=Outfit&weight=800&size=28&duration=4000&pause=99999&color=6366F1&center=true&vCenter=true&width=900&lines=%F0%9F%A7%A0+AI+Suggest+Trip+Planning" alt=""/>
+
+### Plan Smarter. Travel Better. Powered by AI.
+
+*Let AI analyze your preferences, budget, travel style, and interests — and generate a complete personalized trip plan in seconds*
+
+<br/>
+
+<p>
+  <img src="https://img.shields.io/badge/🧠_AI-Powered_Planning-6366F1?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/⚡_Instant-Trip_Generation-A78BFA?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/🎯_Personalized-Recommendations-10B981?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/📅_Smart-Itinerary_Builder-F59E0B?style=for-the-badge&labelColor=0f0f23"/>
+</p>
+
+<br/>
+
+</div>
+
+---
+
+### 🚀 &nbsp; How AI Trip Suggestions Work
+
+<div align="center">
+
+<table>
+<tr>
+<td align="center" width="25%" style="padding:20px">
+  <h2>1️⃣</h2>
+  <b>Share Your Preferences</b><br/>
+  <sub>Tell the AI your budget, travel dates, group size, and interests — food, culture, adventure, or leisure</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Smart-Input_Form-6366F1?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" width="25%" style="padding:20px">
+  <h2>2️⃣</h2>
+  <b>AI Analyzes & Matches</b><br/>
+  <sub>The AI cross-references 28 states, 1000+ hotels, festivals, and seasonal data to find perfect matches</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Deep-Analysis_Engine-A78BFA?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" width="25%" style="padding:20px">
+  <h2>3️⃣</h2>
+  <b>Get Your Trip Plan</b><br/>
+  <sub>Receive a fully structured itinerary with destinations, activities, stay options, and travel tips</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Instant-Plan_Ready-10B981?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" width="25%" style="padding:20px">
+  <h2>4️⃣</h2>
+  <b>Customize & Book</b><br/>
+  <sub>Tweak suggestions, swap destinations, apply your quiz discount coupon, and book directly</sub><br/><br/>
+  <img src="https://img.shields.io/badge/One--Click-Booking-EC4899?style=flat-square&labelColor=0f0f23"/>
+</td>
+</tr>
+</table>
+
+</div>
+
+---
+
+### ✨ &nbsp; AI Trip Planning Features
+
+<div align="center">
+
+<table>
+<tr>
+<td align="center" width="33%" style="padding:20px">
+  <h2>🗓️</h2>
+  <b>Day-by-Day Itinerary</b><br/>
+  <sub>AI builds a complete day-wise travel plan — morning, afternoon, and evening activities for every day of your trip</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Full-Day_Planning-6366F1?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" width="33%" style="padding:20px">
+  <h2>💰</h2>
+  <b>Budget-Aware Suggestions</b><br/>
+  <sub>Plans adjust intelligently to your budget — from backpacker to luxury — maximizing value at every tier</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Budget-Optimized-10B981?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" width="33%" style="padding:20px">
+  <h2>🌦️</h2>
+  <b>Season & Weather Aware</b><br/>
+  <sub>AI factors in real-time weather and seasonal festivals to recommend the best time to visit each destination</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Weather-Intelligent-A78BFA?style=flat-square&labelColor=0f0f23"/>
+</td>
+</tr>
+<tr>
+<td align="center" style="padding:20px">
+  <h2>🏨</h2>
+  <b>Smart Hotel Matching</b><br/>
+  <sub>Automatically suggests top-rated hotels near your planned attractions with real availability and pricing</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Auto-Hotel_Match-F59E0B?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" style="padding:20px">
+  <h2>🍛</h2>
+  <b>Local Food & Experience Tips</b><br/>
+  <sub>AI recommends must-try regional cuisines, local markets, and hidden cultural experiences unique to each state</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Hyper-Local_Tips-EC4899?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" style="padding:20px">
+  <h2>🔄</h2>
+  <b>Re-Generate & Refine</b><br/>
+  <sub>Not satisfied? Ask the AI to regenerate with adjusted preferences — get a fresh plan in seconds</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Instant-Regeneration-06B6D4?style=flat-square&labelColor=0f0f23"/>
+</td>
+</tr>
+<tr>
+<td align="center" style="padding:20px">
+  <h2>🎉</h2>
+  <b>Festival-Aligned Planning</b><br/>
+  <sub>AI detects upcoming festivals at your destination and weaves them into the itinerary for an immersive cultural experience</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Festival-Aware_AI-6366F1?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" style="padding:20px">
+  <h2>👥</h2>
+  <b>Group Size Optimization</b><br/>
+  <sub>Plans are tailored for solo travelers, couples, families, or large groups — with appropriate activity and stay suggestions</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Group-Aware_Plans-A78BFA?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" style="padding:20px">
+  <h2>🌐</h2>
+  <b>Plans in Your Language</b><br/>
+  <sub>Full AI trip suggestion output available in 10+ Indian regional languages — plan in the language you think in</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Multilingual-AI_Plans-10B981?style=flat-square&labelColor=0f0f23"/>
+</td>
+</tr>
+</table>
+
+</div>
+
+---
+
+### 🎯 &nbsp; Trip Suggestion Categories
+
+<div align="center">
+
+| &nbsp; Trip Type &nbsp; | &nbsp; AI Specialization &nbsp; | &nbsp; Best For &nbsp; |
+|:---|:---|:---|
+| 🏔️ &nbsp; **Adventure Getaway** | Trekking routes, wildlife zones, and outdoor stays | Thrill-seekers & nature lovers |
+| 🏛️ &nbsp; **Heritage Circuit** | UNESCO sites, palace trails, and historical timelines | History enthusiasts |
+| 🙏 &nbsp; **Spiritual Journey** | Temple routes, ashrams, and pilgrimage itineraries | Faith-based travelers |
+| 🏖️ &nbsp; **Coastal Escape** | Beach resorts, island hops, and coastal cuisine | Relaxation & beach lovers |
+| 🎉 &nbsp; **Festival Special** | Event-aligned trips with live cultural experiences | Culture explorers |
+| 💰 &nbsp; **Budget Backpacker** | Hostels, local transport, hidden gems on a shoestring | Budget travelers |
+| 👑 &nbsp; **Luxury Curated** | Premium resorts, private tours, and fine dining | Luxury seekers |
+| 👨‍👩‍👧 &nbsp; **Family Trip** | Kid-friendly activities, safe routes, and family stays | Families with children |
+
+</div>
+
+<br/>
+
+> **💡 AI Tip:** Combine the AI Trip Suggestion feature with your earned quiz discount coupon for instant savings on every hotel and package the AI recommends!
 
 <br/>
 
@@ -362,7 +527,7 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
 <br/>
 
 <!---------------------------------------------------------------------------->
-<!--  💸  QUIZ DISCOUNT SYSTEM  ← NEW SECTION                               -->
+<!--  💸  QUIZ DISCOUNT SYSTEM                                               -->
 <!---------------------------------------------------------------------------->
 
 <div align="center">
@@ -531,6 +696,7 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
 | ✈️ &nbsp; **Custom Trips** | Personalized trip planning & booking | Up to 10% off |
 | 🙏 &nbsp; **Spiritual Journeys** | Religious and pilgrimage packages | Up to 10% off |
 | 🏖️ &nbsp; **Beach Vacations** | Coastal escapes and island packages | Up to 12% off |
+| 🧠 &nbsp; **AI Suggested Trips** | Apply coupons directly on AI-generated trip bookings | Up to 15% off |
 
 </div>
 
@@ -545,7 +711,7 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
 <br/>
 
 <!---------------------------------------------------------------------------->
-<!--  🌐  MULTI-LANGUAGE SUPPORT  ← NEW SECTION                             -->
+<!--  🌐  MULTI-LANGUAGE SUPPORT                                             -->
 <!---------------------------------------------------------------------------->
 
 <div align="center">
@@ -733,6 +899,7 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
 | 🏆 &nbsp; **Leaderboard & Badges** | Rank names, badge titles, and achievement messages |
 | 💸 &nbsp; **Quiz Discount System** | Coupon messages, tier names, and redemption flow |
 | 📦 &nbsp; **Travel Packages** | Package names, descriptions, and itinerary details |
+| 🧠 &nbsp; **AI Trip Suggestions** | Full AI-generated trip plans and recommendations |
 
 </div>
 
@@ -795,7 +962,7 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
   <img src="https://img.shields.io/badge/%E2%9C%94-Flexible_Itinerary_Editing-A78BFA?style=for-the-badge&labelColor=0f0f23"/>
 </td>
 <td align="center">
-  <img src="https://img.shields.io/badge/%E2%9C%94-Group_Coordination-10B981?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/%E2%9C%94-AI_Suggest_Trip_Planning-10B981?style=for-the-badge&labelColor=0f0f23"/>
 </td>
 </tr>
 </table>
@@ -1037,6 +1204,7 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
 | 📍 &nbsp; **Destination Guidance** | Discover best spots, hidden gems, and seasonal recommendations |
 | 📚 &nbsp; **Cultural Information** | Detailed insights about traditions, customs, and India's heritage |
 | 🗺️ &nbsp; **Trip Suggestions** | Curated trip ideas based on season, budget, and interests |
+| 🧠 &nbsp; **AI Suggest Trip Planning** | Full AI-generated day-wise itineraries personalized to your travel style |
 | ⚡ &nbsp; **Real-Time Assistance** | Instant answers to travel queries, available anytime |
 | 🍽️ &nbsp; **Food Recommendations** | Regional cuisine suggestions and best local eateries |
 | 🛍️ &nbsp; **Shopping Guide** | Local markets, handicrafts, and authentic souvenirs |
@@ -1131,6 +1299,7 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
 | 🎡 &nbsp; **Reward System Admin** | Configure quiz rewards, wheel prizes, and event bonuses |
 | 💸 &nbsp; **Coupon Admin** | Create, revoke, and monitor quiz-generated discount coupons |
 | 🌐 &nbsp; **Language Management** | Manage translation strings and add new language packs |
+| 🧠 &nbsp; **AI Trip Config** | Configure AI trip suggestion preferences and destination weights |
 
 </div>
 
@@ -1200,96 +1369,6 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
 <br/>
 
 <!---------------------------------------------------------------------------->
-<!--  🔮  UPCOMING FEATURES                                                 -->
-<!---------------------------------------------------------------------------->
-
-<div align="center">
-
-## <img src="https://readme-typing-svg.demolab.com?font=Outfit&weight=800&size=28&duration=4000&pause=99999&color=A78BFA&center=true&vCenter=true&width=800&lines=%F0%9F%94%AE+Upcoming+Features" alt=""/>
-
-<br/>
-
-<table>
-<tr>
-<td align="center" width="50%" style="padding: 28px 24px;">
-
-### 🎟️ Hidden Voucher Hunt
-
-Find secret vouchers hidden throughout the platform. Voucher positions change dynamically, making every visit exciting and rewarding.
-
-<br/>
-
-<img src="https://img.shields.io/badge/Random-Locations-6366F1?style=flat-square&labelColor=0f0f23"/>
-<img src="https://img.shields.io/badge/Surprise-Rewards-A78BFA?style=flat-square&labelColor=0f0f23"/>
-<img src="https://img.shields.io/badge/Dynamic-Positions-10B981?style=flat-square&labelColor=0f0f23"/>
-<img src="https://img.shields.io/badge/Up_to-15%25_Off-F59E0B?style=flat-square&labelColor=0f0f23"/>
-
-</td>
-<td align="center" width="50%" style="padding: 28px 24px;">
-
-### 🏆 Achievement System
-
-Earn badges, unlock achievements, track personal milestones, and become a certified Cultural Explorer Master.
-
-<br/>
-
-<img src="https://img.shields.io/badge/Explorer-Badges-EC4899?style=flat-square&labelColor=0f0f23"/>
-<img src="https://img.shields.io/badge/Travel-Milestones-06B6D4?style=flat-square&labelColor=0f0f23"/>
-<img src="https://img.shields.io/badge/Cultural-Titles-6366F1?style=flat-square&labelColor=0f0f23"/>
-<img src="https://img.shields.io/badge/Progress-Tracking-A78BFA?style=flat-square&labelColor=0f0f23"/>
-
-</td>
-</tr>
-<tr>
-<td align="center" style="padding: 28px 24px;">
-
-### 🎁 Daily Rewards
-
-Log in every day to claim rewards, seasonal bonuses, festival offers, and surprise discount coupons.
-
-<br/>
-
-<img src="https://img.shields.io/badge/Daily-Check--ins-EC4899?style=flat-square&labelColor=0f0f23"/>
-<img src="https://img.shields.io/badge/Festival-Bonuses-06B6D4?style=flat-square&labelColor=0f0f23"/>
-<img src="https://img.shields.io/badge/Seasonal-Offers-6366F1?style=flat-square&labelColor=0f0f23"/>
-<img src="https://img.shields.io/badge/Surprise-Coupons-A78BFA?style=flat-square&labelColor=0f0f23"/>
-
-</td>
-<td align="center" style="padding: 28px 24px;">
-
-### 📲 Social Sharing
-
-Share your quiz results, badge achievements, travel photos, and cultural discoveries with friends across social platforms.
-
-<br/>
-
-<img src="https://img.shields.io/badge/Share-Quiz_Results-EC4899?style=flat-square&labelColor=0f0f23"/>
-<img src="https://img.shields.io/badge/Post-Achievements-06B6D4?style=flat-square&labelColor=0f0f23"/>
-<img src="https://img.shields.io/badge/Travel-Stories-6366F1?style=flat-square&labelColor=0f0f23"/>
-<img src="https://img.shields.io/badge/Community-Feed-A78BFA?style=flat-square&labelColor=0f0f23"/>
-
-</td>
-</tr>
-</table>
-
-### Additional Roadmap Items
-
-<p>
-  <img src="https://img.shields.io/badge/🎡_Gamification-Engine-6366F1?style=for-the-badge&labelColor=0f0f23"/>
-  <img src="https://img.shields.io/badge/📲_Social-Sharing-10B981?style=for-the-badge&labelColor=0f0f23"/>
-  <img src="https://img.shields.io/badge/🤝_Community-Features-F59E0B?style=for-the-badge&labelColor=0f0f23"/>
-  <img src="https://img.shields.io/badge/🗣️_Voice-Assistant-A78BFA?style=for-the-badge&labelColor=0f0f23"/>
-</p>
-
-</div>
-
-<br/>
-
-<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%"/>
-
-<br/>
-
-<!---------------------------------------------------------------------------->
 <!--  🚀  DEVELOPMENT ROADMAP                                               -->
 <!---------------------------------------------------------------------------->
 
@@ -1301,7 +1380,7 @@ Share your quiz results, badge achievements, travel photos, and cultural discove
 
 ```
 ╔═══════════════════════════════════════════════════════════════════════════════════════╗
-║              CULTURAL EXPLORER MAP — ROADMAP v3.2                        STATUS      ║
+║              CULTURAL EXPLORER MAP — ROADMAP v3.3                        STATUS      ║
 ╠═══════════════════════════════════════════════════════════════════════════════════════╣
 ║  ✅  Interactive India Map                   ████████████████████████    100%        ║
 ║  ✅  Hotel Booking System                    ████████████████████████    100%        ║
@@ -1316,15 +1395,15 @@ Share your quiz results, badge achievements, travel photos, and cultural discove
 ║  ✅  Admin Dashboard                         ████████████████████████    100%        ║
 ║  ✅  Quiz Discount System                    ████████████████████████    100%        ║
 ║  ✅  Multi-Language Support (10 Languages)   ████████████████████████    100%        ║
-╠═══════════════════════════════════════════════════════════════════════════════════════╣
-║  🔄  Advanced Reward Quiz System             ████████████████████░░░░     85%        ║
-║  🔄  Global Leaderboard Rankings             ██████████████████░░░░░░     75%        ║
-║  🔄  Achievement Badge System                ██████████████░░░░░░░░░░     60%        ║
-║  🔄  Hidden Voucher Hunt                     █████████████░░░░░░░░░░░     55%        ║
-║  🔄  Spin-The-Wheel Bonus                    ████████████░░░░░░░░░░░░     50%        ║
-║  ⬜  Daily Rewards & Streaks                 ████░░░░░░░░░░░░░░░░░░░░     20%        ║
-║  ⬜  Gamification Engine                     ██░░░░░░░░░░░░░░░░░░░░░░     10%        ║
-║  ⬜  Social Sharing                          ░░░░░░░░░░░░░░░░░░░░░░░░      0%        ║
+║  ✅  Advanced Reward Quiz System             ████████████████████████    100%        ║
+║  ✅  Global Leaderboard Rankings             ████████████████████████    100%        ║
+║  ✅  Achievement Badge System                ████████████████████████    100%        ║
+║  ✅  Hidden Voucher Hunt                     ████████████████████████    100%        ║
+║  ✅  Spin-The-Wheel Bonus                    ████████████████████████    100%        ║
+║  ✅  Daily Rewards & Streaks                 ████████████████████████    100%        ║
+║  ✅  Gamification Engine                     ████████████████████████    100%        ║
+║  ✅  Social Sharing                          ████████████████████████    100%        ║
+║  ✅  AI Suggest Trip Planning                ████████████████████████    100%        ║
 ╚═══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
@@ -1447,7 +1526,7 @@ Share your quiz results, badge achievements, travel photos, and cultural discove
 
 </div>
 
-Unlike traditional travel platforms, **Cultural Explorer Map** combines tourism, culture, education, AI assistance, personalized planning, gamified rewards, quiz-based discounts, and multi-language exploration into a **single intelligent platform**.
+Unlike traditional travel platforms, **Cultural Explorer Map** combines tourism, culture, education, AI assistance, personalized planning, AI-generated trip suggestions, gamified rewards, quiz-based discounts, and multi-language exploration into a **single intelligent platform**.
 
 It is designed to help users not just travel across India — but truly **understand, experience, earn, and connect** with its rich and diverse heritage — in the language they feel most at home in.
 
@@ -1485,7 +1564,7 @@ Complete cultural quizzes, unlock score-based discount coupons, hit daily streak
 
 ### ✈️ &nbsp; Smart Travel Planning
 
-Create personalized trips, discover destinations, optimize routes, book accommodations, apply quiz discount coupons at checkout, and generate complete itineraries — effortlessly.
+Create personalized trips, get AI-powered trip suggestions, discover destinations, optimize routes, book accommodations, apply quiz discount coupons at checkout, and generate complete itineraries — effortlessly.
 
 <br/>
 
@@ -1496,7 +1575,7 @@ Create personalized trips, discover destinations, optimize routes, book accommod
 
 ### 🌐 &nbsp; Your Language, Your Way
 
-Explore every feature — quizzes, maps, AI assistant, festival guides, and booking flow — in 10+ Indian regional languages with instant, seamless language switching.
+Explore every feature — quizzes, maps, AI assistant, AI trip suggestions, festival guides, and booking flow — in 10+ Indian regional languages with instant, seamless language switching.
 
 <br/>
 
