@@ -67,6 +67,10 @@ const TRANSPORT_OPTIONS = [
 
 const STORAGE_KEY = 'ai-itineraries';
 
+type Currency = 'INR' | 'USD';
+const FX_CACHE_KEY = 'fx-usd-inr';
+const FX_TTL_MS = 1000 * 60 * 60 * 6; // 6h
+
 const AITripPlanner: React.FC = () => {
   const { isAuthenticated, user } = useAuth();
   const { theme } = useTheme();
@@ -87,6 +91,45 @@ const AITripPlanner: React.FC = () => {
   const [itinerary, setItinerary] = useState<Itinerary | null>(null);
   const [editing, setEditing] = useState<number | null>(null);
   const [shareOpen, setShareOpen] = useState(false);
+  const [currency, setCurrency] = useState<Currency>('INR');
+  const [usdToInr, setUsdToInr] = useState<number>(83);
+  const [fxUpdatedAt, setFxUpdatedAt] = useState<string | null>(null);
+
+  // Load FX rate (USD -> INR) with cache + fallback
+  React.useEffect(() => {
+    const cached = (() => {
+      try { return JSON.parse(localStorage.getItem(FX_CACHE_KEY) || 'null'); } catch { return null; }
+    })();
+    if (cached && Date.now() - cached.ts < FX_TTL_MS && cached.rate) {
+      setUsdToInr(cached.rate);
+      setFxUpdatedAt(new Date(cached.ts).toLocaleString());
+      return;
+    }
+    (async () => {
+      try {
+        const r = await fetch('https://open.er-api.com/v6/latest/USD');
+        const j = await r.json();
+        const rate = j?.rates?.INR;
+        if (rate && typeof rate === 'number') {
+          setUsdToInr(rate);
+          const ts = Date.now();
+          setFxUpdatedAt(new Date(ts).toLocaleString());
+          localStorage.setItem(FX_CACHE_KEY, JSON.stringify({ rate, ts }));
+        }
+      } catch {
+        // keep fallback rate
+      }
+    })();
+  }, []);
+
+  // Format any INR amount into the active currency
+  const fmt = (inrAmount?: number) => {
+    if (inrAmount == null || isNaN(Number(inrAmount))) return '—';
+    const n = Number(inrAmount);
+    if (currency === 'INR') return `₹${Math.round(n).toLocaleString('en-IN')}`;
+    const usd = n / usdToInr;
+    return `$${usd.toLocaleString('en-US', { maximumFractionDigits: usd < 100 ? 2 : 0 })}`;
+  };
 
   if (!isAuthenticated) {
     return (
@@ -256,6 +299,9 @@ const AITripPlanner: React.FC = () => {
                   <Wallet className="w-4 h-4 text-india-orange" /> Total budget (₹)
                 </label>
                 <Input type="number" min={1000} step={1000} value={budget} onChange={(e) => setBudget(Number(e.target.value))} />
+                <p className="text-xs text-muted-foreground mt-1">
+                  ≈ ${(budget / usdToInr).toLocaleString('en-US', { maximumFractionDigits: 0 })} USD
+                </p>
               </div>
             </div>
 
@@ -381,14 +427,31 @@ const AITripPlanner: React.FC = () => {
                     <Badge className="bg-white/20 text-white border-0">{itinerary.days.length} days</Badge>
                     <Badge className="bg-white/20 text-white border-0">{travelers} travelers</Badge>
                     <Badge className="bg-white/20 text-white border-0">
-                      ₹{itinerary.totalEstimatedCost?.toLocaleString() ?? '—'} estimated
+                      {fmt(itinerary.totalEstimatedCost)} estimated
                     </Badge>
                     {itinerary.states?.slice(0, 4).map(s => (
                       <Badge key={s} className="bg-white/20 text-white border-0">{s}</Badge>
                     ))}
                   </div>
                 </div>
-                <CardContent className="p-4 flex flex-wrap gap-2">
+                <CardContent className="p-4 flex flex-wrap items-center gap-2">
+                  {/* Currency switcher */}
+                  <div className="flex items-center gap-1 bg-muted rounded-lg p-1 mr-auto" data-no-translate translate="no">
+                    {(['INR', 'USD'] as const).map((c) => (
+                      <button
+                        key={c}
+                        onClick={() => setCurrency(c)}
+                        className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${
+                          currency === c ? 'bg-india-orange text-white' : 'text-muted-foreground hover:text-foreground'
+                        }`}
+                      >
+                        {c === 'INR' ? '₹ INR' : '$ USD'}
+                      </button>
+                    ))}
+                    <span className="text-[10px] text-muted-foreground px-2 hidden sm:inline">
+                      1 USD ≈ ₹{usdToInr.toFixed(2)}
+                    </span>
+                  </div>
                   <Button size="sm" variant="outline" onClick={generate}>
                     <RefreshCw className="w-4 h-4 mr-1" /> Regenerate
                   </Button>
@@ -467,7 +530,7 @@ const AITripPlanner: React.FC = () => {
                               <Hotel className="w-4 h-4 text-india-orange mt-0.5" />
                               <div>
                                 <p className="font-medium">{d.accommodation?.name}</p>
-                                <p className="text-xs text-muted-foreground">{d.accommodation?.type} · ₹{d.accommodation?.estimatedCost?.toLocaleString()}</p>
+                                <p className="text-xs text-muted-foreground">{d.accommodation?.type} · {fmt(d.accommodation?.estimatedCost)}</p>
                               </div>
                             </div>
                             <div className="flex items-start gap-2">
@@ -480,7 +543,7 @@ const AITripPlanner: React.FC = () => {
                           </div>
                           <div className="flex items-center justify-between pt-2 border-t">
                             <span className="text-sm text-muted-foreground">Day budget</span>
-                            <span className="font-semibold text-india-orange">₹{d.dailyCost?.toLocaleString()}</span>
+                            <span className="font-semibold text-india-orange">{fmt(d.dailyCost)}</span>
                           </div>
                         </CardContent>
                       </Card>
@@ -514,14 +577,14 @@ const AITripPlanner: React.FC = () => {
                               </td>
                               <td className="p-3 text-xs">{d.attractions?.join(', ')}</td>
                               <td className="p-3 text-xs">{d.accommodation?.name}</td>
-                              <td className="p-3 text-right font-medium text-india-orange">₹{d.dailyCost?.toLocaleString()}</td>
+                              <td className="p-3 text-right font-medium text-india-orange">{fmt(d.dailyCost)}</td>
                             </tr>
                           ))}
                         </tbody>
                         <tfoot>
                           <tr className={`border-t-2 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'}`}>
                             <td colSpan={5} className="p-3 font-semibold text-right">Total</td>
-                            <td className="p-3 text-right font-bold text-india-orange">₹{itinerary.totalEstimatedCost?.toLocaleString()}</td>
+                            <td className="p-3 text-right font-bold text-india-orange">{fmt(itinerary.totalEstimatedCost)}</td>
                           </tr>
                         </tfoot>
                       </table>
@@ -536,7 +599,7 @@ const AITripPlanner: React.FC = () => {
                         {Object.entries(itinerary.budgetBreakdown || {}).map(([k, v]) => (
                           <div key={k} className={`p-3 rounded-lg ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'}`}>
                             <p className="text-xs text-muted-foreground capitalize">{k}</p>
-                            <p className="font-semibold text-india-orange">₹{Number(v).toLocaleString()}</p>
+                            <p className="font-semibold text-india-orange">{fmt(Number(v))}</p>
                           </div>
                         ))}
                       </div>
@@ -560,7 +623,12 @@ const AITripPlanner: React.FC = () => {
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <IndiaMapSVG />
+                      <div className="w-full h-[600px] rounded-xl overflow-hidden border border-border">
+                        <IndiaMapSVG />
+                      </div>
+                      {fxUpdatedAt && currency === 'USD' && (
+                        <p className="text-xs text-muted-foreground mt-2">FX rate updated {fxUpdatedAt}</p>
+                      )}
                     </CardContent>
                   </Card>
                 </TabsContent>
