@@ -98,56 +98,63 @@ const ShareModal: React.FC<ShareModalProps> = ({ open, onClose, data }) => {
 
   return (
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
-      <DialogContent className="max-w-md sm:max-w-lg p-0 overflow-hidden">
-        <DialogHeader className="px-6 pt-6 pb-2">
-          <div className="flex items-center justify-between">
-            <DialogTitle className="flex items-center gap-2 text-xl font-display">
-              <Share2 className="w-5 h-5 text-india-orange" />
-              Share
+      <DialogContent
+        className="max-w-md p-0 overflow-hidden border-0 shadow-2xl rounded-2xl"
+        data-no-translate
+      >
+        {/* Gradient header */}
+        <div className="relative bg-gradient-to-br from-india-orange via-orange-500 to-amber-500 px-6 pt-6 pb-16 text-white">
+          <DialogHeader className="space-y-1">
+            <DialogTitle className="flex items-center gap-2 text-lg font-display text-white">
+              <Share2 className="w-5 h-5" />
+              Share with friends
             </DialogTitle>
-            <button onClick={onClose} className="rounded-full p-1 hover:bg-muted transition-colors">
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-        </DialogHeader>
+            <p className="text-xs text-white/80">Spread the word and earn karma points</p>
+          </DialogHeader>
+        </div>
 
-        <div className="px-6 pb-6 space-y-6">
-          {/* Preview card */}
+        <div className="px-6 -mt-12 pb-6 space-y-5">
+          {/* Floating preview card */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-muted/60 rounded-xl p-4 border border-border"
+            className="bg-background rounded-xl p-4 border border-border shadow-lg"
           >
             {data.image && (
-              <div className="rounded-lg overflow-hidden mb-3 aspect-video">
+              <div className="rounded-lg overflow-hidden mb-3 aspect-video bg-muted">
                 <img src={data.image} alt={data.title} className="w-full h-full object-cover" />
               </div>
             )}
-            <h3 className="font-semibold text-sm line-clamp-1">{data.title}</h3>
-            <p className="text-xs text-muted-foreground line-clamp-2 mt-1">{data.description}</p>
+            <h3 className="font-semibold text-sm line-clamp-2">{data.title}</h3>
+            {data.description && (
+              <p className="text-xs text-muted-foreground line-clamp-2 mt-1 whitespace-pre-line">
+                {data.description}
+              </p>
+            )}
           </motion.div>
 
-          {/* Social platforms */}
+          {/* Social platforms — horizontal scroll on small screens */}
           <div>
-            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">
+            <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-3">
               Share on
             </p>
-            <div className="grid grid-cols-5 gap-3">
+            <div className="flex justify-between gap-2">
               {platforms.map((p) => (
                 <a
                   key={p.name}
                   href={p.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex flex-col items-center gap-1.5 group"
+                  className="flex flex-col items-center gap-1.5 group flex-1 min-w-0"
+                  title={p.name}
                 >
                   <div
-                    className={`w-12 h-12 rounded-2xl flex items-center justify-center text-white transition-transform group-hover:scale-110 ${p.color}`}
+                    className={`w-12 h-12 rounded-full flex items-center justify-center text-white transition-all group-hover:scale-110 group-hover:shadow-lg ${p.color}`}
                   >
                     {p.icon}
                   </div>
-                  <span className="text-[10px] text-muted-foreground group-hover:text-foreground transition-colors">
-                    {p.name}
+                  <span className="text-[10px] text-muted-foreground group-hover:text-foreground transition-colors truncate w-full text-center">
+                    {p.name.split(' ')[0]}
                   </span>
                 </a>
               ))}
@@ -156,38 +163,36 @@ const ShareModal: React.FC<ShareModalProps> = ({ open, onClose, data }) => {
 
           {/* Copy link */}
           <div>
-            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">
+            <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-2">
               Or copy link
             </p>
-            <div className="flex gap-2">
-              <div className="flex-1 flex items-center gap-2 bg-muted rounded-lg px-3 py-2.5 border border-border overflow-hidden">
-                <Link2 className="w-4 h-4 text-muted-foreground shrink-0" />
-                <span className="text-sm text-muted-foreground truncate">{shareUrl}</span>
-              </div>
+            <div className="flex items-center gap-2 bg-muted/60 rounded-xl pl-3 pr-1 py-1 border border-border">
+              <Link2 className="w-4 h-4 text-muted-foreground shrink-0" />
+              <span className="text-xs text-muted-foreground truncate flex-1 min-w-0">{shareUrl}</span>
               <Button
                 onClick={handleCopy}
-                variant="outline"
-                className="shrink-0 px-4"
+                size="sm"
+                className={`shrink-0 h-8 px-3 text-xs transition-colors ${
+                  copied ? 'bg-green-600 hover:bg-green-700' : 'bg-india-orange hover:bg-india-orange/90'
+                } text-white`}
               >
-                <AnimatePresence mode="wait">
+                <AnimatePresence mode="wait" initial={false}>
                   {copied ? (
                     <motion.span
                       key="check"
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      exit={{ scale: 0 }}
-                      className="flex items-center gap-1.5"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      className="flex items-center gap-1"
                     >
-                      <Check className="w-4 h-4 text-green-600" />
-                      Copied
+                      <Check className="w-3.5 h-3.5" /> Copied
                     </motion.span>
                   ) : (
                     <motion.span
                       key="copy"
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      exit={{ scale: 0 }}
-                      className="flex items-center gap-1.5"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
                     >
                       Copy
                     </motion.span>
@@ -198,10 +203,10 @@ const ShareModal: React.FC<ShareModalProps> = ({ open, onClose, data }) => {
           </div>
 
           {/* Native share button for mobile */}
-          {typeof navigator !== 'undefined' && navigator.share && (
-            <Button onClick={handleNativeShare} className="w-full bg-india-orange hover:bg-india-orange/90">
+          {typeof navigator !== 'undefined' && (navigator as any).share && (
+            <Button onClick={handleNativeShare} variant="outline" className="w-full">
               <Share2 className="w-4 h-4 mr-2" />
-              Share via Device
+              More sharing options
             </Button>
           )}
         </div>
