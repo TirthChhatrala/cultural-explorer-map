@@ -10,7 +10,7 @@ import { TripCard } from '../components/trips/TripCard';
 import TripFilter from '../components/trips/TripFilter';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../hooks/use-toast';
-import { Tent, Wallet, Map, Crown, Diamond, Church, Mountain, Ticket, TreeDeciduous, Landmark } from 'lucide-react';
+import { Tent, Wallet, Map, Crown, Diamond, Church, Mountain, Ticket, TreeDeciduous, Landmark, Sparkles } from 'lucide-react';
 
 // Define trip categories with icons and descriptions
 const tripCategories = [
@@ -166,6 +166,16 @@ const Trips = () => {
               Find the perfect journey through India with our curated trip packages or create your own custom adventure.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+              {isAuthenticated && (
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-6 py-3 bg-gradient-to-r from-india-orange to-amber-500 text-white rounded-lg shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                  onClick={() => navigate('/ai-trip-planner')}
+                >
+                  <Sparkles className="w-5 h-5" /> AI Trip Planner
+                </motion.button>
+              )}
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

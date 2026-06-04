@@ -33,6 +33,7 @@ import Trips from './pages/Trips';
 import TripDetails from './pages/TripDetails';
 import CustomTrip from './pages/CustomTrip';
 import MyTrips from './pages/MyTrips';
+import AITripPlanner from './pages/AITripPlanner';
 import Hotels from './pages/Hotels';
 import HotelDetails from './pages/HotelDetails';
 import Casinos from './pages/Casinos';
@@ -93,6 +94,7 @@ const AppRoutes = () => {
       <Route path="/trips/:tripId" element={<TripDetails />} />
       <Route path="/custom-trip" element={<CustomTrip />} />
       <Route path="/my-trips" element={<MyTrips />} />
+      <Route path="/ai-trip-planner" element={<AITripPlanner />} />
       
       <Route path="/hotels" element={<Hotels />} />
       <Route path="/hotels/:hotelId" element={<HotelDetails />} />
