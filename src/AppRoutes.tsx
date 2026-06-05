@@ -49,12 +49,18 @@ import ManageFestivals from './pages/admin/ManageFestivals';
 import ManageTrips from './pages/admin/ManageTrips';
 import ManageImages from './pages/admin/ManageImages';
 import ManagePayments from './pages/admin/ManagePayments';
+import ManageStories from './pages/admin/ManageStories';
 
 // User Pages
 import PaymentHistory from './pages/PaymentHistory';
 import CulturalQuiz from './pages/CulturalQuiz';
 import CompareCultures from './pages/CompareCultures';
 import RewardDashboard from './pages/RewardDashboard';
+
+// Stories
+import Stories from './pages/Stories';
+import StoryDetail from './pages/StoryDetail';
+import StoryEditor from './pages/StoryEditor';
 
 // 404 Page
 import NotFound from './pages/NotFound';
@@ -112,12 +118,21 @@ const AppRoutes = () => {
       <Route path="/admin/trips" element={<ManageTrips />} />
       <Route path="/admin/images" element={<ManageImages />} />
       <Route path="/admin/payments" element={<ManagePayments />} />
+      <Route path="/admin/stories" element={<ManageStories />} />
+      <Route path="/admin/stories/new" element={<StoryEditor adminMode />} />
+      <Route path="/admin/stories/edit/:id" element={<StoryEditor adminMode />} />
       
       {/* User Routes */}
       <Route path="/payment-history" element={<PaymentHistory />} />
       <Route path="/cultural-quiz" element={<CulturalQuiz />} />
       <Route path="/compare-cultures" element={<CompareCultures />} />
       <Route path="/rewards" element={<RewardDashboard />} />
+
+      {/* Stories */}
+      <Route path="/stories" element={<Stories />} />
+      <Route path="/stories/new" element={<StoryEditor />} />
+      <Route path="/stories/edit/:id" element={<StoryEditor />} />
+      <Route path="/stories/:slug" element={<StoryDetail />} />
       
       {/* 404 Route */}
       <Route path="*" element={<NotFound />} />
