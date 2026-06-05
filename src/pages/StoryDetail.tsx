@@ -98,10 +98,10 @@ const StoryDetail = () => {
 
       <ShareModal
         open={shareOpen}
-        onOpenChange={setShareOpen}
+        onClose={() => setShareOpen(false)}
         data={{
           title: story.title,
-          text: story.summary || "",
+          description: story.summary || "",
           url: typeof window !== "undefined" ? window.location.href : "",
           image: story.featured_image || undefined,
         }}
