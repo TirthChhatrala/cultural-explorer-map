@@ -55,6 +55,7 @@ const Header = () => {
     { path: '/freedom-fighters', label: t('nav.freedomFighters') },
     { path: '/news', label: t('nav.news') },
     { path: '/festivals', label: t('nav.festivals') },
+    { path: '/stories', label: 'Stories' },
     { path: '/compare-cultures', label: t('nav.compare') },
     { path: '/booking', label: t('nav.booking') },
   ];

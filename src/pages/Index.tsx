@@ -6,6 +6,7 @@ import IndiaMapSVG from '../components/IndiaMapSVG';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { FestivalCountdownSection, TrendingDestinationsSection, IndiaFactCardsSection } from '../components/HomeExtras';
+import LatestStoriesSection from '../components/LatestStoriesSection';
 import { useT } from '@/context/LanguageContext';
 
 const Index = () => {
@@ -154,6 +155,8 @@ const Index = () => {
           ))}
         </div>
       </motion.section>
+
+      <LatestStoriesSection />
     </Layout>
   );
 };

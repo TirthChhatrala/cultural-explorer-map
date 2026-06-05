@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { 
   MapPin, Info, Newspaper, Calendar, Users, User, 
   Shield, LogOut, Plus, Edit, Trash, Image, Upload,
-  Percent, Utensils, CloudSun, Shirt, Landmark, Book, CreditCard
+  Percent, Utensils, CloudSun, Shirt, Landmark, Book, CreditCard, BookOpen
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
@@ -37,6 +37,13 @@ const AdminDashboard = () => {
       icon: <MapPin size={24} />,
       link: "/admin/states",
       action: "Manage States"
+    },
+    {
+      title: "Stories",
+      description: "Create, AI-generate, review, and publish travel & cultural stories",
+      icon: <BookOpen size={24} />,
+      link: "/admin/stories",
+      action: "Manage Stories"
     },
     {
       title: "Image Gallery",

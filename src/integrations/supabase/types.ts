@@ -14,7 +14,96 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      stories: {
+        Row: {
+          ai_generated: boolean
+          author_email: string | null
+          author_name: string | null
+          bg_color: string | null
+          category: string | null
+          content: string | null
+          created_at: string
+          featured: boolean
+          featured_image: string | null
+          gallery_images: Json
+          id: string
+          is_admin_generated: boolean
+          links: Json
+          location: string | null
+          published_at: string | null
+          scheduled_at: string | null
+          seo_description: string | null
+          seo_title: string | null
+          slug: string
+          status: string
+          structured: Json | null
+          summary: string | null
+          tags: Json
+          text_color: string | null
+          title: string
+          updated_at: string
+          views: number
+        }
+        Insert: {
+          ai_generated?: boolean
+          author_email?: string | null
+          author_name?: string | null
+          bg_color?: string | null
+          category?: string | null
+          content?: string | null
+          created_at?: string
+          featured?: boolean
+          featured_image?: string | null
+          gallery_images?: Json
+          id?: string
+          is_admin_generated?: boolean
+          links?: Json
+          location?: string | null
+          published_at?: string | null
+          scheduled_at?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug: string
+          status?: string
+          structured?: Json | null
+          summary?: string | null
+          tags?: Json
+          text_color?: string | null
+          title: string
+          updated_at?: string
+          views?: number
+        }
+        Update: {
+          ai_generated?: boolean
+          author_email?: string | null
+          author_name?: string | null
+          bg_color?: string | null
+          category?: string | null
+          content?: string | null
+          created_at?: string
+          featured?: boolean
+          featured_image?: string | null
+          gallery_images?: Json
+          id?: string
+          is_admin_generated?: boolean
+          links?: Json
+          location?: string | null
+          published_at?: string | null
+          scheduled_at?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug?: string
+          status?: string
+          structured?: Json | null
+          summary?: string | null
+          tags?: Json
+          text_color?: string | null
+          title?: string
+          updated_at?: string
+          views?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
