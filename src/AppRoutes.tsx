@@ -61,6 +61,7 @@ import RewardDashboard from './pages/RewardDashboard';
 import Stories from './pages/Stories';
 import StoryDetail from './pages/StoryDetail';
 import StoryEditor from './pages/StoryEditor';
+import MyStories from './pages/MyStories';
 
 // 404 Page
 import NotFound from './pages/NotFound';
@@ -132,6 +133,7 @@ const AppRoutes = () => {
       <Route path="/stories" element={<Stories />} />
       <Route path="/stories/new" element={<StoryEditor />} />
       <Route path="/stories/edit/:id" element={<StoryEditor />} />
+      <Route path="/my-stories" element={<MyStories />} />
       <Route path="/stories/:slug" element={<StoryDetail />} />
       
       {/* 404 Route */}

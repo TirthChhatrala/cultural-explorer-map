@@ -20,6 +20,7 @@ const ManageStories = () => {
   const { toast } = useToast();
   const [stories, setStories] = useState<Story[]>([]);
   const [loading, setLoading] = useState(true);
+  const [authorFilter, setAuthorFilter] = useState<"all" | "user" | "admin" | "ai">("all");
   const [aiOpen, setAiOpen] = useState(false);
   const [aiTopic, setAiTopic] = useState("");
   const [aiLocation, setAiLocation] = useState("");
@@ -122,13 +123,41 @@ const ManageStories = () => {
         </div>
 
         {loading ? (<div className="text-center py-20 text-muted-foreground">Loading...</div>) : (
+        <>
+          <div className="flex flex-wrap gap-2 mb-4">
+            {([
+              { key: "all", label: `All (${stories.length})` },
+              { key: "user", label: `User Stories (${stories.filter(s => !s.is_admin_generated && !s.ai_generated).length})` },
+              { key: "admin", label: `Admin (${stories.filter(s => s.is_admin_generated && !s.ai_generated).length})` },
+              { key: "ai", label: `AI Generated (${stories.filter(s => s.ai_generated).length})` },
+            ] as const).map(t => (
+              <button
+                key={t.key}
+                onClick={() => setAuthorFilter(t.key)}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+                  authorFilter === t.key
+                    ? "bg-india-orange text-white border-india-orange"
+                    : "bg-background text-muted-foreground border-border hover:border-india-orange/40"
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
           <div className="overflow-x-auto rounded-lg border border-border">
             <table className="w-full text-sm">
               <thead className="bg-muted/40">
                 <tr><th className="p-3 text-left">Title</th><th className="p-3 text-left">Status</th><th className="p-3 text-left">Author</th><th className="p-3 text-left">Type</th><th className="p-3 text-left">Featured</th><th className="p-3 text-right">Actions</th></tr>
               </thead>
               <tbody>
-                {stories.map((s) => (
+                {stories
+                  .filter(s => {
+                    if (authorFilter === "all") return true;
+                    if (authorFilter === "ai") return s.ai_generated;
+                    if (authorFilter === "admin") return s.is_admin_generated && !s.ai_generated;
+                    return !s.is_admin_generated && !s.ai_generated;
+                  })
+                  .map((s) => (
                   <tr key={s.id} className="border-t border-border">
                     <td className="p-3">
                       <div className="font-medium">{s.title}</div>
@@ -140,7 +169,15 @@ const ManageStories = () => {
                       </select>
                     </td>
                     <td className="p-3 text-muted-foreground">{s.author_name || "—"}</td>
-                    <td className="p-3">{s.ai_generated ? <span className="px-2 py-0.5 bg-purple-100 text-purple-700 rounded text-xs">AI</span> : <span className="px-2 py-0.5 bg-muted rounded text-xs">Manual</span>}</td>
+                    <td className="p-3">
+                      {s.ai_generated ? (
+                        <span className="px-2 py-0.5 bg-purple-100 text-purple-700 rounded text-xs">AI</span>
+                      ) : s.is_admin_generated ? (
+                        <span className="px-2 py-0.5 bg-red-100 text-red-700 rounded text-xs">Admin</span>
+                      ) : (
+                        <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-xs">User</span>
+                      )}
+                    </td>
                     <td className="p-3"><button onClick={() => toggleFeatured(s)}><Star size={16} className={s.featured ? "fill-yellow-400 text-yellow-500" : "text-muted-foreground"} /></button></td>
                     <td className="p-3 text-right space-x-1">
                       <Link to={`/stories/${s.slug}`} className="inline-flex items-center p-2 rounded hover:bg-muted" title="View"><Eye size={14} /></Link>
@@ -153,6 +190,7 @@ const ManageStories = () => {
               </tbody>
             </table>
           </div>
+        </>
         )}
       </div>
 

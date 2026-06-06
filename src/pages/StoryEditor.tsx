@@ -141,7 +141,13 @@ const StoryEditor: React.FC<Props> = ({ adminMode }) => {
                   <option value="published">Published</option>
                 </select>
               ) : (
-                <div className="text-xs text-muted-foreground">Your story will be published immediately.</div>
+                <>
+                  <select value={status === "scheduled" || status === "pending" ? "draft" : status} onChange={(e) => setStatus(e.target.value as any)} className="w-full h-10 rounded-md border border-input bg-background px-3 text-sm">
+                    <option value="draft">Save as Draft</option>
+                    <option value="published">Publish Now</option>
+                  </select>
+                  <div className="text-xs text-muted-foreground">Drafts stay private. Published stories appear on the public Stories page.</div>
+                </>
               )}
               {status === "scheduled" && (
                 <Input type="datetime-local" value={scheduledAt} onChange={(e) => setScheduledAt(e.target.value)} />
