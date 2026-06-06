@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   MapPin, Info, Newspaper, Calendar, Users, Shield, User, 
-  LogOut, Utensils, CloudSun, Shirt, Landmark, Book, Phone 
+  LogOut, Utensils, CloudSun, Shirt, Landmark, Book, Phone, BookOpen
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
@@ -31,6 +31,13 @@ const Dashboard = () => {
   }, [user, navigate, toast]);
 
   const pageLinks = [
+    {
+      title: "Create Your Stories",
+      description: "Write, save drafts, and publish your own travel & cultural stories",
+      icon: <BookOpen size={24} />,
+      link: "/my-stories",
+      category: "main"
+    },
     {
       title: "Map Explorer",
       description: "Explore all Indian states through our interactive map",
