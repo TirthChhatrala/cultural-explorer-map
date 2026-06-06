@@ -17,7 +17,7 @@ import {
   Sparkles, Wand2, MapPin, Clock, Users, Wallet, Plane, Train, Car, Bus,
   Hotel, Utensils, Compass, Save, Share2, Download, RefreshCw, Edit3, X, Plus, LogIn, Lightbulb, Calendar, Route,
 } from 'lucide-react';
-import IndiaMapSVG from '@/components/IndiaMapSVG';
+import ItineraryMap, { LegInfo } from '@/components/ItineraryMap';
 import ShareModal from '@/components/ShareModal';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -94,6 +94,8 @@ const AITripPlanner: React.FC = () => {
   const [currency, setCurrency] = useState<Currency>('INR');
   const [usdToInr, setUsdToInr] = useState<number>(83);
   const [fxUpdatedAt, setFxUpdatedAt] = useState<string | null>(null);
+  const [activeDay, setActiveDay] = useState<number | null>(null);
+  const [legs, setLegs] = useState<LegInfo[]>([]);
 
   // Load FX rate (USD -> INR) with cache + fallback
   React.useEffect(() => {
@@ -615,17 +617,101 @@ const AITripPlanner: React.FC = () => {
                         <MapPin className="w-5 h-5 text-india-orange" /> Your route across India
                       </CardTitle>
                       <div className="flex flex-wrap gap-2 mt-2">
-                        {itinerary.states?.map((s, i) => (
-                          <Badge key={s} className="bg-india-orange/10 text-india-orange border-india-orange/30">
-                            {i + 1}. {s}
-                          </Badge>
+                        {itinerary.days.map((d) => (
+                          <button
+                            key={d.day}
+                            onClick={() => setActiveDay(activeDay === d.day ? null : d.day)}
+                            className={`px-3 py-1 rounded-full text-xs font-medium border transition-all ${
+                              activeDay === d.day
+                                ? 'bg-india-orange text-white border-india-orange'
+                                : 'bg-india-orange/10 text-india-orange border-india-orange/30 hover:bg-india-orange/20'
+                            }`}
+                          >
+                            Day {d.day} · {d.location}
+                          </button>
                         ))}
                       </div>
                     </CardHeader>
                     <CardContent>
                       <div className="w-full h-[600px] rounded-xl overflow-hidden border border-border">
-                        <IndiaMapSVG />
+                        <ItineraryMap
+                          stops={itinerary.days.map(d => ({
+                            day: d.day,
+                            location: d.location,
+                            travelFrom: d.travelFrom,
+                            transport: d.transport,
+                            travelTime: d.travelTime,
+                          }))}
+                          transportMode={transport}
+                          activeDay={activeDay}
+                          onSelectDay={(day) => setActiveDay(day)}
+                          onLegsComputed={setLegs}
+                        />
                       </div>
+
+                      {/* Day-wise travel breakdown */}
+                      <div className="mt-6">
+                        <h3 className="font-semibold mb-3 flex items-center gap-2">
+                          <Route className="w-4 h-4 text-india-orange" /> Day-wise travel breakdown
+                        </h3>
+                        <div className="overflow-x-auto rounded-lg border border-border">
+                          <table className="w-full text-sm">
+                            <thead className={theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'}>
+                              <tr>
+                                <th className="text-left p-3">Day</th>
+                                <th className="text-left p-3">From → To</th>
+                                <th className="text-left p-3">Transport</th>
+                                <th className="text-right p-3">Distance</th>
+                                <th className="text-right p-3">Travel time</th>
+                                <th className="text-left p-3">Stay</th>
+                                <th className="text-left p-3">Activities</th>
+                                <th className="text-right p-3">Cost</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {itinerary.days.map((d, i) => {
+                                const leg = legs.find(l => l.toDay === d.day);
+                                const fromLabel = d.travelFrom || (i === 0 ? '— start —' : itinerary.days[i - 1]?.location);
+                                return (
+                                  <tr
+                                    key={d.day}
+                                    onClick={() => setActiveDay(activeDay === d.day ? null : d.day)}
+                                    className={`border-t cursor-pointer transition-colors ${
+                                      activeDay === d.day ? 'bg-india-orange/10' : 'hover:bg-muted/50'
+                                    }`}
+                                  >
+                                    <td className="p-3 font-semibold text-india-orange">Day {d.day}</td>
+                                    <td className="p-3">
+                                      <div className="font-medium">{d.location}</div>
+                                      <div className="text-xs text-muted-foreground">from {fromLabel}</div>
+                                    </td>
+                                    <td className="p-3 capitalize text-xs">
+                                      {leg?.transport || d.transport || (i === 0 ? '—' : transport)}
+                                    </td>
+                                    <td className="p-3 text-right text-xs">
+                                      {leg?.distanceKm != null ? `${Math.round(leg.distanceKm)} km` : (i === 0 ? '—' : '…')}
+                                    </td>
+                                    <td className="p-3 text-right text-xs">
+                                      {leg?.durationMin != null
+                                        ? `${Math.floor(leg.durationMin / 60)}h ${Math.round(leg.durationMin % 60)}m`
+                                        : d.travelTime || (i === 0 ? '—' : '…')}
+                                    </td>
+                                    <td className="p-3 text-xs">{d.accommodation?.name}</td>
+                                    <td className="p-3 text-xs max-w-[220px] truncate" title={d.attractions?.join(', ')}>
+                                      {d.attractions?.slice(0, 3).join(', ')}
+                                    </td>
+                                    <td className="p-3 text-right font-medium text-india-orange">{fmt(d.dailyCost)}</td>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </table>
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-2">
+                          Distances and times for road legs are routed via OpenStreetMap (OSRM). Flight & train legs are estimated geodesic distances.
+                        </p>
+                      </div>
+
                       {fxUpdatedAt && currency === 'USD' && (
                         <p className="text-xs text-muted-foreground mt-2">FX rate updated {fxUpdatedAt}</p>
                       )}
