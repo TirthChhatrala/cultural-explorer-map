@@ -11,7 +11,7 @@
 <!-- ═══════════════════════════════════════════════════════════════════════════ -->
 
 <a href="https://git.io/typing-svg">
-  <img src="https://readme-typing-svg.demolab.com?font=Outfit&weight=700&size=24&duration=2800&pause=800&color=A78BFA&center=true&vCenter=true&multiline=false&width=1000&lines=%F0%9F%97%BA%EF%B8%8F+Interactive+India+Map+%E2%80%94+Explore+Every+State+%26+Territory;%F0%9F%A4%96+AI+Bharat+Buddy+%E2%80%94+Your+24%2F7+Intelligent+Travel+Companion;%F0%9F%8F%A8+Smart+Hotel+Discovery+%26+Seamless+Booking+Experience;%F0%9F%8E%AF+Quizzes+%E2%80%A2+Vouchers+%E2%80%A2+Achievements+%E2%80%A2+Exclusive+Rewards;%F0%9F%8E%89+500%2B+Festivals+%26+Living+Cultural+Traditions;%F0%9F%8F%86+Global+Leaderboard+%E2%80%A2+Badges+%E2%80%A2+Spin-The-Wheel+Bonuses;%E2%9A%A1+Real-Time+Weather+%26+Travel+Intelligence;%F0%9F%A7%A0+AI+Trip+Suggestions+%E2%80%94+Smart+Personalized+Planning" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.demolab.com?font=Outfit&weight=700&size=24&duration=2800&pause=800&color=A78BFA&center=true&vCenter=true&multiline=false&width=1000&lines=%F0%9F%97%BA%EF%B8%8F+Interactive+India+Map+%E2%80%94+Explore+Every+State+%26+Territory;%F0%9F%A4%96+AI+Bharat+Buddy+%E2%80%94+Your+24%2F7+Intelligent+Travel+Companion;%F0%9F%8F%A8+Smart+Hotel+Discovery+%26+Seamless+Booking+Experience;%F0%9F%8E%AF+Quizzes+%E2%80%A2+Vouchers+%E2%80%A2+Achievements+%E2%80%A2+Exclusive+Rewards;%F0%9F%8E%89+500%2B+Festivals+%26+Living+Cultural+Traditions;%F0%9F%8F%86+Global+Leaderboard+%E2%80%A2+Badges+%E2%80%A2+Spin-The-Wheel+Bonuses;%E2%9A%A1+Real-Time+Weather+%26+Travel+Intelligence;%F0%9F%A7%A0+AI+Trip+Suggestions+%E2%80%94+Smart+Personalized+Planning;%F0%9F%93%96+Travel+Stories+%E2%80%94+Share+%26+Inspire+Cultural+Journeys" alt="Typing SVG" />
 </a>
 
 <br/><br/>
@@ -19,7 +19,7 @@
 <!-- STATUS BADGES ROW 1 -->
 <p>
   <img src="https://img.shields.io/badge/%E2%9C%A6_Status-Active_&_Live-6366F1?style=for-the-badge&logo=vercel&logoColor=white&labelColor=0f0f23"/>
-  <img src="https://img.shields.io/badge/%F0%9F%9A%80_Version-3.3.0-A78BFA?style=for-the-badge&logo=rocket&logoColor=white&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/%F0%9F%9A%80_Version-3.4.0-A78BFA?style=for-the-badge&logo=rocket&logoColor=white&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/%F0%9F%A4%96_AI-Bharat_Buddy-10B981?style=for-the-badge&logo=openai&logoColor=white&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/%F0%9F%8E%81_Rewards-System_v3-F59E0B?style=for-the-badge&logo=gift&logoColor=white&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/%F0%9F%93%98_License-Apache_2.0-EC4899?style=for-the-badge&logo=apache&logoColor=white&labelColor=0f0f23"/>
@@ -59,6 +59,8 @@
   <img src="https://img.shields.io/badge/-%F0%9F%8C%90%20Multi--Language-10B981?style=flat-square&logoColor=white"/>
   &nbsp;
   <img src="https://img.shields.io/badge/-%F0%9F%A7%A0%20AI%20Trip%20Suggestions-6366F1?style=flat-square&logoColor=white"/>
+  &nbsp;
+  <img src="https://img.shields.io/badge/-%F0%9F%93%96%20Travel%20Stories-EC4899?style=flat-square&logoColor=white"/>
 </p>
 
 <br/>
@@ -73,7 +75,7 @@
 <p>
 <i>An AI-powered travel and cultural exploration platform that helps users discover India's heritage,<br/>
 plan unforgettable journeys, explore hidden gems, compare cultures, book accommodations,<br/>
-earn rewards, climb leaderboards — and create truly personalized travel experiences.</i>
+earn rewards, climb leaderboards, share travel stories — and create truly personalized travel experiences.</i>
 </p>
 
 <br/>
@@ -84,11 +86,11 @@ earn rewards, climb leaderboards — and create truly personalized travel experi
 
 <!-- PLATFORM STATS -->
 <p>
-  <img src="https://img.shields.io/badge/Components-55%2B-6366F1?style=for-the-badge&labelColor=0f0f23"/>
-  <img src="https://img.shields.io/badge/Pages-28%2B-A78BFA?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/Components-60%2B-6366F1?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/Pages-30%2B-A78BFA?style=for-the-badge&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/States_Covered-28-10B981?style=for-the-badge&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/Hotels-1000%2B-F59E0B?style=for-the-badge&labelColor=0f0f23"/>
-  <img src="https://img.shields.io/badge/AI_Features-18%2B-EC4899?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/AI_Features-20%2B-EC4899?style=for-the-badge&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/Reward_Types-12%2B-06B6D4?style=for-the-badge&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/Languages-10%2B-A78BFA?style=for-the-badge&labelColor=0f0f23"/>
 </p>
@@ -121,7 +123,7 @@ earn rewards, climb leaderboards — and create truly personalized travel experi
 
 **Cultural Explorer Map** is more than a travel planner. It is a **complete cultural discovery ecosystem** designed to help travelers, students, explorers, and culture enthusiasts experience the richness of India through technology, intelligent recommendations, immersive exploration tools, and a gamified reward system that makes every visit exciting.
 
-Whether you're planning a weekend getaway, a luxury vacation, a spiritual journey, or simply exploring India's cultural diversity — the platform provides everything needed in one place — including AI-powered trip suggestions, quizzes, leaderboards, achievements, exclusive discount rewards, and full multi-language support.
+Whether you're planning a weekend getaway, a luxury vacation, a spiritual journey, or simply exploring India's cultural diversity — the platform provides everything needed in one place — including AI-powered trip suggestions, quizzes, leaderboards, achievements, exclusive discount rewards, full multi-language support, and a vibrant **Travel Stories** community where explorers share their journeys.
 
 <br/>
 
@@ -155,6 +157,7 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
 | 🆚 &nbsp; **Compare Cultures** | Compare traditions, food, tourism, and heritage |
 | 🎉 &nbsp; **Festival Explorer** | Discover festivals, celebrations, and countdowns |
 | 📷 &nbsp; **Travel Gallery** | Upload and share your travel memories |
+| 📖 &nbsp; **Travel Stories** | Read, write, and discover inspiring cultural travel stories |
 | 🗳️ &nbsp; **Political Explorer** | Explore state-wise political information |
 | 🏆 &nbsp; **Global Leaderboard** | Compete with users worldwide and earn top ranks |
 | 🎁 &nbsp; **Reward Quiz System** | Answer questions, unlock discounts, claim prizes |
@@ -171,7 +174,292 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
 <br/>
 
 <!---------------------------------------------------------------------------->
-<!--  🧠  AI SUGGEST TRIP PLANNING  ← NEW SECTION                          -->
+<!--  📖  TRAVEL STORIES  ← NEW SECTION                                     -->
+<!---------------------------------------------------------------------------->
+
+<div align="center">
+
+## <img src="https://readme-typing-svg.demolab.com?font=Outfit&weight=800&size=28&duration=4000&pause=99999&color=EC4899&center=true&vCenter=true&width=900&lines=%F0%9F%93%96+Travel+Stories" alt=""/>
+
+### Stories That Inspire Every Journey
+
+*A community-driven storytelling hub where explorers share real travel experiences, cultural discoveries, and hidden gems from across India — powered by AI for richer, more immersive content*
+
+<br/>
+
+<p>
+  <img src="https://img.shields.io/badge/📖_Stories-Community_Hub-EC4899?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/🤖_AI-Generated_Content_(Admin)-6366F1?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/✍️_Manual-Stories_(All_Users)-10B981?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/🛡️_Moderated-Safe_&_Curated-F59E0B?style=for-the-badge&labelColor=0f0f23"/>
+</p>
+
+<br/>
+
+</div>
+
+### 👤 &nbsp; Role-Based Story Permissions
+
+<div align="center">
+
+<table>
+<tr>
+<th align="center" width="50%" style="padding:16px">
+  <h3>🙋 Regular Users</h3>
+</th>
+<th align="center" width="50%" style="padding:16px">
+  <h3>👑 Admin</h3>
+</th>
+</tr>
+<tr>
+<td align="center" style="padding:20px">
+
+<img src="https://img.shields.io/badge/✍️_Manual-Story_Creation-10B981?style=for-the-badge&labelColor=0f0f23"/>
+
+<br/><br/>
+
+<table>
+<tr><td>✅ Write and publish stories manually</td></tr>
+<tr><td>✅ Add title, description, images & tags</td></tr>
+<tr><td>✅ Select destination state & category</td></tr>
+<tr><td>✅ Edit and delete own stories</td></tr>
+<tr><td>✅ Like, save, and comment on stories</td></tr>
+<tr><td>✅ Share stories on social platforms</td></tr>
+<tr><td>❌ Cannot use AI to generate story content</td></tr>
+<tr><td>❌ Cannot publish without review (optional moderation)</td></tr>
+</table>
+
+</td>
+<td align="center" style="padding:20px">
+
+<img src="https://img.shields.io/badge/🤖_AI+Manual-Full_Story_Control-6366F1?style=for-the-badge&labelColor=0f0f23"/>
+
+<br/><br/>
+
+<table>
+<tr><td>✅ Write stories manually</td></tr>
+<tr><td>✅ Generate stories using AI (AI Story Creator)</td></tr>
+<tr><td>✅ Edit AI-generated content before publishing</td></tr>
+<tr><td>✅ Approve, reject, or feature user stories</td></tr>
+<tr><td>✅ Pin stories to state pages or festival entries</td></tr>
+<tr><td>✅ Delete any story on the platform</td></tr>
+<tr><td>✅ Manage story categories and tags</td></tr>
+<tr><td>✅ Configure moderation and publishing rules</td></tr>
+</table>
+
+</td>
+</tr>
+</table>
+
+</div>
+
+---
+
+### 🤖 &nbsp; AI Story Creator (Admin Exclusive)
+
+<div align="center">
+
+<p>
+  <img src="https://img.shields.io/badge/🔒_Access-Admin_Only-EF4444?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/⚡_Generation-Instant_AI_Drafts-6366F1?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/✏️_Editable-Before_Publishing-A78BFA?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/🌐_Multilingual-10%2B_Languages-10B981?style=for-the-badge&labelColor=0f0f23"/>
+</p>
+
+</div>
+
+The Admin's **AI Story Creator** allows platform administrators to generate rich, culturally accurate travel stories in seconds using AI. Admins select a destination, category, tone, and language — and the AI drafts a complete story that can be reviewed and edited before being published on the platform.
+
+<div align="center">
+
+<table>
+<tr>
+<td align="center" width="25%" style="padding:20px">
+  <h2>1️⃣</h2>
+  <b>Configure Story Inputs</b><br/>
+  <sub>Select state, category (festival, heritage, food, adventure), tone, target audience, and language</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Smart-Input_Form-6366F1?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" width="25%" style="padding:20px">
+  <h2>2️⃣</h2>
+  <b>AI Generates Draft</b><br/>
+  <sub>The AI produces a full story — title, body, cultural context, highlights, and suggested image tags</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Full-Story_Draft-A78BFA?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" width="25%" style="padding:20px">
+  <h2>3️⃣</h2>
+  <b>Admin Edits & Refines</b><br/>
+  <sub>Review, modify, add personal insights, attach images, and adjust metadata before publishing</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Full-Editorial_Control-10B981?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" width="25%" style="padding:20px">
+  <h2>4️⃣</h2>
+  <b>Publish & Pin</b><br/>
+  <sub>Publish immediately, schedule for later, or pin to a specific state page or festival entry</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Flexible-Publishing-F59E0B?style=flat-square&labelColor=0f0f23"/>
+</td>
+</tr>
+</table>
+
+</div>
+
+---
+
+### ✨ &nbsp; AI Story Generation Capabilities
+
+<div align="center">
+
+<table>
+<tr>
+<td align="center" width="33%" style="padding:20px">
+  <h2>🏛️</h2>
+  <b>Heritage & Culture Stories</b><br/>
+  <sub>AI crafts detailed narratives about India's historical monuments, ancient traditions, and living cultural practices tied to each state</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Culturally-Accurate-6366F1?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" width="33%" style="padding:20px">
+  <h2>🎉</h2>
+  <b>Festival Experience Stories</b><br/>
+  <sub>AI writes immersive first-person style festival narratives — Diwali in Varanasi, Holi in Mathura, Navratri in Gujarat, and more</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Festival-Immersive-EC4899?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" width="33%" style="padding:20px">
+  <h2>🍛</h2>
+  <b>Food & Culinary Tales</b><br/>
+  <sub>Generate stories centred around regional cuisines, street food trails, and the cultural significance of local dishes</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Culinary-Discovery-F59E0B?style=flat-square&labelColor=0f0f23"/>
+</td>
+</tr>
+<tr>
+<td align="center" style="padding:20px">
+  <h2>🏔️</h2>
+  <b>Adventure & Nature Stories</b><br/>
+  <sub>AI generates trekking journals, wildlife safari narratives, and nature escape stories for India's mountains, forests, and coasts</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Adventure-Narratives-10B981?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" style="padding:20px">
+  <h2>🌐</h2>
+  <b>Multilingual Story Generation</b><br/>
+  <sub>Generate AI stories directly in Hindi, Tamil, Telugu, Bengali, Gujarati, and 5+ more regional languages for native audiences</sub><br/><br/>
+  <img src="https://img.shields.io/badge/10%2B-Language_Output-A78BFA?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" style="padding:20px">
+  <h2>🔄</h2>
+  <b>Regenerate & Restyle</b><br/>
+  <sub>Not satisfied with the draft? Regenerate with a different tone — poetic, journalistic, conversational — in one click</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Instant-Restyle-06B6D4?style=flat-square&labelColor=0f0f23"/>
+</td>
+</tr>
+</table>
+
+</div>
+
+---
+
+### ✍️ &nbsp; Manual Story Creation (Users & Admin)
+
+<div align="center">
+
+<table>
+<tr>
+<td align="center" width="33%" style="padding:20px">
+  <h2>📝</h2>
+  <b>Rich Text Editor</b><br/>
+  <sub>Full-featured editor with formatting options — headings, bold, italic, quotes, and paragraph styling for expressive storytelling</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Rich-Text_Editor-6366F1?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" width="33%" style="padding:20px">
+  <h2>📸</h2>
+  <b>Photo Uploads</b><br/>
+  <sub>Attach travel photos directly to your story — images are displayed inline throughout the narrative for a gallery-style experience</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Inline-Photo_Support-10B981?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" width="33%" style="padding:20px">
+  <h2>🏷️</h2>
+  <b>Tags & Categories</b><br/>
+  <sub>Tag your story by state, trip type (adventure, spiritual, food, heritage), and season so readers discover it in relevant searches</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Smart-Tagging-F59E0B?style=flat-square&labelColor=0f0f23"/>
+</td>
+</tr>
+<tr>
+<td align="center" style="padding:20px">
+  <h2>📍</h2>
+  <b>Destination Linking</b><br/>
+  <sub>Link your story to a specific state or destination on the interactive map — story appears in that state's profile automatically</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Map-Linked_Stories-EC4899?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" style="padding:20px">
+  <h2>👁️</h2>
+  <b>Draft & Preview</b><br/>
+  <sub>Save as draft, preview how your story looks on the platform, then publish when you're ready — no pressure to go live immediately</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Draft-Save_&_Preview-A78BFA?style=flat-square&labelColor=0f0f23"/>
+</td>
+<td align="center" style="padding:20px">
+  <h2>🌟</h2>
+  <b>Community Engagement</b><br/>
+  <sub>Readers can like, save to their wishlist, comment, and share your story — building a community around shared travel experiences</sub><br/><br/>
+  <img src="https://img.shields.io/badge/Social-Engagement-06B6D4?style=flat-square&labelColor=0f0f23"/>
+</td>
+</tr>
+</table>
+
+</div>
+
+---
+
+### 📚 &nbsp; Story Categories
+
+<div align="center">
+
+| &nbsp; Category &nbsp; | &nbsp; Description &nbsp; | &nbsp; Who Creates &nbsp; |
+|:---|:---|:---|
+| 🏛️ &nbsp; **Heritage & History** | Ancient sites, monuments, and historical journeys | Users & Admin (AI+Manual) |
+| 🎉 &nbsp; **Festival Experiences** | Immersive festival narratives and event diaries | Users & Admin (AI+Manual) |
+| 🍛 &nbsp; **Food & Culinary** | Regional cuisine trails, street food explorations | Users & Admin (AI+Manual) |
+| 🏔️ &nbsp; **Adventure & Trekking** | Outdoor journeys, treks, and nature escapes | Users & Admin (AI+Manual) |
+| 🙏 &nbsp; **Spiritual Journeys** | Pilgrimage routes, temple trails, and ashram visits | Users & Admin (AI+Manual) |
+| 🏖️ &nbsp; **Coastal & Beach** | Coastal escapes, island hops, and seaside tales | Users & Admin (AI+Manual) |
+| 🌿 &nbsp; **Village & Rural Life** | Off-beat travels and rural cultural experiences | Users & Admin (AI+Manual) |
+| 🤖 &nbsp; **AI Curated Stories** | Premium stories generated and published by Admin AI | Admin Only (AI) |
+
+</div>
+
+---
+
+### 🛡️ &nbsp; Story Moderation & Safety
+
+<div align="center">
+
+<p>
+  <img src="https://img.shields.io/badge/🔍_Review-Admin_Moderation-6366F1?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/🚫_Filter-Inappropriate_Content-EF4444?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/📌_Feature-Curated_Highlights-F59E0B?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/🏷️_Tag-Verified_Stories-10B981?style=for-the-badge&labelColor=0f0f23"/>
+</p>
+
+</div>
+
+| &nbsp; Moderation Layer &nbsp; | &nbsp; Details &nbsp; |
+|:---|:---|
+| 🔍 &nbsp; **Admin Review Queue** | All user-submitted stories go into a review queue before going live (configurable) |
+| 🚫 &nbsp; **Content Filtering** | Automated checks for inappropriate language, spam, and off-topic content |
+| 📌 &nbsp; **Featured Stories** | Admin can promote standout stories to the homepage and state feature sections |
+| ✅ &nbsp; **Verified Badge** | Admin can mark stories as "Verified Experience" for high-quality, authentic posts |
+| 🗑️ &nbsp; **Takedown Control** | Admin can remove any story that violates platform guidelines at any time |
+| 🤖 &nbsp; **AI Story Labelling** | AI-generated stories are clearly labelled as "AI Assisted" for full transparency |
+
+<br/>
+
+> **💡 Stories Tip:** Link your Travel Story to a hotel booking or AI-generated trip — readers can jump directly from your story to book the same experience!
+
+<br/>
+
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%"/>
+
+<br/>
+
+<!---------------------------------------------------------------------------->
+<!--  🧠  AI SUGGEST TRIP PLANNING                                          -->
 <!---------------------------------------------------------------------------->
 
 <div align="center">
@@ -895,6 +1183,7 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
 | 🤖 &nbsp; **Bharat Buddy AI** | Full conversational AI in selected language |
 | 🏨 &nbsp; **Hotel & Booking Pages** | Property descriptions, amenities, and booking flow |
 | 🎉 &nbsp; **Festival Explorer** | Festival names, descriptions, and countdowns |
+| 📖 &nbsp; **Travel Stories** | Story titles, body text, category names, and comment prompts |
 | 📊 &nbsp; **Historical Timeline** | Historical event titles and descriptions |
 | 🏆 &nbsp; **Leaderboard & Badges** | Rank names, badge titles, and achievement messages |
 | 💸 &nbsp; **Quiz Discount System** | Coupon messages, tier names, and redemption flow |
@@ -1070,6 +1359,7 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
 | 🎉 &nbsp; **Festivals** | Celebrations, events, and cultural gatherings |
 | 🌄 &nbsp; **Attractions** | Popular tourist destinations and hidden gems |
 | 📚 &nbsp; **History** | Historical significance, timelines, and events |
+| 📖 &nbsp; **Travel Stories** | Community-written and AI-curated cultural journey narratives |
 
 </div>
 
@@ -1205,6 +1495,7 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
 | 📚 &nbsp; **Cultural Information** | Detailed insights about traditions, customs, and India's heritage |
 | 🗺️ &nbsp; **Trip Suggestions** | Curated trip ideas based on season, budget, and interests |
 | 🧠 &nbsp; **AI Suggest Trip Planning** | Full AI-generated day-wise itineraries personalized to your travel style |
+| 📖 &nbsp; **Story Inspiration** | AI suggests story ideas and destinations based on your travel profile |
 | ⚡ &nbsp; **Real-Time Assistance** | Instant answers to travel queries, available anytime |
 | 🍽️ &nbsp; **Food Recommendations** | Regional cuisine suggestions and best local eateries |
 | 🛍️ &nbsp; **Shopping Guide** | Local markets, handicrafts, and authentic souvenirs |
@@ -1265,6 +1556,13 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
   <sub>Never miss a celebration</sub>
 </td>
 </tr>
+<tr>
+<td align="center" colspan="3" style="padding:20px">
+  <h2>📖</h2>
+  <b>Trending Stories</b><br/>
+  <sub>Most-read user and AI-curated travel stories ranked by engagement, region, and season</sub>
+</td>
+</tr>
 </table>
 
 </div>
@@ -1300,6 +1598,8 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
 | 💸 &nbsp; **Coupon Admin** | Create, revoke, and monitor quiz-generated discount coupons |
 | 🌐 &nbsp; **Language Management** | Manage translation strings and add new language packs |
 | 🧠 &nbsp; **AI Trip Config** | Configure AI trip suggestion preferences and destination weights |
+| 📖 &nbsp; **Stories Management** | Create stories manually or via AI, review user submissions, feature, moderate, and manage all story content |
+| 🤖 &nbsp; **AI Story Creator** | Generate culturally rich travel stories using AI — configure tone, language, destination, and category before publishing |
 
 </div>
 
@@ -1326,6 +1626,7 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
   <img src="https://img.shields.io/badge/👤_Access-Restrictions-F59E0B?style=for-the-badge&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/🔑_Account-Protection-EC4899?style=for-the-badge&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/💳_Secure-Booking_Flow-06B6D4?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/📖_Stories-Role--Gated_AI_Access-6366F1?style=for-the-badge&labelColor=0f0f23"/>
 </p>
 
 </div>
@@ -1358,6 +1659,7 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
   <img src="https://img.shields.io/badge/♿_Accessible-Interface-6366F1?style=for-the-badge&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/🌈_Dark_Mode-Ready-A78BFA?style=for-the-badge&labelColor=0f0f23"/>
   <img src="https://img.shields.io/badge/🌐_Multi--Language-UI-10B981?style=for-the-badge&labelColor=0f0f23"/>
+  <img src="https://img.shields.io/badge/📖_Story-Community_Feed-EC4899?style=for-the-badge&labelColor=0f0f23"/>
 </p>
 
 </div>
@@ -1380,7 +1682,7 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
 
 ```
 ╔═══════════════════════════════════════════════════════════════════════════════════════╗
-║              CULTURAL EXPLORER MAP — ROADMAP v3.3                        STATUS      ║
+║              CULTURAL EXPLORER MAP — ROADMAP v3.4                        STATUS      ║
 ╠═══════════════════════════════════════════════════════════════════════════════════════╣
 ║  ✅  Interactive India Map                   ████████████████████████    100%        ║
 ║  ✅  Hotel Booking System                    ████████████████████████    100%        ║
@@ -1404,6 +1706,8 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
 ║  ✅  Gamification Engine                     ████████████████████████    100%        ║
 ║  ✅  Social Sharing                          ████████████████████████    100%        ║
 ║  ✅  AI Suggest Trip Planning                ████████████████████████    100%        ║
+║  ✅  Travel Stories (Manual — Users)         ████████████████████████    100%        ║
+║  ✅  Travel Stories (AI + Manual — Admin)    ████████████████████████    100%        ║
 ╚═══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
@@ -1526,9 +1830,9 @@ Whether you're planning a weekend getaway, a luxury vacation, a spiritual journe
 
 </div>
 
-Unlike traditional travel platforms, **Cultural Explorer Map** combines tourism, culture, education, AI assistance, personalized planning, AI-generated trip suggestions, gamified rewards, quiz-based discounts, and multi-language exploration into a **single intelligent platform**.
+Unlike traditional travel platforms, **Cultural Explorer Map** combines tourism, culture, education, AI assistance, personalized planning, AI-generated trip suggestions, gamified rewards, quiz-based discounts, community-driven travel stories with AI content creation, and multi-language exploration into a **single intelligent platform**.
 
-It is designed to help users not just travel across India — but truly **understand, experience, earn, and connect** with its rich and diverse heritage — in the language they feel most at home in.
+It is designed to help users not just travel across India — but truly **understand, experience, earn, connect, and share** with its rich and diverse heritage — in the language they feel most at home in.
 
 <div align="center">
 
@@ -1573,9 +1877,22 @@ Create personalized trips, get AI-powered trip suggestions, discover destination
 </td>
 <td align="center" style="padding: 28px 30px;">
 
+### 📖 &nbsp; Share Your Journey
+
+Write and publish your own travel stories, read AI-curated cultural narratives, discover inspiring journeys from fellow explorers, and contribute to a living library of India's travel experiences.
+
+<br/>
+
+<img src="https://img.shields.io/badge/Community-Travel_Stories-EC4899?style=for-the-badge&labelColor=0f0f23"/>
+
+</td>
+</tr>
+<tr>
+<td align="center" colspan="2" style="padding: 28px 30px;">
+
 ### 🌐 &nbsp; Your Language, Your Way
 
-Explore every feature — quizzes, maps, AI assistant, AI trip suggestions, festival guides, and booking flow — in 10+ Indian regional languages with instant, seamless language switching.
+Explore every feature — quizzes, maps, AI assistant, AI trip suggestions, travel stories, festival guides, and booking flow — in 10+ Indian regional languages with instant, seamless language switching.
 
 <br/>
 
@@ -1646,12 +1963,12 @@ OR CONDITIONS OF ANY KIND, either express or implied.
 
 <br/>
 
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&section=footer&height=240&color=gradient&customColorList=6,11,20&animation=fadeIn&text=🇮🇳%20Explore%20India's%20Culture&fontSize=38&fontColor=ffffff&fontAlignY=52&desc=Discover%20Heritage%20%E2%80%A2%20Earn%20Discounts%20%E2%80%A2%20Explore%20in%20Your%20Language%20%E2%80%A2%20Experience%20India&descAlignY=76&descSize=17"/>
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&section=footer&height=240&color=gradient&customColorList=6,11,20&animation=fadeIn&text=🇮🇳%20Explore%20India's%20Culture&fontSize=38&fontColor=ffffff&fontAlignY=52&desc=Discover%20Heritage%20%E2%80%A2%20Earn%20Discounts%20%E2%80%A2%20Share%20Stories%20%E2%80%A2%20Explore%20in%20Your%20Language%20%E2%80%A2%20Experience%20India&descAlignY=76&descSize=17"/>
 
 <br/>
 
 <a href="https://readme-typing-svg.demolab.com">
-  <img src="https://readme-typing-svg.demolab.com?font=Outfit&weight=700&size=20&duration=3000&pause=800&color=A78BFA&center=true&vCenter=true&width=900&lines=Plan+Smarter+%E2%80%A2+Travel+Better+%E2%80%A2+Earn+Discounts+%E2%80%A2+Explore+in+Your+Language" alt="Footer Typing"/>
+  <img src="https://readme-typing-svg.demolab.com?font=Outfit&weight=700&size=20&duration=3000&pause=800&color=A78BFA&center=true&vCenter=true&width=900&lines=Plan+Smarter+%E2%80%A2+Travel+Better+%E2%80%A2+Earn+Discounts+%E2%80%A2+Share+Stories+%E2%80%A2+Explore+in+Your+Language" alt="Footer Typing"/>
 </a>
 
 <br/><br/>
