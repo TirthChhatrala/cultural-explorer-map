@@ -11,7 +11,6 @@ This Code of Conduct governs participation in the Cultural Explorer Map communit
 1. [Our Pledge](#1-our-pledge)
 2. [Our Standards](#2-our-standards)
    - 2.1 [Expected Behaviour](#21-expected-behaviour)
-   - 2.2 [Unacceptable Behaviour](#22-unacceptable-behaviour)
 3. [Scope](#3-scope)
 4. [Enforcement Responsibilities](#4-enforcement-responsibilities)
 5. [Reporting a Violation](#5-reporting-a-violation)
@@ -51,19 +50,6 @@ The following behaviours are expected of all community members and contribute to
 - **Take responsibility for mistakes** — acknowledge errors, apologise to those affected, and learn from the experience
 - **Act in the best interest of the community** — prioritise collective wellbeing over individual preferences
 - **Maintain professional communication** in all project spaces, including issues, pull requests, discussions, and code reviews
-
----
-
-### 2.2 Unacceptable Behaviour
-
-The following behaviours are considered unacceptable and will not be tolerated in any project space:
-
-- Use of sexualised language, imagery, or unwelcome sexual attention or advances of any kind
-- Trolling, insulting remarks, derogatory comments, or personal and political attacks
-- Public or private harassment of any community member
-- Publishing another person's private information — such as a physical address, email address, or other identifying details — without their explicit consent
-- Sustained disruption of discussions, reviews, or community events
-- Any conduct that could reasonably be considered inappropriate in a professional setting
 
 ---
 
