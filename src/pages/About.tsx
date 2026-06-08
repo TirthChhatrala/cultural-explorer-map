@@ -24,8 +24,8 @@ const About = () => {
     image: "https://randomuser.me/api/portraits/men/32.jpg", // You might want to replace this with your actual photo
     contact: {
       email: "tirthchhatrala@gmail.com",
-      phone: "+91 9328971214",
-      location: "Junagadh, Gujarat"
+      phone: "+91 999999999",
+      location: "Gujarat"
     },
     social: {
       github: "https://github.com/TirthChhatrala",
