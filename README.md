@@ -1995,6 +1995,6 @@ OR CONDITIONS OF ANY KIND, either express or implied.
 
 ### 👨‍💻 &nbsp; Built with ❤️ by &nbsp; [Tirth Chhatrala](https://github.com/TirthChhatrala)
 
-<sub>© 2024 Cultural Explorer Map &nbsp;•&nbsp; Licensed under Apache 2.0 &nbsp;•&nbsp; All rights reserved.</sub>
+<sub>© 2025 Cultural Explorer Map &nbsp;•&nbsp; Licensed under Apache 2.0 &nbsp;•&nbsp; All rights reserved.</sub>
 
 </div>
