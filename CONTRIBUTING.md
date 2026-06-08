@@ -139,7 +139,7 @@ Click the **Fork** button at the top right of the [repository page](https://gith
 **2. Clone your fork**
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/cultural-explorer-map.git
+git clone https://github.com/TirthChhatrala/cultural-explorer-map.git
 cd cultural-explorer-map
 ```
 
