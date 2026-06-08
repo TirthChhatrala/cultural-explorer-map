@@ -26,18 +26,14 @@ We, as members, contributors, and leaders of the Cultural Explorer Map community
 
 We are committed to an open, welcoming, diverse, inclusive, and healthy community, regardless of:
 
-- Age
-- Body size
+
 - Visible or invisible disability
 - Ethnicity and national origin
-- Sex characteristics
-- Gender identity and expression
 - Level of experience or education
 - Socio-economic status
 - Personal appearance
 - Race
 - Religion
-- Sexual identity and orientation
 
 We pledge to act and interact in ways that uphold these values at every level of participation.
 
