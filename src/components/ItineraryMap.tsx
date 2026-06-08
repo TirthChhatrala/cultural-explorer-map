@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Polyline, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Polyline, Popup, Tooltip, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Plane, Train, Car, Bus, Route as RouteIcon } from 'lucide-react';
@@ -103,6 +103,38 @@ async function osrmRoute(a: LatLng, b: LatLng): Promise<{ coords: LatLng[]; dist
   }
 }
 
+/** Generate a smooth curved arc between two points (great-circle-ish bezier) for flights. */
+function curvedArc(a: LatLng, b: LatLng, segments = 64, curvature = 0.22): LatLng[] {
+  const mid = { lat: (a.lat + b.lat) / 2, lng: (a.lng + b.lng) / 2 };
+  const dx = b.lng - a.lng;
+  const dy = b.lat - a.lat;
+  // perpendicular offset for control point
+  const ctrl = { lat: mid.lat - dx * curvature, lng: mid.lng + dy * curvature };
+  const pts: LatLng[] = [];
+  for (let i = 0; i <= segments; i++) {
+    const t = i / segments;
+    const u = 1 - t;
+    const lat = u * u * a.lat + 2 * u * t * ctrl.lat + t * t * b.lat;
+    const lng = u * u * a.lng + 2 * u * t * ctrl.lng + t * t * b.lng;
+    pts.push({ lat, lng });
+  }
+  return pts;
+}
+
+function midpoint(coords: LatLng[]): LatLng {
+  if (coords.length === 0) return { lat: 22.5, lng: 79 };
+  return coords[Math.floor(coords.length / 2)];
+}
+
+function formatDuration(min: number | null): string {
+  if (min == null) return '—';
+  const h = Math.floor(min / 60);
+  const m = Math.round(min % 60);
+  if (h === 0) return `${m} min`;
+  if (m === 0) return `${h}h`;
+  return `${h}h ${m}m`;
+}
+
 function legTransport(overall: string, dayTransport?: string | null): 'car' | 'bus' | 'train' | 'flight' {
   const t = (dayTransport || overall || '').toLowerCase();
   if (t.includes('flight') || t.includes('plane') || t.includes('air')) return 'flight';
@@ -112,16 +144,34 @@ function legTransport(overall: string, dayTransport?: string | null): 'car' | 'b
   return 'car';
 }
 
-function makeNumberIcon(num: number, active: boolean): L.DivIcon {
-  const size = active ? 40 : 32;
+function makeNumberIcon(num: number, active: boolean, isStart: boolean, isEnd: boolean): L.DivIcon {
+  const size = active ? 44 : 34;
   const bg = active ? '#FF671F' : '#fff';
   const fg = active ? '#fff' : '#FF671F';
   const border = '#FF671F';
+  const label = isStart ? 'Start' : isEnd ? 'End' : `Day ${num}`;
+  const pulse = active
+    ? `<span style="position:absolute;inset:-6px;border-radius:9999px;background:rgba(255,103,31,.35);animation:itineraryPulse 1.6s ease-out infinite;"></span>`
+    : '';
   return L.divIcon({
     className: 'itinerary-marker',
-    html: `<div style="width:${size}px;height:${size}px;border-radius:9999px;background:${bg};color:${fg};border:3px solid ${border};display:flex;align-items:center;justify-content:center;font-weight:700;font-family:system-ui;box-shadow:0 6px 16px rgba(0,0,0,.25);transition:all .2s ease">${num}</div>`,
-    iconSize: [size, size],
+    html: `
+      <div style="position:relative;display:flex;flex-direction:column;align-items:center;">
+        ${pulse}
+        <div style="position:relative;width:${size}px;height:${size}px;border-radius:9999px;background:${bg};color:${fg};border:3px solid ${border};display:flex;align-items:center;justify-content:center;font-weight:800;font-family:system-ui;box-shadow:0 8px 20px rgba(0,0,0,.28);transition:all .2s ease;font-size:${active ? 16 : 14}px;">${num}</div>
+        <div style="margin-top:4px;padding:2px 8px;background:#111827;color:#fff;border-radius:9999px;font-size:10px;font-weight:600;font-family:system-ui;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.25)">${label}</div>
+      </div>`,
+    iconSize: [size, size + 22],
     iconAnchor: [size / 2, size / 2],
+  });
+}
+
+function makeLegLabelIcon(text: string, color: string): L.DivIcon {
+  return L.divIcon({
+    className: 'itinerary-leg-label',
+    html: `<div style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:9999px;background:#fff;color:${color};border:1.5px solid ${color};font-size:11px;font-weight:700;font-family:system-ui;box-shadow:0 4px 10px rgba(0,0,0,.18);white-space:nowrap;">${text}</div>`,
+    iconSize: [1, 1],
+    iconAnchor: [0, 0],
   });
 }
 
@@ -148,6 +198,13 @@ const transportColor: Record<string, string> = {
   bus: '#0EA5E9',
   train: '#16A34A',
   flight: '#8B5CF6',
+};
+
+const transportLabel: Record<string, string> = {
+  car: 'Car / Cab',
+  bus: 'Bus',
+  train: 'Train',
+  flight: 'Flight',
 };
 
 const ItineraryMap: React.FC<Props> = ({ stops, transportMode, activeDay, onSelectDay, onLegsComputed }) => {
@@ -189,15 +246,20 @@ const ItineraryMap: React.FC<Props> = ({ stops, transportMode, activeDay, onSele
         let distanceKm: number | null = null;
         let durationMin: number | null = null;
         let source: 'osrm' | 'haversine' = 'haversine';
-        if (mode === 'car' || mode === 'bus') {
+        if (mode === 'car' || mode === 'bus' || mode === 'train') {
+          // OSRM road geometry is used as a visual approximation for trains too
+          // (rail routing isn't available on the public OSRM demo). Adjust speed below.
           const r = await osrmRoute(a, b);
           if (r) {
             coords = r.coords;
             distanceKm = r.distanceKm;
-            // bus is ~1.3x slower than driving
-            durationMin = mode === 'bus' ? r.durationMin * 1.3 : r.durationMin;
+            if (mode === 'bus') durationMin = r.durationMin * 1.3;
+            else if (mode === 'train') durationMin = (r.distanceKm / 60) * 60; // avg 60 km/h
+            else durationMin = r.durationMin;
             source = 'osrm';
           }
+        } else if (mode === 'flight') {
+          coords = curvedArc(a, b);
         }
         if (distanceKm == null) {
           const km = haversineKm(a, b);
@@ -254,42 +316,74 @@ const ItineraryMap: React.FC<Props> = ({ stops, transportMode, activeDay, onSele
         />
 
         {legs.map((leg, i) => (
-          <Polyline
-            key={i}
-            positions={leg.coords.map(c => [c.lat, c.lng]) as [number, number][]}
-            pathOptions={{
-              color: leg.color,
-              weight: activeLegIdx === i ? 6 : 4,
-              opacity: activeLegIdx === -1 || activeLegIdx === i ? 0.95 : 0.4,
-              dashArray: leg.dashed ? '8 8' : undefined,
-            }}
-          />
+          <React.Fragment key={i}>
+            {/* halo for depth */}
+            <Polyline
+              positions={leg.coords.map(c => [c.lat, c.lng]) as [number, number][]}
+              pathOptions={{
+                color: leg.color,
+                weight: activeLegIdx === i ? 11 : 8,
+                opacity: activeLegIdx === -1 || activeLegIdx === i ? 0.18 : 0.08,
+              }}
+            />
+            <Polyline
+              positions={leg.coords.map(c => [c.lat, c.lng]) as [number, number][]}
+              pathOptions={{
+                color: leg.color,
+                weight: activeLegIdx === i ? 6 : 4,
+                opacity: activeLegIdx === -1 || activeLegIdx === i ? 0.95 : 0.4,
+                dashArray: leg.dashed ? '10 8' : undefined,
+                className: leg.dashed ? 'itinerary-dash-anim' : undefined,
+                lineCap: 'round',
+                lineJoin: 'round',
+              }}
+            />
+            <Marker
+              position={[midpoint(leg.coords).lat, midpoint(leg.coords).lng]}
+              icon={makeLegLabelIcon(
+                `${transportLabel[leg.mode]} · ${Math.round(leg.info.distanceKm || 0)} km · ${formatDuration(leg.info.durationMin)}`,
+                leg.color,
+              )}
+              interactive={false}
+            />
+          </React.Fragment>
         ))}
 
         {points.map((pt, idx) => {
           if (!pt) return null;
           const s = stops[idx];
           const active = activeDay === s.day;
+          const isStart = idx === 0;
+          const isEnd = idx === points.length - 1 && points.length > 1;
           return (
             <Marker
               key={idx}
               position={[pt.lat, pt.lng]}
-              icon={makeNumberIcon(s.day, active)}
+              icon={makeNumberIcon(s.day, active, isStart, isEnd)}
               eventHandlers={{ click: () => onSelectDay?.(s.day) }}
             >
-              <Popup>
-                <div style={{ fontFamily: 'system-ui', minWidth: 180 }}>
-                  <div style={{ fontWeight: 700, color: '#FF671F' }}>Day {s.day}</div>
-                  <div style={{ fontSize: 14, marginBottom: 4 }}>{s.location}</div>
+              <Popup className="itinerary-popup">
+                <div style={{ fontFamily: 'system-ui', minWidth: 220 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                    <span style={{ background: '#FF671F', color: '#fff', padding: '3px 10px', borderRadius: 9999, fontSize: 11, fontWeight: 700, letterSpacing: 0.3 }}>
+                      {isStart ? 'START' : isEnd ? 'END' : `DAY ${s.day}`}
+                    </span>
+                    {s.transport && (
+                      <span style={{ fontSize: 11, color: '#6b7280', fontWeight: 600, textTransform: 'capitalize' }}>{s.transport}</span>
+                    )}
+                  </div>
+                  <div style={{ fontSize: 15, fontWeight: 700, color: '#111827', marginBottom: 6 }}>{s.location}</div>
                   {s.travelFrom && (
-                    <div style={{ fontSize: 12, color: '#666' }}>
-                      From: {s.travelFrom}<br />
-                      {s.transport && <>Mode: {s.transport}<br /></>}
-                      {s.travelTime && <>Time: {s.travelTime}</>}
+                    <div style={{ fontSize: 12, color: '#4b5563', borderTop: '1px solid #e5e7eb', paddingTop: 6, lineHeight: 1.5 }}>
+                      <div><strong style={{ color: '#111827' }}>From:</strong> {s.travelFrom}</div>
+                      {s.travelTime && <div><strong style={{ color: '#111827' }}>Travel:</strong> {s.travelTime}</div>}
                     </div>
                   )}
                 </div>
               </Popup>
+              <Tooltip direction="top" offset={[0, -10]} opacity={0.95}>
+                <span style={{ fontWeight: 600 }}>{s.location}</span>
+              </Tooltip>
             </Marker>
           );
         })}
@@ -299,17 +393,18 @@ const ItineraryMap: React.FC<Props> = ({ stops, transportMode, activeDay, onSele
       </MapContainer>
 
       {/* Legend */}
-      <div className="absolute top-3 right-3 z-[400] bg-background/95 backdrop-blur rounded-lg shadow-lg border border-border p-3 text-xs space-y-1.5">
-        <div className="font-semibold mb-1">Transport</div>
-        <div className="flex items-center gap-2"><Car className="w-3 h-3" style={{ color: transportColor.car }} /> Car / Cab</div>
-        <div className="flex items-center gap-2"><Bus className="w-3 h-3" style={{ color: transportColor.bus }} /> Bus</div>
-        <div className="flex items-center gap-2"><Train className="w-3 h-3" style={{ color: transportColor.train }} /> Train</div>
-        <div className="flex items-center gap-2"><Plane className="w-3 h-3" style={{ color: transportColor.flight }} /> Flight</div>
-        <div className="flex items-center gap-2"><RouteIcon className="w-3 h-3 text-muted-foreground" /> Mixed (per leg)</div>
+      <div className="absolute top-3 right-3 z-[400] bg-background/95 backdrop-blur-md rounded-xl shadow-xl border border-border p-3 text-xs space-y-1.5 min-w-[140px]">
+        <div className="font-semibold mb-1.5 text-[11px] uppercase tracking-wider text-muted-foreground">Transport</div>
+        <div className="flex items-center gap-2"><span className="inline-block w-3 h-[3px] rounded-full" style={{ background: transportColor.car }} /><Car className="w-3 h-3" style={{ color: transportColor.car }} /> Car / Cab</div>
+        <div className="flex items-center gap-2"><span className="inline-block w-3 h-[3px] rounded-full" style={{ background: transportColor.bus }} /><Bus className="w-3 h-3" style={{ color: transportColor.bus }} /> Bus</div>
+        <div className="flex items-center gap-2"><span className="inline-block w-3 h-[3px] rounded-full border-dashed border-t-[3px]" style={{ borderColor: transportColor.train }} /><Train className="w-3 h-3" style={{ color: transportColor.train }} /> Train</div>
+        <div className="flex items-center gap-2"><span className="inline-block w-3 h-[3px] rounded-full border-dashed border-t-[3px]" style={{ borderColor: transportColor.flight }} /><Plane className="w-3 h-3" style={{ color: transportColor.flight }} /> Flight</div>
+        <div className="flex items-center gap-2 pt-1 border-t border-border/60"><RouteIcon className="w-3 h-3 text-muted-foreground" /> Mixed (per leg)</div>
       </div>
 
       {loading && (
-        <div className="absolute bottom-3 left-3 z-[400] bg-background/95 backdrop-blur rounded-md px-3 py-1.5 text-xs shadow border border-border">
+        <div className="absolute bottom-3 left-3 z-[400] bg-background/95 backdrop-blur-md rounded-full px-4 py-2 text-xs shadow-xl border border-border flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-india-orange animate-pulse" />
           Locating destinations…
         </div>
       )}
